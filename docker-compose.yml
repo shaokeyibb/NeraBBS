@@ -1,0 +1,164 @@
+version: "3.4"
+
+services:
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+    container_name: "NeraBBS-Frontend"
+    restart: on-failure
+    expose:
+      - "3000"
+    networks:
+      - frontend
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:3000" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  gateway:
+    build:
+      context: .
+      target: gateway
+    container_name: "NeraBBS-Gateway"
+    restart: on-failure
+    depends_on:
+      consul:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+      service-auth:
+        condition: service_started
+      service-user:
+        condition: service_started
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+      - consul
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:80/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      - logging.level.org.springframework.cloud.gateway=TRACE
+
+  service-auth:
+    build:
+      context: .
+      target: service-auth
+    container_name: "NeraBBS-Service-Auth"
+    restart: on-failure
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - redis
+      - postgres
+      - consul
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  service-user:
+    build:
+      context: .
+      target: service-user
+    container_name: "NeraBBS-Service-User"
+    restart: on-failure
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - redis
+      - postgres
+      - consul
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:latest
+    container_name: "NeraBBS-Middleware-Redis"
+    restart: on-failure
+    expose:
+      - "6379"
+    networks:
+      - redis
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: [ "redis-server", "--bind", "0.0.0.0", "--port", "6379" ]
+
+  postgres:
+    image: postgres:latest
+    container_name: "NeraBBS-Middleware-Postgres"
+    restart: on-failure
+    expose:
+      - "5432"
+    networks:
+      - postgres
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "nerabbs", "-d", "nerabbs" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_PASSWORD=nerabbs
+      - POSTGRES_USER=nerabbs
+      - POSTGRES_DB=nerabbs
+
+  consul:
+    image: hashicorp/consul:latest
+    container_name: "NeraBBS-Middleware-Consul"
+    restart: on-failure
+    expose:
+      - "8500"
+    networks:
+      - consul
+    volumes:
+      - ./data/consul:/consul/data
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "localhost:8500/v1/status/leader" ]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    command: [ "consul", "agent", "-server", "-data-dir=/consul/data", "-bootstrap-expect=1", "-client=0.0.0.0" ]
+
+networks:
+  frontend:
+  services:
+  redis:
+  postgres:
+  consul:

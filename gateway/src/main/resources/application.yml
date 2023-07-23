@@ -1,0 +1,15 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: nerabbs-gateway
+
+  cloud:
+    consul:
+      host: consul
+      post: 8500
+
+nerabbs:
+  frontend:
+    url: http://frontend:3000

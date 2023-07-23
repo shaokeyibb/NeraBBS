@@ -1,0 +1,35 @@
+[versions]
+springboot = "3.1.1"
+springDependencyManagement = "1.1.0"
+protobufPlugin = "0.9.1"
+frontendGradlePlugin = "7.0.0"
+
+springCloud = "2022.0.3"
+springData = "2023.0.2"
+
+grpc = "1.56.1"
+protobuf = "3.22.3"
+
+grpcSpringBootStarter = "2.13.1.RELEASE"
+
+javaxAnnotation = "1.3.2"
+
+saTokenStarter = "1.35.0.RC"
+
+[libraries]
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
+grpc-services = { module = "io.grpc:grpc-services", version.ref = "grpc" }
+grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
+grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc" }
+javax-annotation = { module = "javax.annotation:javax.annotation-api", version.ref = "javaxAnnotation" }
+
+grpc-spring-boot-starter = { module = "net.devh:grpc-spring-boot-starter", version.ref = "grpcSpringBootStarter" }
+
+sa-token-starter = { module = "cn.dev33:sa-token-spring-boot3-starter", version.ref = "saTokenStarter" }
+sa-token-redis = { module = "cn.dev33:sa-token-redis", version.ref = "saTokenStarter" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+frontend-gradle = { id = "org.siouan.frontend-jdk17", version.ref = "frontendGradlePlugin" }

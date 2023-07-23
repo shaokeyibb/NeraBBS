@@ -1,0 +1,29 @@
+package io.hikarilan.nearbbs.gateway.configuration;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RoutesConfiguration {
+
+    @Value("${nerabbs.frontend.url}")
+    private String frontendUrl;
+
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("service-user", r -> r.path("/api/users/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://nerabbs-service-user"))
+                .route("service-auth", r -> r.path("/api/authorization/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://nerabbs-service-auth"))
+                .route("frontend", r -> r.path("/**")
+                        .uri(frontendUrl))
+                .build();
+    }
+
+}

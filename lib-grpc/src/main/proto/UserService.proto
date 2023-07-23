@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.hikarilan.nerabbs.lib.services.user.grpc";
+option java_outer_classname = "UserServiceProto";
+
+package user_service;
+
+service UserInfo{
+  /**
+    Get full user info by id or email
+    WARNING: do not expose this rpc cause the password will be returned
+  */
+  rpc GetFullUserInfo(FullUserInfoRequest) returns (FullUserInfoResponse);
+}
+
+message FullUserInfoRequest{
+  oneof identify{
+    int64 id = 1;
+    string email = 2;
+  }
+}
+
+message FullUserInfoResponse{
+  int64 id = 1;
+  string username = 2;
+  optional string email = 3;
+  optional string password = 4;
+}
+
+service UserRegistration{
+  rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+}
+
+message RegisterUserRequest{
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterUserResponse{
+  int64 id = 1;
+}

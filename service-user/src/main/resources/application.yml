@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: nerabbs-service-user
+
+  data:
+    redis:
+      host: redis
+      port: 6379
+      timeout: 10s
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/nerabbs
+    username: nerabbs
+    password: nerabbs
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    show-sql: true
+
+  cloud:
+    consul:
+      host: consul
+      post: 8500
+
+grpc:
+  server:
+    security:
+      enabled: false
+
+sa-token:
+  token-name: nerabbs
