@@ -6,18 +6,16 @@ import io.hikarilan.nerabbs.lib.services.user.grpc.RegisterUserResponse;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserRegistrationGrpc;
 import io.hikarilan.nerabbs.services.user.data.dto.UserBasicRegistrationDto;
 import io.hikarilan.nerabbs.services.user.service.UserRegistrationService;
+import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.validation.annotation.Validated;
 
+@RequiredArgsConstructor
 @GrpcService
 @Validated
 public class GrpcUserRegistrationService extends UserRegistrationGrpc.UserRegistrationImplBase {
 
     private final UserRegistrationService userRegistrationService;
-
-    public GrpcUserRegistrationService(UserRegistrationService userRegistrationService) {
-        this.userRegistrationService = userRegistrationService;
-    }
 
     @Override
     public void registerUser(RegisterUserRequest request, StreamObserver<RegisterUserResponse> responseObserver) {

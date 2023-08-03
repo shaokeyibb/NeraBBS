@@ -5,19 +5,16 @@ import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoRequest;
 import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoResponse;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
 import io.hikarilan.nerabbs.services.user.database.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.validation.annotation.Validated;
 
+@RequiredArgsConstructor
 @GrpcService
 @Validated
 public class GrpcUserInfoService extends UserInfoGrpc.UserInfoImplBase {
 
     private final UserRepository userRepository;
-
-    public GrpcUserInfoService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
 
     @Override
     public void getFullUserInfo(FullUserInfoRequest request, StreamObserver<FullUserInfoResponse> responseObserver) {

@@ -5,20 +5,17 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
 import io.hikarilan.nerabbs.services.user.data.vo.UserBasicInfoVo;
 import io.hikarilan.nerabbs.services.user.service.UserInfoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 @Validated
 public class UserInfoController {
 
-
     private final UserInfoService userInfoService;
-
-    public UserInfoController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
-    }
 
     @SaCheckLogin
     @GetMapping
