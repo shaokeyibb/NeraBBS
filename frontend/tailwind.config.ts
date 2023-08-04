@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import colors from "tailwindcss/colors";
+
 module.exports = {
     content: [
         "./components/**/*.{js,vue,ts}",
@@ -9,7 +11,17 @@ module.exports = {
         "./app.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: '#FF5252',
+                secondary: '#CDDC39',
+                tertiary: '#6750A4',
+                neutral: colors.neutral
+            }
+        },
     },
-    plugins: [],
+    plugins: [
+        require('@iconify/tailwind').addDynamicIconSelectors()
+    ],
+    darkMode: 'class',
 }
