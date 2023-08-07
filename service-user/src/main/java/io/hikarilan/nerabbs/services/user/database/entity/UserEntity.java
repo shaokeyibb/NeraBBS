@@ -1,6 +1,6 @@
 package io.hikarilan.nerabbs.services.user.database.entity;
 
-import cn.dev33.satoken.secure.BCrypt;
+import cn.hutool.crypto.digest.BCrypt;
 import io.hikarilan.nerabbs.services.user.data.dto.UserBasicRegistrationDto;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;

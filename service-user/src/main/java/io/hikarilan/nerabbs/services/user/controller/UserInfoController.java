@@ -1,8 +1,7 @@
 package io.hikarilan.nerabbs.services.user.controller;
 
-import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.dev33.satoken.annotation.SaCheckRole;
-import cn.dev33.satoken.stp.StpUtil;
+import io.hikarilan.nerabbs.common.BizConstants;
+import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import io.hikarilan.nerabbs.services.user.data.vo.UserBasicInfoVo;
 import io.hikarilan.nerabbs.services.user.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +16,16 @@ public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-    @SaCheckLogin
     @GetMapping
     @ResponseBody
-    public UserBasicInfoVo getUserBasicInfo() {
-        var id = StpUtil.getLoginIdAsLong();
+    public UserBasicInfoVo getUserBasicInfoFromHeader(@RequestHeader("X-User-ID") long userID) {
+        if (userID == BizConstants.USER_ID_UNAUTHORIZED)
+            throw new UnauthorizedException();
 
-        return userInfoService.getUserBasicInfoByID(id);
+        return userInfoService.getUserBasicInfoByID(userID);
     }
 
-    @SaCheckRole("admin")
+    //TODO: @SaCheckRole("admin")
     @GetMapping("/{id}")
     @ResponseBody
     public UserBasicInfoVo getUserBasicInfo(@PathVariable long id) {

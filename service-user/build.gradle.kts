@@ -32,9 +32,7 @@ dependencies {
 
     implementation(libs.grpc.spring.boot.starter)
 
-    implementation(libs.sa.token.starter)
-    implementation(libs.sa.token.redis)
-    implementation("org.apache.commons:commons-pool2")
+    implementation(libs.hutool.crypto)
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

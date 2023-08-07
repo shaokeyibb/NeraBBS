@@ -5,12 +5,6 @@ spring:
   application:
     name: nerabbs-service-user
 
-  data:
-    redis:
-      host: redis
-      port: 6379
-      timeout: 10s
-
   datasource:
     url: jdbc:postgresql://postgres:5432/nerabbs
     username: nerabbs
@@ -35,6 +29,3 @@ grpc:
   server:
     security:
       enabled: false
-
-sa-token:
-  token-name: nerabbs
