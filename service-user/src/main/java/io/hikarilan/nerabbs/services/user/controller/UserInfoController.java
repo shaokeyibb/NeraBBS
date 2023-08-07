@@ -18,7 +18,7 @@ public class UserInfoController {
 
     @GetMapping
     @ResponseBody
-    public UserBasicInfoVo getUserBasicInfoFromHeader(@RequestHeader("X-User-ID") long userID) {
+    public UserBasicInfoVo getUserBasicInfoFromHeader(@RequestHeader(BizConstants.USER_ID_HEADER) long userID) {
         if (userID == BizConstants.USER_ID_UNAUTHORIZED)
             throw new UnauthorizedException();
 
