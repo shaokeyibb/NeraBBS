@@ -14,7 +14,9 @@ grpcSpringBootStarter = "2.13.1.RELEASE"
 
 javaxAnnotation = "1.3.2"
 
-saTokenStarter = "1.35.0.RC"
+saToken = "1.35.0.RC"
+
+hutool = "5.8.20"
 
 [libraries]
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
@@ -25,8 +27,11 @@ javax-annotation = { module = "javax.annotation:javax.annotation-api", version.r
 
 grpc-spring-boot-starter = { module = "net.devh:grpc-spring-boot-starter", version.ref = "grpcSpringBootStarter" }
 
-sa-token-starter = { module = "cn.dev33:sa-token-spring-boot3-starter", version.ref = "saTokenStarter" }
-sa-token-redis = { module = "cn.dev33:sa-token-redis", version.ref = "saTokenStarter" }
+sa-token-starter = { module = "cn.dev33:sa-token-spring-boot3-starter", version.ref = "saToken" }
+sa-token-redis = { module = "cn.dev33:sa-token-redis", version.ref = "saToken" }
+sa-token-reactor-starter = { module = "cn.dev33:sa-token-reactor-spring-boot3-starter", version.ref = "saToken" }
+
+hutool-crypto = { module = "cn.hutool:hutool-crypto", version.ref = "hutool" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
