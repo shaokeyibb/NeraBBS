@@ -8,10 +8,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(project(":common"))
 
