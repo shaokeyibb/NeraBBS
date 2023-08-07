@@ -5,10 +5,19 @@ spring:
   application:
     name: nerabbs-gateway
 
+  data:
+    redis:
+      host: redis
+      port: 6379
+      timeout: 10s
+
   cloud:
     consul:
       host: consul
       post: 8500
+
+sa-token:
+  token-name: nerabbs
 
 nerabbs:
   frontend:
