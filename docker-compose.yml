@@ -26,6 +26,8 @@ services:
     container_name: "NeraBBS-Gateway"
     restart: on-failure
     depends_on:
+      redis:
+        condition: service_healthy
       consul:
         condition: service_healthy
       frontend:
@@ -37,8 +39,9 @@ services:
     ports:
       - "80:80"
     networks:
-      - frontend
+      - redis
       - consul
+      - frontend
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:80/actuator/health" ]
       interval: 30s
@@ -82,8 +85,6 @@ services:
     container_name: "NeraBBS-Service-User"
     restart: on-failure
     depends_on:
-      redis:
-        condition: service_healthy
       postgres:
         condition: service_healthy
       consul:
