@@ -1,9 +1,7 @@
 package io.hikarilan.nerabbs.services.user.grpc;
 
 import io.grpc.stub.StreamObserver;
-import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoRequest;
-import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoResponse;
-import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
+import io.hikarilan.nerabbs.lib.services.user.grpc.*;
 import io.hikarilan.nerabbs.services.user.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -41,6 +39,28 @@ public class GrpcUserInfoService extends UserInfoGrpc.UserInfoImplBase {
                 .setUsername(user.getUsername())
                 .setEmail(user.getEmail())
                 .setPassword(user.getPassword())
+                .build();
+
+        responseObserver.onNext(resp);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getBasicUserInfo(BasicUserInfoRequest request, StreamObserver<BasicUserInfoResponse> responseObserver) {
+        var exists = userRepository.existsById(request.getId());
+
+        if (!exists) {
+            responseObserver.onNext(null);
+            responseObserver.onCompleted();
+            return;
+        }
+
+        var user = userRepository.findById(request.getId()).orElseThrow();
+
+        var resp = BasicUserInfoResponse.newBuilder()
+                .setId(user.getId())
+                .setUsername(user.getUsername())
+                .setEmail(user.getEmail())
                 .build();
 
         responseObserver.onNext(resp);
