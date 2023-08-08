@@ -3,7 +3,7 @@ import AppHeader from "~/components/AppHeader.vue";
 import AppFooter from "~/components/AppFooter.vue";
 
 const header = ref<Element>()
-const _headerHeight = ref<number>()
+const _headerHeight = ref<number | undefined>(56.0)
 const headerHeight = computed(() => `${_headerHeight.value}px`)
 
 onMounted(() => {
