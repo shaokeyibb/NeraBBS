@@ -8,6 +8,6 @@ export const useDarkModeStore = defineStore('dark_mode', () => {
     return {mode, switchMode}
 }, {
     persist: {
-        storage: persistedState.localStorage
+        storage: persistedState.cookies
     },
 })

@@ -18,21 +18,19 @@ const {mode, toggleDarkMode} = useDarkMode($pinia)
       <span class="dark:text-white">NeraBBS</span>
     </div>
     <div>
-      <ClientOnly>
-        <button class="px-3"
-                type="button"
-                @click="toggleDarkMode()">
-          <span v-if="mode==='auto'"
-                :title="$t('theme.auto')"
-                class="icon-[material-symbols--night-sight-auto] dark:text-white text-2xl mr-1 align-top"/>
-          <span v-else-if="mode==='light'"
-                :title="$t('theme.light')"
-                class="icon-[material-symbols--light-mode] dark:text-white text-2xl mr-1 align-top"/>
-          <span v-else-if="mode==='dark'"
-                :title="$t('theme.dark')"
-                class="icon-[material-symbols--dark-mode] dark:text-white text-2xl mr-1 align-top"/>
-        </button>
-      </ClientOnly>
+      <button class="px-3"
+              type="button"
+              @click="toggleDarkMode()">
+        <span v-if="mode==='auto'"
+              :title="$t('theme.auto')"
+              class="icon-[material-symbols--night-sight-auto] dark:text-white text-2xl mr-1 align-top"/>
+        <span v-else-if="mode==='light'"
+              :title="$t('theme.light')"
+              class="icon-[material-symbols--light-mode] dark:text-white text-2xl mr-1 align-top"/>
+        <span v-else-if="mode==='dark'"
+              :title="$t('theme.dark')"
+              class="icon-[material-symbols--dark-mode] dark:text-white text-2xl mr-1 align-top"/>
+      </button>
       <button class="px-3"
               popovertarget="language-selector"
               type="button">
