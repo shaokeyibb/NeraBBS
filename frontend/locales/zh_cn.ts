@@ -6,4 +6,13 @@ export default {
     "theme.auto": "主题由系统控制",
     "theme.light": "浅色主题",
     "theme.dark": "深色主题",
+    "signup.welcome": "成为 {appName} 中的一员！",
+    "signup.welcome.subtitle": "注册以访问我们的所有功能。",
+    "signup.error.internal": "注册时发生内部错误：{err}",
+    "signin.welcome": "欢迎回来！",
+    "signin.welcome.subtitle": "猜猜你不在的时候都发生了什么？",
+    "signin.error.internal": "登录时发生内部错误：{err}",
+    "username": "用户名",
+    "email": "电子邮件地址",
+    "password": "密码",
 }

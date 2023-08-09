@@ -6,4 +6,13 @@ export default {
     "theme.auto": "Theme controlled by system",
     "theme.light": "Light theme",
     "theme.dark": "Dark theme",
+    "signup.welcome": "Become a member of {appName}!",
+    "signup.welcome.subtitle": "Sign up to get access to all features provided by us.",
+    "signup.error.internal": "An internal error occurred while signing up: {err}",
+    "signin.welcome": "Welcome back!",
+    "signin.welcome.subtitle": "Guess what happened while you were away?",
+    "signin.error.internal": "An internal error occurred while signing in: {err}",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
 }

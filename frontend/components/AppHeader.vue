@@ -15,7 +15,7 @@ const {mode, toggleDarkMode} = useDarkMode($pinia)
 <template>
   <div class="container mx-auto p-4 flex flex-row justify-between items-center">
     <div>
-      <span class="dark:text-white">NeraBBS</span>
+      <NuxtLink class="dark:text-white" to="/">NeraBBS</NuxtLink>
     </div>
     <div>
       <button class="px-3"
@@ -37,8 +37,8 @@ const {mode, toggleDarkMode} = useDarkMode($pinia)
         <span aria-hidden="true" class="icon-[material-symbols--language] dark:text-white text-2xl mr-1 align-top"/>
         <span class="dark:text-white">{{ $t("locale.name") }}</span>
       </button>
-      <button class="px-3 dark:text-white" type="button">{{ $t("sign_up") }}</button>
-      <button class="px-3 dark:text-white" type="button">{{ $t("sign_in") }}</button>
+      <NuxtLink class="px-3 dark:text-white" to="/signup">{{ $t("sign_up") }}</NuxtLink>
+      <NuxtLink class="px-3 dark:text-white" to="/signin">{{ $t("sign_in") }}</NuxtLink>
     </div>
   </div>
   <dialog id="language-selector"
