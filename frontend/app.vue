@@ -7,9 +7,9 @@ const {darkModeClass} = useDarkMode($pinia)
 
 watchEffect(() => {
   useHead({
-    bodyAttrs: {
+    htmlAttrs: {
       class: [darkModeClass]
-    },
+    }
   })
 })
 
