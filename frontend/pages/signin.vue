@@ -14,7 +14,7 @@ async function onSubmit(e: Event) {
     })
     await router.push("/")
   } catch (e: any) {
-    alert(t("signin.error.internal", e.message))
+    alert(t("signin.error.internal", {err: e.message}))
   }
 }
 </script>
