@@ -21,7 +21,8 @@ module.exports = {
         },
     },
     plugins: [
-        require('@iconify/tailwind').addDynamicIconSelectors()
+        require('@iconify/tailwind').addDynamicIconSelectors(),
+        require('@tailwindcss/forms')
     ],
     darkMode: 'class',
 }

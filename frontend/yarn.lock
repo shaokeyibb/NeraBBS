@@ -1622,6 +1622,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tailwindcss/forms@npm:^0.5.4":
+  version: 0.5.4
+  resolution: "@tailwindcss/forms@npm:0.5.4"
+  dependencies:
+    mini-svg-data-uri: ^1.2.3
+  peerDependencies:
+    tailwindcss: ">=3.0.0 || >= 3.0.0-alpha.1"
+  checksum: 3b8c6fe6fd02bf0e346a8c7a7386b6a7df2052ba36292037ce79db3ce51562ef34fee43798984a06c0626c041d9b8de5e3b89fa81790f9b8927594d0da72a53d
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -5460,6 +5471,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mini-svg-data-uri@npm:^1.2.3":
+  version: 1.4.4
+  resolution: "mini-svg-data-uri@npm:1.4.4"
+  bin:
+    mini-svg-data-uri: cli.js
+  checksum: 997f1fbd8d59a70f03761e18626d335197a3479cb9d1ff75678e4b64b864d32a0b8fc18115eabde035e5299b8b4a354a78e57dd6ac10f9d604162a6170898d09
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^3.0.4, minimatch@npm:^3.1.1":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -5706,6 +5726,7 @@ __metadata:
     "@nuxtjs/i18n": ^8.0.0-rc.2
     "@pinia-plugin-persistedstate/nuxt": ^1.1.1
     "@pinia/nuxt": ^0.4.11
+    "@tailwindcss/forms": ^0.5.4
     "@types/node": ^18.16.19
     "@vueuse/core": ^10.3.0
     autoprefixer: ^10.4.14
