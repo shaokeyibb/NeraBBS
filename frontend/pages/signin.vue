@@ -22,9 +22,9 @@ async function onSubmit(e: Event) {
 <template>
   <div class="container mx-auto my-3 px-4 py-6">
     <div class="pb-10">
-      <h1 class="text-2xl lg:text-4xl dark:text-white text-center">{{ $t('signin.welcome', {appName: 'NeraBBS'}) }}</h1>
+      <h1 class="text-2xl lg:text-4xl dark:text-white text-center">{{ t('signin.welcome', {appName: 'NeraBBS'}) }}</h1>
       <h2 class="text-xl lg:text-2xl dark:text-white text-center">{{
-          $t('signin.welcome.subtitle', {appName: 'NeraBBS'})
+          t('signin.welcome.subtitle', {appName: 'NeraBBS'})
         }}</h2>
     </div>
     <form class="flex flex-col gap-6 w-[340px] mx-auto" method="post" @submit.prevent="onSubmit">
