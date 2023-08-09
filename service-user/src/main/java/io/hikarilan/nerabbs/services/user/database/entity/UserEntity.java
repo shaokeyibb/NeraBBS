@@ -5,6 +5,7 @@ import io.hikarilan.nerabbs.services.user.data.dto.UserBasicRegistrationDto;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,6 +28,7 @@ public final class UserEntity {
     private long id;
 
     @NotNull
+    @Min(3)
     @NotBlank
     @Getter
     @Setter
@@ -40,6 +42,7 @@ public final class UserEntity {
     private String email;
 
     @Nullable
+    @Min(8)
     @Getter
     @Setter
     private String password;
