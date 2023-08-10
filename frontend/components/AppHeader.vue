@@ -31,30 +31,31 @@ const {mode, toggleDarkMode} = useDarkMode($pinia)
               :title="$t('theme.dark')"
               class="icon-[material-symbols--dark-mode] dark:text-white text-2xl mr-1 align-top"/>
       </button>
-      <button class="px-3"
-              popovertarget="language-selector"
+      <button class="relative px-3 group"
               type="button">
         <span aria-hidden="true" class="icon-[material-symbols--language] dark:text-white text-2xl mr-1 align-top"/>
         <span class="dark:text-white">{{ $t("locale.name") }}</span>
+        <ClientOnly>
+          <div class="absolute group-hover:block hidden">
+            <!--Placeholder used to as a replace of margin-top to make hover work correctly-->
+            <div class="pt-2"/>
+            <div class="bg-white dark:bg-black border rounded lg:w-max">
+              <ul class="py-2">
+                <template v-for="locale in availableLocales">
+                  <li>
+                    <button class="w-full px-4 py-2 text-start dark:text-white"
+                            type="button"
+                            @click="setLocalePermanently(locale)">{{ getLocalizedLocalName(locale) }}
+                    </button>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </div>
+        </ClientOnly>
       </button>
       <NuxtLink class="px-3 dark:text-white" to="/signup">{{ $t("sign_up") }}</NuxtLink>
       <NuxtLink class="px-3 dark:text-white" to="/signin">{{ $t("sign_in") }}</NuxtLink>
     </div>
   </div>
-  <dialog id="language-selector"
-          class="border rounded -translate-y-1/3"
-          popover>
-    <ul class="py-2">
-      <template v-for="locale in availableLocales">
-        <li>
-          <button class="w-full px-4 py-2 text-start"
-                  popovertarget="language-selector"
-                  popovertargetaction="hide"
-                  type="button"
-                  @click="setLocalePermanently(locale)">{{ getLocalizedLocalName(locale) }}
-          </button>
-        </li>
-      </template>
-    </ul>
-  </dialog>
 </template>
