@@ -1,20 +1,29 @@
 <script lang="ts" setup>
+import useUser from "~/hooks/user";
+
 const router = useRouter()
 const {t} = useI18n()
+
+const {$pinia} = useNuxtApp()
+const {signin} = useUser($pinia)
 
 async function onSubmit(e: Event) {
   const target = e.target as HTMLFormElement
   try {
-    await $fetch("/api/authorization/signin", {
-      method: "POST",
-      body: {
-        email: target.email.value,
-        password: target.password.value,
-      }
-    })
+    await signin(
+        target.email.value,
+        target.password.value,
+    )
     await router.push("/")
   } catch (e: any) {
-    alert(t("signin.error.internal", {err: e.message}))
+    if (e.status === 400) {
+      alert(t("signin.error.bad_request"))
+      return
+    } else if (e.status === 401) {
+      alert(t("signin.error.unauthorized"))
+      return
+    }
+    alert(t("signin.error.internal", {err: e.data.message}))
   }
 }
 </script>

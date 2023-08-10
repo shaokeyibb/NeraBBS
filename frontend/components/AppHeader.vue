@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import useLocale from "~/hooks/locale";
 import useDarkMode from "~/hooks/dark_mode";
+import {storeToRefs} from "pinia";
+import {useUserInfoStore} from "~/stores/user_info";
 
 const {$pinia} = useNuxtApp()
 
@@ -10,6 +12,7 @@ const {getLocalizedLocalName, setLocalePermanently} = useLocale()
 
 const {mode, toggleDarkMode} = useDarkMode($pinia)
 
+const {userInfo} = storeToRefs(useUserInfoStore())
 </script>
 
 <template>
@@ -54,8 +57,17 @@ const {mode, toggleDarkMode} = useDarkMode($pinia)
           </div>
         </ClientOnly>
       </button>
-      <NuxtLink class="px-3 dark:text-white" to="/signup">{{ $t("sign_up") }}</NuxtLink>
-      <NuxtLink class="px-3 dark:text-white" to="/signin">{{ $t("sign_in") }}</NuxtLink>
+      <template v-if="!userInfo">
+        <NuxtLink class="px-3 dark:text-white" to="/signup">{{ $t("sign_up") }}</NuxtLink>
+        <NuxtLink class="px-3 dark:text-white" to="/signin">{{ $t("sign_in") }}</NuxtLink>
+      </template>
+      <button v-else
+              class="px-3"
+              type="button">
+        <span aria-hidden="true"
+              class="icon-[material-symbols--account-circle] dark:text-white text-2xl mr-1 align-top"/>
+        <NuxtLink :to="`/user`" class="dark:text-white">{{ userInfo.username }}</NuxtLink>
+      </button>
     </div>
   </div>
 </template>
