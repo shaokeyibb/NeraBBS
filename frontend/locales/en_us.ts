@@ -3,6 +3,7 @@ export default {
     "locale.intl.name": "English",
     "sign_up": "Sign Up",
     "sign_in": "Sign In",
+    "sign_out": "Sign Out",
     "theme.auto": "Theme controlled by system",
     "theme.light": "Light theme",
     "theme.dark": "Dark theme",

@@ -3,6 +3,7 @@ export default {
     "locale.intl.name": "Simplified Chinese",
     "sign_up": "注册",
     "sign_in": "登录",
+    "sign_out": "登出",
     "theme.auto": "主题由系统控制",
     "theme.light": "浅色主题",
     "theme.dark": "深色主题",
