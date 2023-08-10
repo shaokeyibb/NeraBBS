@@ -3,6 +3,7 @@ import useLocale from "~/hooks/locale";
 import useDarkMode from "~/hooks/dark_mode";
 import {storeToRefs} from "pinia";
 import {useUserInfoStore} from "~/stores/user_info";
+import {useDarkModeStore} from "~/stores/dark_mode";
 
 const {$pinia} = useNuxtApp()
 
@@ -10,7 +11,8 @@ const {availableLocales} = useI18n()
 
 const {getLocalizedLocalName, setLocalePermanently} = useLocale()
 
-const {mode, toggleDarkMode} = useDarkMode($pinia)
+const {mode} = storeToRefs(useDarkModeStore())
+const {toggleDarkMode} = useDarkMode($pinia)
 
 const {userInfo} = storeToRefs(useUserInfoStore())
 </script>

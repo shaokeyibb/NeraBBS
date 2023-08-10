@@ -41,7 +41,6 @@ export default function useDarkMode(pinia: Pinia) {
     }
 
     return {
-        mode: computed(() => store.mode),
         toggleDarkMode,
         darkModeClass
     }
