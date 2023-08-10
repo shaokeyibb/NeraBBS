@@ -5,8 +5,8 @@ export default function useLocale() {
         return `${messages.value[locale]['locale.name']} (${messages.value[locale]['locale.intl.name']})`
     }
 
-    function setLocalePermanently(locale: string) {
-        setLocale(locale)
+    async function setLocalePermanently(locale: string) {
+        await setLocale(locale)
     }
 
     return {
