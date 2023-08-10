@@ -46,5 +46,8 @@ async function onSubmit(e: Event) {
         }}
       </button>
     </form>
+    <div class="mt-10 text-center text-tertiary">
+      <NuxtLink to="/signin">{{ $t('signup.to.signin') }}</NuxtLink>
+    </div>
   </div>
 </template>
