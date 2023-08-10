@@ -37,15 +37,17 @@ async function onSubmit(e: Event) {
     <form class="flex flex-col gap-6 w-[340px] mx-auto" method="post" @submit.prevent="onSubmit">
       <label class="flex flex-col dark:text-white gap-2">
         {{ $t('username') }}
-        <input class="dark:bg-black" minlength="3" name="username" pattern="(.|\s)*\S(.|\s)*" required type="text"/>
+        <input autocomplete="nickname" class="dark:bg-black" minlength="3" name="username" pattern="(.|\s)*\S(.|\s)*" required
+               type="text"/>
       </label>
       <label class="flex flex-col dark:text-white gap-2">
         {{ $t('email') }}
-        <input class="dark:bg-black" name="email" required type="email"/>
+        <input autocomplete="email" class="dark:bg-black" name="email" required type="email"/>
       </label>
       <label class="flex flex-col dark:text-white gap-2">
         {{ $t('password') }}
-        <input class="dark:bg-black" minlength="8" name="password" required type="password"/>
+        <input autocomplete="new-password" class="dark:bg-black" minlength="8" name="password" required
+               type="password"/>
       </label>
       <button class="border rounded py-3 px-5 dark:text-white bg-secondary dark:bg-black" type="submit">{{
           $t('sign_up')
