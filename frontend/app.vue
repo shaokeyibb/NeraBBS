@@ -9,11 +9,15 @@ const {darkModeClass} = useDarkMode($pinia)
 const {requestUserInfo} = useUser($pinia)
 requestUserInfo()
 
+const {locale} = useI18n()
+
 watchEffect(() => {
   useHead({
     htmlAttrs: {
-      class: [darkModeClass]
-    }
+      class: [darkModeClass],
+      lang: locale.value
+    },
+    title: "NearBBS",
   })
 })
 
