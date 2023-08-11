@@ -8,6 +8,7 @@ include("gateway")
 
 include("service-auth")
 include("service-user")
+include("service-post")
 
 include("frontend")
 

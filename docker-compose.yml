@@ -36,9 +36,12 @@ services:
         condition: service_started
       service-user:
         condition: service_started
+      service-post:
+        condition: service_started
     ports:
       - "80:80"
     networks:
+      - services
       - redis
       - consul
       - frontend
@@ -85,6 +88,35 @@ services:
     container_name: "NeraBBS-Service-User"
     restart: on-failure
     depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - redis
+      - postgres
+      - consul
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  service-post:
+    build:
+      context: .
+      target: service-post
+    container_name: "NeraBBS-Service-Post"
+    restart: on-failure
+    depends_on:
+      redis:
+        condition: service_healthy
       postgres:
         condition: service_healthy
       consul:

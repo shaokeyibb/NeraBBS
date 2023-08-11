@@ -21,6 +21,9 @@ public class RoutesConfiguration {
                 .route("service-auth", r -> r.path("/api/authorization/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://nerabbs-service-auth"))
+                .route("service-post", r -> r.path("/api/posts/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://nerabbs-service-post"))
                 .route("frontend", r -> r.path("/**")
                         .uri(frontendUrl))
                 .build();
