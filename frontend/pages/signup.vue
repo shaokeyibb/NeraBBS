@@ -20,6 +20,9 @@ async function onSubmit(e: Event) {
     if (e.status === 400) {
       alert(t("signup.error.bad_request"))
       return
+    } else if (e.status === 403) {
+      alert(t("signup.error.user_already_exists"))
+      return
     }
     alert(t("signup.error.internal", {err: e.data.message}))
   }
@@ -37,7 +40,8 @@ async function onSubmit(e: Event) {
     <form class="flex flex-col gap-6 w-[340px] mx-auto" method="post" @submit.prevent="onSubmit">
       <label class="flex flex-col dark:text-white gap-2">
         {{ $t('username') }}
-        <input autocomplete="nickname" class="dark:bg-black" minlength="3" name="username" pattern="(.|\s)*\S(.|\s)*" required
+        <input autocomplete="nickname" class="dark:bg-black" minlength="3" name="username" pattern="(.|\s)*\S(.|\s)*"
+               required
                type="text"/>
       </label>
       <label class="flex flex-col dark:text-white gap-2">

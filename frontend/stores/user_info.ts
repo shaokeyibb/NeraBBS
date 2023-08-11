@@ -1,7 +1,8 @@
 type user_info = {
     id: number,
     username: string,
-    email: string
+    email: string,
+    createAt: string,
 }
 
 export const useUserInfoStore = defineStore('user-info', () => {

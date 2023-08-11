@@ -2,6 +2,7 @@ package io.hikarilan.nerabbs.services.user.handler;
 
 import io.grpc.Status;
 import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
+import io.hikarilan.nerabbs.common.exception.UserAlreadyExistsException;
 import net.devh.boot.grpc.server.advice.GrpcAdvice;
 import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
 
@@ -9,8 +10,8 @@ import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
 public class GrpcExceptionAdvice {
 
     @GrpcExceptionHandler
-    public Status handleException(IllegalArgumentException e) {
-        return Status.INVALID_ARGUMENT.withCause(e);
+    public Status handleException(UserAlreadyExistsException e) {
+        return Status.ALREADY_EXISTS.withCause(e);
     }
 
     @GrpcExceptionHandler

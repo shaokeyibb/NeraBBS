@@ -9,6 +9,7 @@ export default {
     "theme.dark": "深色主题",
     "signup.welcome": "成为 {appName} 中的一员！",
     "signup.welcome.subtitle": "注册以访问我们的所有功能。",
+    "signup.error.user_already_exists": "无法注册，因为指定邮件地址已存在。",
     "signup.error.bad_request": "无效请求，请检查您的输入。",
     "signup.error.internal": "注册时发生内部错误：{err}",
     "signup.to.signin": "已有账号？点我登录。",

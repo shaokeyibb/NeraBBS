@@ -9,6 +9,7 @@ export default {
     "theme.dark": "Dark theme",
     "signup.welcome": "Become a member of {appName}!",
     "signup.welcome.subtitle": "Sign up to get access to all features provided by us.",
+    "signup.error.user_already_exists": "Unable to sign up because the specified email address already exists.",
     "signup.error.bad_request": "Invalid request, please check your input.",
     "signup.error.internal": "An internal error occurred while signing up: {err}",
     "signup.to.signin": "Already have an account? Click here to sign in.",

@@ -7,6 +7,7 @@ import io.grpc.StatusRuntimeException;
 import io.hikarilan.nerabbs.common.data.ErrorMessage;
 import io.hikarilan.nerabbs.services.auth.exception.UserInfoMismatchException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,9 +34,15 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(value = {StatusRuntimeException.class})
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ErrorMessage statusRuntimeException() {
-        return new ErrorMessage("Bad request.");
+    public ResponseEntity<ErrorMessage> statusRuntimeException(StatusRuntimeException e) {
+        return switch (e.getStatus().getCode()) {
+            case ALREADY_EXISTS ->
+                    ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage("The resource you requested already exists."));
+            case UNAUTHENTICATED ->
+                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage("Not logged in."));
+            case INVALID_ARGUMENT -> ResponseEntity.badRequest().body(new ErrorMessage("Bad request."));
+            default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage(e.getMessage()));
+        };
     }
 
 }
