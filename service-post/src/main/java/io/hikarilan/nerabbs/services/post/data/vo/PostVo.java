@@ -18,7 +18,7 @@ public record PostVo(long id,
                 entity.getPosterID(),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.getCreateTime().toInstant().toString()
+                entity.getCreateAt().toInstant().toString()
         );
     }
 

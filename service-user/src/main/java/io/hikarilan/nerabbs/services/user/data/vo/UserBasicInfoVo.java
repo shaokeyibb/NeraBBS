@@ -9,11 +9,13 @@ import org.hibernate.validator.constraints.Length;
 
 public record UserBasicInfoVo(long id,
                               @NotNull @Length(min = 3) @NotBlank String username,
-                              @Nullable @Email String email) {
+                              @Nullable @Email String email,
+                              @NotNull String createAt
+) {
 
     @NotNull
     public static UserBasicInfoVo fromUserEntity(@NotNull UserEntity entity) {
-        return new UserBasicInfoVo(entity.getId(), entity.getUsername(), entity.getEmail());
+        return new UserBasicInfoVo(entity.getId(), entity.getUsername(), entity.getEmail(), entity.getCreateAt().toInstant().toString());
     }
 
 }

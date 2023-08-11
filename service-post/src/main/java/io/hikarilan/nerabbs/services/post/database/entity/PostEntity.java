@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -21,10 +22,12 @@ public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     @Getter
     @Setter
     private long id;
 
+    @Column(nullable = false)
     @Getter
     @Setter
     private long posterID;
@@ -38,17 +41,20 @@ public class PostEntity {
     @NotNull
     @NotBlank
     @Basic(fetch = FetchType.LAZY)
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     @Getter
     @Setter
     private String content;
 
     @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     @Getter
     @Setter
-    private Date createTime;
+    private Date createAt;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    @ColumnDefault("false")
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
 
 }

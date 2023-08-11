@@ -8,9 +8,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
+
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +27,7 @@ public final class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     @Getter
     @Setter
     private long id;
@@ -30,6 +35,7 @@ public final class UserEntity {
     @NotNull
     @Length(min = 3)
     @NotBlank
+    @Column(nullable = false)
     @Getter
     @Setter
     private String username;
@@ -47,12 +53,20 @@ public final class UserEntity {
     @Setter
     private String password;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    @NotNull
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(nullable = false)
+    @Getter
+    @Setter
+    private Date createAt;
+
+    @ColumnDefault("false")
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
 
     @NotNull
     public static UserEntity fromUserBasicRegistrationDto(@NotNull UserBasicRegistrationDto userBasicRegistrationDto) {
-        return new UserEntity(-1, userBasicRegistrationDto.username(), userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), false);
+        return new UserEntity(-1, userBasicRegistrationDto.username(), userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), Date.from(Instant.now()), false);
     }
 
 }
