@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -14,6 +16,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorMessage notLoginException() {
         return new ErrorMessage("Not logged in.");
+    }
+
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorMessage notFoundException() {
+        return new ErrorMessage("The resource you requested isn't exists.");
     }
 
 }
