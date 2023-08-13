@@ -22,4 +22,6 @@ export default {
     "username": "用户名",
     "email": "电子邮件地址",
     "password": "密码",
+    "menu": "菜单",
+    "user_center": "用户中心",
 }

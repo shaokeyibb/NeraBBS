@@ -22,4 +22,6 @@ export default {
     "username": "Username",
     "email": "Email",
     "password": "Password",
+    "menu": "Menu",
+    "user_center": "User Center",
 }

@@ -25,7 +25,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 main {
   padding-top: v-bind(headerHeight);
 }
