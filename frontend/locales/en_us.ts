@@ -19,9 +19,23 @@ export default {
     "signin.error.bad_request": "Invalid request, please check your input.",
     "signin.error.internal": "An internal error occurred while signing in: {err}",
     "signin.to.signup": "Don't have an account? Click here to sign up.",
+    "publish.editor.title_placeholder": "Input title or leave it blank if you don't need one.",
+    "publish.editor.placeholder": "What's new today?",
+    "publish.editor.submit": "Submit",
+    "publish.editor.validation.empty": "Post content cannot be empty.",
+    "publish.error.bad_request": "Invalid request, please check your input.",
+    "publish.error.internal": "An internal error occurred while publishing: {err}",
     "username": "Username",
     "email": "Email",
     "password": "Password",
     "menu": "Menu",
     "user_center": "User Center",
+
+    // gfm
+    "strike": "Strike",
+    "strikeText": "Strike",
+    "task": "Task",
+    "taskText": "Task",
+    "table": "Table",
+    "tableHeading": "Heading"
 }

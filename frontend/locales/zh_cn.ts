@@ -19,9 +19,23 @@ export default {
     "signin.error.bad_request": "无效请求，请检查您的输入。",
     "signin.error.internal": "登录时发生内部错误：{err}",
     "signin.to.signup": "没有账号？点我注册。",
+    "publish.editor.title_placeholder": "输入标题，如果你不想写的话就将它留空吧。",
+    "publish.editor.placeholder": "今天又发生了什么新鲜事？",
+    "publish.editor.submit": "发布",
+    "publish.editor.validation.empty": "文章内容不能为空。",
+    "publish.error.bad_request": "无效请求，请检查您的输入",
+    "publish.error.internal": "发布时发生内部错误：{err}",
     "username": "用户名",
     "email": "电子邮件地址",
     "password": "密码",
     "menu": "菜单",
     "user_center": "用户中心",
+
+    // gfm
+    "strike": "删除线",
+    "strikeText": "删除线",
+    "task": "任务",
+    "taskText": "任务",
+    "table": "表格",
+    "tableHeading": "标题"
 }
