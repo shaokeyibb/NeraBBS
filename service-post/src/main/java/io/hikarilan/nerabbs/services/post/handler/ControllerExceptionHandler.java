@@ -2,6 +2,7 @@ package io.hikarilan.nerabbs.services.post.handler;
 
 import io.grpc.StatusRuntimeException;
 import io.hikarilan.nerabbs.common.data.ErrorMessage;
+import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,12 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorMessage notLoginException() {
+        return new ErrorMessage("Not logged in.");
+    }
 
     @ExceptionHandler(value = {NoSuchElementException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
