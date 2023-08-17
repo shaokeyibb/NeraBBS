@@ -19,6 +19,7 @@ export default {
     "signin.error.bad_request": "无效请求，请检查您的输入。",
     "signin.error.internal": "登录时发生内部错误：{err}",
     "signin.to.signup": "没有账号？点我注册。",
+    "publish.editor.required_sign_in": "请先登录以发布文章。",
     "publish.editor.title_placeholder": "输入标题，如果你不想写的话就将它留空吧。",
     "publish.editor.placeholder": "今天又发生了什么新鲜事？",
     "publish.editor.submit": "发布",

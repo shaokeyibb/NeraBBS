@@ -19,6 +19,7 @@ export default {
     "signin.error.bad_request": "Invalid request, please check your input.",
     "signin.error.internal": "An internal error occurred while signing in: {err}",
     "signin.to.signup": "Don't have an account? Click here to sign up.",
+    "publish.editor.required_sign_in": "To publish posts, you need to sign in first.",
     "publish.editor.title_placeholder": "Input title or leave it blank if you don't need one.",
     "publish.editor.placeholder": "What's new today?",
     "publish.editor.submit": "Submit",
