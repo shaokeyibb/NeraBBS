@@ -5,12 +5,15 @@ import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import io.hikarilan.nerabbs.services.post.data.bo.PostCreationBo;
 import io.hikarilan.nerabbs.services.post.data.dto.PostCreationDto;
 import io.hikarilan.nerabbs.services.post.data.vo.PostVo;
+import io.hikarilan.nerabbs.services.post.data.vo.PreviewPostVo;
 import io.hikarilan.nerabbs.services.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,5 +37,11 @@ public class PostController {
             throw new UnauthorizedException();
 
         return postService.createPost(PostCreationBo.from(userID, postCreationDto));
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<PreviewPostVo> getPreviewPosts(@RequestParam int page, @RequestParam int size) {
+        return postService.getPreviewPosts(page, size);
     }
 }

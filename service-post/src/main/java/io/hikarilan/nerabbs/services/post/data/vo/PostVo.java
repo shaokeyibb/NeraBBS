@@ -7,7 +7,7 @@ public record PostVo(long id,
                      long posterID,
                      String title,
                      String content,
-                     String createTime) {
+                     String createAt) {
 
     @NotNull
     public static PostVo fromPostEntity(@NotNull PostEntity entity) {
