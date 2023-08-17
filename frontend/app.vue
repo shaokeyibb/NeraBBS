@@ -9,7 +9,9 @@ const {darkModeClass} = useDarkMode($pinia)
 const {requestUserInfo} = useUser($pinia)
 requestUserInfo()
 
-const {locale} = useI18n()
+const {locale, setLocale, defaultLocale} = useI18n()
+
+setLocale(useCookie("locale").value ?? defaultLocale)
 
 watchEffect(() => {
   useHead({
