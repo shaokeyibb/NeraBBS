@@ -6,8 +6,8 @@ const zhCNNumberMap = ['零', '一', '两', '三', '四', '五', '六', '七', '
 const messages: Record<string, UseTimeAgoMessages<'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'>> = {
     "zh-CN": {
         justNow: '刚刚',
-        past: n => n.match(/\d/) || [...n].some(it => it in zhCNNumberMap) ? `${n}前` : n,
-        future: n => n.match(/\d/) || [...n].some(it => it in zhCNNumberMap) ? `${n}后` : n,
+        past: n => n.match(/\d/) || [...n].some(it => zhCNNumberMap.indexOf(it) != -1) ? `${n}前` : n,
+        future: n => n.match(/\d/) || [...n].some(it => zhCNNumberMap.indexOf(it) != -1) ? `${n}后` : n,
         month: (n) => `${zhCNNumberMap[n]}个月`,
         year: (n) => `${zhCNNumberMap[n]}年`,
         day: (n) => `${zhCNNumberMap[n]}天`,
