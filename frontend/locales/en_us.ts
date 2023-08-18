@@ -29,6 +29,7 @@ export default {
     "publish.editor.validation.empty": "Post content cannot be empty.",
     "publish.error.bad_request": "Invalid request, please check your input.",
     "publish.error.internal": "An internal error occurred while publishing: {err}",
+    "posts.error": "There's something went wrong while loading the posts, please try again later.",
     "username": "Username",
     "email": "Email",
     "password": "Password",

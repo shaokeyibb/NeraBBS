@@ -1,4 +1,4 @@
-import {PostCreation, PreviewPost} from "~/data/common";
+import {Post, PostCreation, PreviewPost} from "~/data/common";
 
 export default function usePost() {
     async function publishPost(data: PostCreation): Promise<number> {
@@ -19,8 +19,16 @@ export default function usePost() {
         })
     }
 
+    async function getPost(id: string): Promise<Post> {
+        return await $fetch<Post>(`/api/posts/${id}`, {
+            method: "GET",
+            parseResponse: JSON.parse
+        })
+    }
+
     return {
         publishPost,
-        getPreviewPosts
+        getPreviewPosts,
+        getPost
     }
 }

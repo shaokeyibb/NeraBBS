@@ -29,6 +29,7 @@ export default {
     "publish.editor.validation.empty": "文章内容不能为空。",
     "publish.error.bad_request": "无效请求，请检查您的输入",
     "publish.error.internal": "发布时发生内部错误：{err}",
+    "posts.error": "加载文章时发生错误，请稍后重试。",
     "username": "用户名",
     "email": "电子邮件地址",
     "password": "密码",
