@@ -16,6 +16,7 @@ const {t} = useI18n()
 
 const {publishPost, getPreviewPosts} = usePost()
 const {getUserInfo} = useUsers()
+const router = useRouter()
 
 const {userInfo} = storeToRefs(useUserInfoStore())
 
@@ -26,10 +27,12 @@ async function onSubmitPublishPost() {
   }
 
   try {
-    await withJumpUnauthorize(publishPost({
+    const id = await withJumpUnauthorize(publishPost({
       title: title.value,
       content: content.value
     }), "/signin")
+
+    await router.push(`/posts/${id}`)
   } catch (e: any) {
     if (e.status === 400) {
       alert(t("publish.error.bad_request"))
@@ -110,7 +113,8 @@ async function requireUserName(id: number) {
         <span class="icon-[material-symbols--sync-problem] text-red-600 text-2xl lg:mr-1 align-top"/>
         <span class="dark:text-white">{{ $t("index.error_retry") }}</span>
       </button>
-      <button v-else :disabled="!data || data.length == 0" class="border rounded py-3 px-5 dark:text-white bg-secondary dark:bg-black"
+      <button v-else :disabled="!data || data.length == 0"
+              class="border rounded py-3 px-5 dark:text-white bg-secondary dark:bg-black"
               @click="currentPage++">
         <span class="icon-[material-symbols--more-horiz] dark:text-white text-2xl lg:mr-1 align-top"/>
         <span class="dark:text-white">{{ $t("index.load_more") }}</span>
