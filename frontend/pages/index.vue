@@ -42,9 +42,10 @@ async function onSubmitPublishPost() {
   }
 }
 
+const pageSize = 20
 const currentPage = ref(0)
 const allPosts = reactive<PreviewPost[]>([])
-const {data, pending, error, refresh} = useAsyncData(() => getPreviewPosts(currentPage.value), {
+const {data, pending, error, refresh} = useAsyncData(() => getPreviewPosts(currentPage.value, pageSize), {
   lazy: true,
   server: false,
   watch: [currentPage],
@@ -113,7 +114,7 @@ async function requireUserName(id: number) {
         <span class="icon-[material-symbols--sync-problem] text-red-600 text-2xl lg:mr-1 align-top"/>
         <span class="dark:text-white">{{ $t("index.error_retry") }}</span>
       </button>
-      <button v-else :disabled="!data || data.length == 0"
+      <button v-else :disabled="!data || data.length < pageSize"
               class="border rounded py-3 px-5 dark:text-white bg-secondary dark:bg-black"
               @click="currentPage++">
         <span class="icon-[material-symbols--more-horiz] dark:text-white text-2xl lg:mr-1 align-top"/>
