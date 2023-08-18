@@ -94,9 +94,9 @@ async function requireUserName(id: number) {
         <span v-else-if="getUserName(post.posterID).error"
               class="font-bold dark:text-white">UID: {{ post.posterID }}</span>
         <span v-else class="font-bold dark:text-white">@{{ getUserName(post.posterID).data }}</span>
-        <span class="text-neutral-600 text-sm dark:text-white">{{
-            useTimeAgoLocalized(post.createAt).value
-          }}</span>
+        <time :datetime="post.createAt" class="text-neutral-600 text-sm dark:text-white">
+          {{ useTimeAgoLocalized(post.createAt).value }}
+        </time>
       </div>
       <span v-if="post.title"
             class="text-lg dark:text-white">{{ post.title }}</span>
