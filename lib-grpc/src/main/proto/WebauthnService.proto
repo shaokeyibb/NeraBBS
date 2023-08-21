@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.hikarilan.nerabbs.lib.services.webauthn.grpc";
+option java_outer_classname = "WebauthnServiceProto";
+
+package webauthn_service;
+import "google/protobuf/empty.proto";
+
+service Passkey {
+  rpc GetPasskeyRegistrationOptions(GetPasskeyRegistrationOptionsRequest) returns (GetPasskeyRegistrationOptionsResponse) {}
+  rpc VerifyPasskeyRegistration(VerifyPasskeyRegistrationRequest) returns (google.protobuf.Empty) {}
+  rpc GetPasskeyAssertionOptions(GetPasskeyAssertionOptionsRequest) returns (GetPasskeyAssertionOptionsResponse) {}
+  rpc VerifyPasskeyAssertion(VerifyPasskeyAssertionRequest) returns (VerifyPasskeyAssertionResponse) {}
+}
+
+message GetPasskeyRegistrationOptionsRequest {
+  uint64 id = 1;
+}
+
+message GetPasskeyRegistrationOptionsResponse {
+  string options = 1;
+}
+
+message VerifyPasskeyRegistrationRequest {
+  uint64 id = 1;
+  string credential = 2;
+}
+
+message GetPasskeyAssertionOptionsRequest{
+  string identifier = 1;
+}
+
+message GetPasskeyAssertionOptionsResponse {
+  string options = 1;
+}
+
+message VerifyPasskeyAssertionRequest {
+  string identifier = 1;
+  string credential = 2;
+}
+
+message VerifyPasskeyAssertionResponse {
+  bool success = 1;
+  uint64 id = 2;
+}

@@ -56,6 +56,19 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
+FROM openjdk:17 AS service-webauthn
+LABEL org.opencontainers.image.authors="HikariLan"
+
+ARG SERVICE_NAME=service-webauthn
+
+EXPOSE 80
+
+WORKDIR /app
+
+COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+
+ENTRYPOINT ["java", "-jar", "application.jar"]
+
 FROM openjdk:17 AS gateway
 LABEL org.opencontainers.image.authors="HikariLan"
 

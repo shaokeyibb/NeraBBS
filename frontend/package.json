@@ -28,6 +28,7 @@
     "@bytemd/plugin-gfm": "^1.21.0",
     "@bytemd/plugin-highlight-ssr": "^1.21.0",
     "@bytemd/vue-next": "^1.21.0",
+    "@github/webauthn-json": "^2.1.1",
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/core": "^10.3.0",
     "bytemd": "^1.21.0",

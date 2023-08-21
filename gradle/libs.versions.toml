@@ -18,6 +18,11 @@ saToken = "1.35.0.RC"
 
 hutool = "5.8.20"
 
+webauthnServerCore = "2.5.0"
+
+hypersistenceUtils = "3.5.0"
+
+jackson-module-jakarta-xmlbind-annotations = "2.15.2"
 [libraries]
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
 grpc-services = { module = "io.grpc:grpc-services", version.ref = "grpc" }
@@ -31,7 +36,14 @@ sa-token-starter = { module = "cn.dev33:sa-token-spring-boot3-starter", version.
 sa-token-redis = { module = "cn.dev33:sa-token-redis", version.ref = "saToken" }
 sa-token-reactor-starter = { module = "cn.dev33:sa-token-reactor-spring-boot3-starter", version.ref = "saToken" }
 
+hutool-core = { module = "cn.hutool:hutool-core", version.ref = "hutool" }
 hutool-crypto = { module = "cn.hutool:hutool-crypto", version.ref = "hutool" }
+
+webauthn-server-core = { module = "com.yubico:webauthn-server-core", version.ref = "webauthnServerCore" }
+
+hypersistence-utils-hibernate = { module = "io.hypersistence:hypersistence-utils-hibernate-62", version.ref = "hypersistenceUtils" }
+
+jackson-module-jakarta-xmlbind-annotations = { module = "com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations", version.ref = "jackson-module-jakarta-xmlbind-annotations" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }

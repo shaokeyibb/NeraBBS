@@ -5,6 +5,7 @@ import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import io.grpc.StatusRuntimeException;
 import io.hikarilan.nerabbs.common.data.ErrorMessage;
+import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import io.hikarilan.nerabbs.services.auth.exception.UserInfoMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ControllerExceptionHandler {
         return new ErrorMessage("Username or password incorrect.");
     }
 
-    @ExceptionHandler(value = {NotLoginException.class})
+    @ExceptionHandler(value = {NotLoginException.class, UnauthorizedException.class})
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorMessage notLoginException() {
         return new ErrorMessage("Not logged in.");

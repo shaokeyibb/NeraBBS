@@ -82,9 +82,21 @@ const isMobileUserDrawerOpen = ref(false)
           <div class="bg-white dark:bg-black border rounded w-max">
             <ul class="py-2">
               <li>
-                <button class="w-full px-4 py-2 text-start dark:text-white"
+                <NuxtLink
+                    :to="`/settings`"
+                    class="block w-full px-4 py-2 text-start">
+                  <span aria-hidden="true"
+                        class="icon-[material-symbols--settings] dark:text-white text-2xl mr-1 align-top"/>
+                  <span class="dark:text-white">{{ $t("settings") }}</span>
+                </NuxtLink>
+              </li>
+              <li>
+                <button class="w-full px-4 py-2 text-start"
                         type="button"
-                        @click="signout">{{ $t("sign_out") }}
+                        @click="signout">
+                  <span aria-hidden="true"
+                        class="icon-[material-symbols--logout] dark:text-white text-2xl mr-1 align-top"/>
+                  <span class="dark:text-white">{{ $t("sign_out") }}</span>
                 </button>
               </li>
             </ul>
@@ -173,13 +185,30 @@ const isMobileUserDrawerOpen = ref(false)
         <li>
           <NuxtLink
               :to="`/user`"
-              class="block w-full px-4 py-2 text-start dark:text-white">{{ $t("user_center") }}
+              class="block w-full px-4 py-2 text-start dark:text-white"
+              @click="isMobileUserDrawerOpen=false">
+            <span aria-hidden="true"
+                  class="icon-[material-symbols--account-circle] dark:text-white text-2xl mr-1 align-top"/>
+            <span class="dark:text-white">{{ $t("user_center") }}</span>
           </NuxtLink>
         </li>
         <li>
-          <button class="w-full px-4 py-2 text-start dark:text-white"
+          <NuxtLink
+              :to="`/settings`"
+              class="block w-full px-4 py-2 text-start dark:text-white"
+              @click="isMobileUserDrawerOpen=false">
+            <span aria-hidden="true"
+                  class="icon-[material-symbols--settings] dark:text-white text-2xl mr-1 align-top"/>
+            <span class="dark:text-white">{{ $t("settings") }}</span>
+          </NuxtLink>
+        </li>
+        <li>
+          <button class="w-full px-4 py-2 text-start"
                   type="button"
-                  @click="signout(); isMobileUserDrawerOpen=false">{{ $t("sign_out") }}
+                  @click="signout(); isMobileUserDrawerOpen=false">
+            <span aria-hidden="true"
+                  class="icon-[material-symbols--logout] dark:text-white text-2xl mr-1 align-top"/>
+            <span class="dark:text-white">{{ $t("sign_out") }}</span>
           </button>
         </li>
       </ul>

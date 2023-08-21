@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/service-auth" />
             <option value="$PROJECT_DIR$/service-post" />
             <option value="$PROJECT_DIR$/service-user" />
+            <option value="$PROJECT_DIR$/service-webauthn" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import useUser from "~/hooks/user";
+import usePasskey from "~/hooks/passkey";
 
 const router = useRouter()
 const {t} = useI18n()
+const {validatePasskeyCredential} = usePasskey()
 
 const {$pinia} = useNuxtApp()
-const {signin} = useUser($pinia)
+const {requestUserInfo, signin} = useUser($pinia)
 
 async function onSubmit(e: Event) {
   const target = e.target as HTMLFormElement
@@ -26,6 +28,21 @@ async function onSubmit(e: Event) {
     alert(t("signin.error.internal", {err: e.data.message}))
   }
 }
+
+async function onSignInWithPasskey() {
+  try {
+    await validatePasskeyCredential()
+    await requestUserInfo()
+    await router.push("/")
+  } catch (e: any) {
+    if (e.status === 401) {
+      alert(t("signin.error.unauthorized"))
+      return
+    }
+    alert(t("signin.error.internal", {err: e.data.message}))
+  }
+}
+
 </script>
 
 <template>
@@ -51,6 +68,15 @@ async function onSubmit(e: Event) {
         }}
       </button>
     </form>
+    <div class="mt-3 flex flex-row justify-center">
+      <span class="mr-1">{{ $t('signin.with') }}</span>
+      <button :title="$t('signin.with.passkey')"
+              class="px-3"
+              type="button"
+              @click="onSignInWithPasskey">
+        <span class="icon-[material-symbols--passkey] dark:text-white text-2xl align-top"/>
+      </button>
+    </div>
     <div class="mt-10 text-center text-tertiary">
       <NuxtLink to="/signup">{{ $t('signin.to.signup') }}</NuxtLink>
     </div>

@@ -3,13 +3,16 @@ server:
 
 spring:
   application:
-    name: nerabbs-service-auth
+    name: nerabbs-service-webauthn
 
   data:
     redis:
       host: redis
       port: 6379
       timeout: 10s
+
+  cache:
+    type: redis
 
   datasource:
     url: jdbc:postgresql://postgres:5432/nerabbs
@@ -36,9 +39,6 @@ grpc:
     nerabbs-service-user:
       address: 'discovery:///nerabbs-service-user'
       negotiationType: PLAINTEXT
-    nerabbs-service-webauthn:
-      address: 'discovery:///nerabbs-service-webauthn'
-      negotiationType: PLAINTEXT
-
-sa-token:
-  token-name: nerabbs
+  server:
+    security:
+      enabled: false

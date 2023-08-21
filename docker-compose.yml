@@ -38,8 +38,10 @@ services:
         condition: service_started
       service-post:
         condition: service_started
+      service-webauthn:
+        condition: service_started
     ports:
-      - "80:80"
+      - "8475:80"
     networks:
       - services
       - redis
@@ -134,6 +136,36 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  service-webauthn:
+    build:
+      context: .
+      target: service-webauthn
+    container_name: "NeraBBS-Service-Webauthn"
+    restart: on-failure
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - redis
+      - postgres
+      - consul
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      - nerabbs.webauthn.relying-party.id=localhost
+      - nerabbs.webauthn.relying-party.name=Nerabbs
 
   redis:
     image: redis:latest
