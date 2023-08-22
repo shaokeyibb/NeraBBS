@@ -1,0 +1,18 @@
+kind: pipeline
+type: exec
+name: default
+
+steps:
+  - name: cleanup
+    commands:
+      - docker compose down
+
+  - name: build
+    commands:
+      - docker compose build
+
+  - name: deploy
+    commands:
+      - docker compose up -d
+    depends_on:
+      - build
