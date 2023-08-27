@@ -6,6 +6,7 @@ include("lib-grpc")
 
 include("gateway")
 
+include("service-oss")
 include("service-auth")
 include("service-webauthn")
 include("service-user")

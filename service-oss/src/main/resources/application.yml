@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: nerabbs-service-oss
+
+  cloud:
+    consul:
+      host: consul
+      post: 8500
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+minio:
+  endpoint: "http://minio:9000"
+  user: nerabbs
+  password: nerabbs#strong_password@2023

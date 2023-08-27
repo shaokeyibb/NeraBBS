@@ -23,6 +23,8 @@ webauthnServerCore = "2.5.0"
 hypersistenceUtils = "3.5.0"
 
 jackson-module-jakarta-xmlbind-annotations = "2.15.2"
+
+minio = "8.4.3"
 [libraries]
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
 grpc-services = { module = "io.grpc:grpc-services", version.ref = "grpc" }
@@ -44,6 +46,8 @@ webauthn-server-core = { module = "com.yubico:webauthn-server-core", version.ref
 hypersistence-utils-hibernate = { module = "io.hypersistence:hypersistence-utils-hibernate-62", version.ref = "hypersistenceUtils" }
 
 jackson-module-jakarta-xmlbind-annotations = { module = "com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations", version.ref = "jackson-module-jakarta-xmlbind-annotations" }
+
+minio = { module = "io.minio:minio", version.ref = "minio" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }

@@ -40,8 +40,10 @@ services:
         condition: service_started
       service-webauthn:
         condition: service_started
+      service-oss:
+        condition: service_started
     ports:
-      - "8475:80"
+      - "80:80"
     networks:
       - services
       - redis
@@ -167,6 +169,30 @@ services:
       - nerabbs.webauthn.relying-party.id=localhost
       - nerabbs.webauthn.relying-party.name=Nerabbs
 
+  service-oss:
+    build:
+      context: .
+      target: service-oss
+    container_name: "NeraBBS-Service-OSS"
+    restart: on-failure
+    depends_on:
+      consul:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - consul
+      - minio
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   redis:
     image: redis:latest
     container_name: "NeraBBS-Middleware-Redis"
@@ -221,9 +247,30 @@ services:
       retries: 60
     command: [ "consul", "agent", "-server", "-data-dir=/consul/data", "-bootstrap-expect=1", "-client=0.0.0.0" ]
 
+  minio:
+    image: minio/minio
+    container_name: "NeraBBS-Middleware-Minio"
+    restart: on-failure
+    expose:
+      - "9000"
+    networks:
+      - minio
+    volumes:
+      - ./data/minio:/data
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "localhost:9000/minio/health/live" ]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    environment:
+      - MINIO_ROOT_USER=nerabbs
+      - MINIO_ROOT_PASSWORD=nerabbs#strong_password@2023
+    command: [ "server", "/data" ]
+
 networks:
   frontend:
   services:
   redis:
   postgres:
   consul:
+  minio:

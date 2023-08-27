@@ -15,6 +15,9 @@ public class RoutesConfiguration {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
+                .route("service-oss", r -> r.path("/api/storages/**")
+                        .filters(f -> f.stripPrefix(1))
+                        .uri("lb://nerabbs-service-oss"))
                 .route("service-user", r -> r.path("/api/users/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://nerabbs-service-user"))
