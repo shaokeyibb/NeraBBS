@@ -30,11 +30,10 @@ export default function useUser(pinia: Pinia) {
         await requestUserInfo()
     }
 
-    async function signup(username: string, email: string, password: string) {
+    async function signup(email: string, password: string) {
         await $fetch("/api/authorization/signup", {
             method: "POST",
             body: {
-                username,
                 email,
                 password,
             }

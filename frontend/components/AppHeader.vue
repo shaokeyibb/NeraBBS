@@ -74,6 +74,7 @@ const isMobileUserDrawerOpen = ref(false)
                 type="button">
           <span aria-hidden="true"
                 class="icon-[material-symbols--account-circle] dark:text-white text-2xl mr-1 align-top"/>
+          <!--          FIXME {{ userInfo.username }} -->
           <NuxtLink :to="`/user`" class="dark:text-white">{{ userInfo.username }}</NuxtLink>
         </button>
         <div class="absolute peer-hover/user:block hover:block hidden">

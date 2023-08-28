@@ -1,12 +1,7 @@
-type user_info = {
-    id: number,
-    username: string,
-    email: string,
-    createAt: string,
-}
+import {UserInfo} from "~/data/common";
 
 export const useUserInfoStore = defineStore('user-info', () => {
-    const userInfo = ref<user_info>()
+    const userInfo = ref<UserInfo>()
 
     function clearUserInfo() {
         userInfo.value = undefined

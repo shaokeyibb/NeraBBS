@@ -1,7 +1,8 @@
 package io.hikarilan.nerabbs.services.auth.service;
 
-import cn.dev33.satoken.secure.BCrypt;
-import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoRequest;
+import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
+import io.hikarilan.nerabbs.lib.services.user.grpc.CheckPasswordRequest;
+import io.hikarilan.nerabbs.lib.services.user.grpc.UserAuthorizationGrpc;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
 import io.hikarilan.nerabbs.services.auth.data.dto.UserBasicSignInDto;
 import io.hikarilan.nerabbs.services.auth.exception.UserInfoMismatchException;
@@ -16,20 +17,25 @@ import org.springframework.validation.annotation.Validated;
 public class AuthorizationValidationService {
 
     @GrpcClient("nerabbs-service-user")
+    private UserAuthorizationGrpc.UserAuthorizationBlockingStub userAuthorizationStub;
+
+    @GrpcClient("nerabbs-service-user")
     private UserInfoGrpc.UserInfoBlockingStub userInfoStub;
 
     public long validateUser(@NotNull @Valid UserBasicSignInDto userBasicSignInDto) {
-        var info = userInfoStub.getFullUserInfo(FullUserInfoRequest.newBuilder()
+        var passwordResponse = userAuthorizationStub.checkPassword(CheckPasswordRequest.newBuilder()
+                .setEmail(userBasicSignInDto.email())
+                .setPassword(userBasicSignInDto.password())
+                .build());
+
+        if (!passwordResponse.getCorrect())
+            throw new UserInfoMismatchException();
+
+        var userResponse = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder()
                 .setEmail(userBasicSignInDto.email())
                 .build());
 
-        if (info == null)
-            throw new UserInfoMismatchException();
-
-        if (!BCrypt.checkpw(userBasicSignInDto.password(), info.getPassword()))
-            throw new UserInfoMismatchException();
-
-        return info.getId();
+        return userResponse.getId();
     }
 
 }

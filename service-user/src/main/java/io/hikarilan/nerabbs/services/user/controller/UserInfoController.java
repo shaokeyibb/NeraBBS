@@ -25,7 +25,6 @@ public class UserInfoController {
         return userInfoService.getUserBasicInfoByID(userID);
     }
 
-    //TODO: @SaCheckRole("admin")
     @GetMapping("/{id}")
     @ResponseBody
     public UserBasicInfoVo getUserBasicInfo(@PathVariable long id) {

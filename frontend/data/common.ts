@@ -16,7 +16,6 @@ export type PreviewPost = Post
 
 export type UserInfo = {
     id: number,
-    username: string,
     email: string,
     createAt: string
 }

@@ -5,7 +5,6 @@ import io.hikarilan.nerabbs.services.user.data.dto.UserBasicRegistrationDto;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,14 +30,6 @@ public final class UserEntity {
     @Getter
     @Setter
     private long id;
-
-    @NotNull
-    @Length(min = 3)
-    @NotBlank
-    @Column(nullable = false)
-    @Getter
-    @Setter
-    private String username;
 
     @Nullable
     @Email
@@ -66,7 +57,7 @@ public final class UserEntity {
 
     @NotNull
     public static UserEntity fromUserBasicRegistrationDto(@NotNull UserBasicRegistrationDto userBasicRegistrationDto) {
-        return new UserEntity(-1, userBasicRegistrationDto.username(), userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), Date.from(Instant.now()), false);
+        return new UserEntity(-1, userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), Date.from(Instant.now()), false);
     }
 
 }

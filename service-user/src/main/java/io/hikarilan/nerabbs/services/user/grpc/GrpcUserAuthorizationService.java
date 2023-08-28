@@ -1,9 +1,10 @@
 package io.hikarilan.nerabbs.services.user.grpc;
 
+import cn.hutool.crypto.digest.BCrypt;
 import io.grpc.stub.StreamObserver;
-import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
-import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoResponse;
-import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
+import io.hikarilan.nerabbs.lib.services.user.grpc.CheckPasswordRequest;
+import io.hikarilan.nerabbs.lib.services.user.grpc.CheckPasswordResponse;
+import io.hikarilan.nerabbs.lib.services.user.grpc.UserAuthorizationGrpc;
 import io.hikarilan.nerabbs.services.user.database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -12,12 +13,12 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 @GrpcService
 @Validated
-public class GrpcUserInfoService extends UserInfoGrpc.UserInfoImplBase {
+public class GrpcUserAuthorizationService extends UserAuthorizationGrpc.UserAuthorizationImplBase {
 
     private final UserRepository userRepository;
 
     @Override
-    public void getUserInfo(BasicUserInfoRequest request, StreamObserver<BasicUserInfoResponse> responseObserver) {
+    public void checkPassword(CheckPasswordRequest request, StreamObserver<CheckPasswordResponse> responseObserver) {
         var exists = switch (request.getIdentifyCase()) {
             case ID -> userRepository.existsById(request.getId());
             case EMAIL -> userRepository.existsByEmail(request.getEmail());
@@ -25,7 +26,9 @@ public class GrpcUserInfoService extends UserInfoGrpc.UserInfoImplBase {
         };
 
         if (!exists) {
-            responseObserver.onNext(null);
+            responseObserver.onNext(CheckPasswordResponse.newBuilder()
+                    .setCorrect(false)
+                    .build());
             responseObserver.onCompleted();
             return;
         }
@@ -36,10 +39,8 @@ public class GrpcUserInfoService extends UserInfoGrpc.UserInfoImplBase {
             case IDENTIFY_NOT_SET -> throw new IllegalArgumentException("Identify not set");
         };
 
-        var resp = BasicUserInfoResponse.newBuilder()
-                .setId(user.getId())
-                .setEmail(user.getEmail())
-                .setCreateAt(user.getCreateAt().toInstant().toString())
+        var resp = CheckPasswordResponse.newBuilder()
+                .setCorrect(BCrypt.checkpw(request.getPassword(), user.getPassword()))
                 .build();
 
         responseObserver.onNext(resp);

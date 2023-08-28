@@ -18,7 +18,6 @@ public class BasicRegistrationService {
 
     public long registerUser(@NotNull @Valid UserBasicSignUpDto userBasicSignInDto) {
         var resp = userRegistrationStub.registerUser(RegisterUserRequest.newBuilder()
-                .setUsername(userBasicSignInDto.username())
                 .setEmail(userBasicSignInDto.email())
                 .setPassword(userBasicSignInDto.password())
                 .build());

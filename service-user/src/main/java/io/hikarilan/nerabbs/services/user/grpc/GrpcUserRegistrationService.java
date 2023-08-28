@@ -19,7 +19,7 @@ public class GrpcUserRegistrationService extends UserRegistrationGrpc.UserRegist
 
     @Override
     public void registerUser(RegisterUserRequest request, StreamObserver<RegisterUserResponse> responseObserver) {
-        var id = userRegistrationService.registerUser(new UserBasicRegistrationDto(request.getUsername(), request.getEmail(), request.getPassword()));
+        var id = userRegistrationService.registerUser(new UserBasicRegistrationDto(request.getEmail(), request.getPassword()));
 
         var resp = RegisterUserResponse.newBuilder()
                 .setId(id)

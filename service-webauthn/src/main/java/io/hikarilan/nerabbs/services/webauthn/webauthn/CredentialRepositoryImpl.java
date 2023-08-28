@@ -4,7 +4,7 @@ import com.yubico.webauthn.CredentialRepository;
 import com.yubico.webauthn.RegisteredCredential;
 import com.yubico.webauthn.data.ByteArray;
 import com.yubico.webauthn.data.PublicKeyCredentialDescriptor;
-import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoRequest;
+import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
 import io.hikarilan.nerabbs.services.webauthn.data.CredentialRegistration;
 import io.hikarilan.nerabbs.services.webauthn.database.entity.WebauthnCredentialEntity;
@@ -106,7 +106,7 @@ public class CredentialRepositoryImpl implements CredentialRepository {
     }
 
     private long getUserIDByEmail(String email) {
-        return userInfoStub.getFullUserInfo(FullUserInfoRequest.newBuilder().setEmail(email).build()).getId();
+        return userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setEmail(email).build()).getId();
     }
 
     private Collection<CredentialRegistration> getRegistrationsByUsername(String email) {

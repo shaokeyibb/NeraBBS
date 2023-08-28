@@ -7,7 +7,6 @@ import com.yubico.webauthn.data.*;
 import com.yubico.webauthn.exception.AssertionFailedException;
 import com.yubico.webauthn.exception.RegistrationFailedException;
 import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
-import io.hikarilan.nerabbs.lib.services.user.grpc.FullUserInfoRequest;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
 import io.hikarilan.nerabbs.services.webauthn.database.entity.WebauthnCredentialEntity;
 import io.hikarilan.nerabbs.services.webauthn.database.repository.WebauthnCredentialRepository;
@@ -30,12 +29,12 @@ public class PasskeyService {
     private UserInfoGrpc.UserInfoBlockingStub userInfoStub;
 
     public PublicKeyCredentialCreationOptions startPasskeyRegistration(long userID) throws JsonProcessingException {
-        var user = userInfoStub.getBasicUserInfo(BasicUserInfoRequest.newBuilder().setId(userID).build());
+        var user = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setId(userID).build());
 
         var options = relyingParty.startRegistration(StartRegistrationOptions.builder()
                 .user(UserIdentity.builder()
                         .name(user.getEmail())
-                        .displayName(user.getUsername())
+                        .displayName(user.getEmail())
                         .id(new ByteArray(ByteUtil.longToBytes(user.getId())))
                         .build())
                 .authenticatorSelection(AuthenticatorSelectionCriteria.builder()
@@ -49,7 +48,7 @@ public class PasskeyService {
     }
 
     public void finishPasskeyRegistration(long userID, PublicKeyCredential<AuthenticatorAttestationResponse, ClientRegistrationExtensionOutputs> pkc) throws JsonProcessingException, RegistrationFailedException {
-        var user = userInfoStub.getBasicUserInfo(BasicUserInfoRequest.newBuilder().setId(userID).build());
+        var user = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setId(userID).build());
 
         var request = PublicKeyCredentialCreationOptions.fromJson((String) template.opsForHash().get(REDIS_PASSKEY_REGISTRATION_KEY, String.valueOf(user.getId())));
 
@@ -85,7 +84,7 @@ public class PasskeyService {
             throw new AssertionFailedException("Verify failed");
         }
 
-        var user = userInfoStub.getFullUserInfo(FullUserInfoRequest.newBuilder().setEmail(result.getUsername()).build());
+        var user = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setEmail(result.getUsername()).build());
 
         updateCredential(user.getId(), result.getCredential().getCredentialId(), result);
 

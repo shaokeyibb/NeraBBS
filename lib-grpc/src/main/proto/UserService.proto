@@ -8,49 +8,47 @@ package user_service;
 
 service UserInfo{
   /**
-    Get full user info by id or email
-    WARNING: do not expose this rpc cause the password will be returned
-  */
-  rpc GetFullUserInfo(FullUserInfoRequest) returns (FullUserInfoResponse);
-
-  /**
     Get basic user info by id
    */
-  rpc GetBasicUserInfo(BasicUserInfoRequest) returns (BasicUserInfoResponse);
+  rpc GetUserInfo(BasicUserInfoRequest) returns (BasicUserInfoResponse);
 }
 
-message FullUserInfoRequest{
-  oneof identify{
-    uint64 id = 1;
-    string email = 2;
-  }
-}
-
-message FullUserInfoResponse{
-  uint64 id = 1;
-  string username = 2;
-  optional string email = 3;
-  optional string password = 4;
-}
-
-message BasicUserInfoRequest{
-  uint64 id = 1;
-}
-
-message BasicUserInfoResponse{
-  uint64 id = 1;
-  string username = 2;
-  string email = 3;
+service UserAuthorization{
+  rpc CheckPassword(CheckPasswordRequest) returns (CheckPasswordResponse);
 }
 
 service UserRegistration{
   rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
 }
 
-message RegisterUserRequest{
-  string username = 1;
+message BasicUserInfoRequest{
+  oneof identify{
+    uint64 id = 1;
+    string email = 2;
+  }
+}
+
+message BasicUserInfoResponse{
+  uint64 id = 1;
   string email = 2;
+  string createAt = 3;
+}
+
+message CheckPasswordRequest{
+  oneof identify{
+    uint64 id = 1;
+    string email = 2;
+  }
   string password = 3;
+}
+
+message CheckPasswordResponse{
+  bool correct = 1;
+}
+
+message RegisterUserRequest{
+  string email = 1;
+  string password = 2;
 }
 
 message RegisterUserResponse{
