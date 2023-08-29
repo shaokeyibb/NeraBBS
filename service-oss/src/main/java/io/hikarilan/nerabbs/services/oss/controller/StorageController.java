@@ -32,18 +32,17 @@ public class StorageController {
     @SneakyThrows
     @GetMapping("/{object}")
     public ResponseEntity<Resource> getFile(@PathVariable String object) {
-        var file = storageService.getFile(object);
-        var fileStat = storageService.getFileStat(object);
+        var resource = storageService.getFileAndState(object);
 
-        var res = new ByteArrayResource(file.readAllBytes());
+        try (var file = resource.file()) {
+            var res = new ByteArrayResource(file.readAllBytes());
 
-        file.close();
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(fileStat.contentType()))
-                .contentLength(fileStat.size())
-                .eTag(fileStat.etag())
-                .lastModified(fileStat.lastModified())
-                .body(res);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.valueOf(resource.fileStat().contentType()))
+                    .contentLength(resource.fileStat().size())
+                    .eTag(resource.fileStat().etag())
+                    .lastModified(resource.fileStat().lastModified())
+                    .body(res);
+        }
     }
 }

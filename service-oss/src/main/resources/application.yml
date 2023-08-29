@@ -19,3 +19,14 @@ minio:
   endpoint: "http://minio:9000"
   user: nerabbs
   password: nerabbs#strong_password@2023
+
+nerabbs:
+  oss:
+    upload:
+      allowed-file-mime-types:
+        - image/jpeg
+        - image/png
+        - image/gif
+        - image/bmp
+        - image/webp
+        - image/avif

@@ -16,13 +16,13 @@ import java.security.NoSuchAlgorithmException;
 @Configuration
 public class MinioBucketConfiguration {
 
-    private final ConfigProperties configProperties;
+    private final MinioConfigProperties minioConfigProperties;
     private final MinioClient minioClient;
 
     @PostConstruct
     public void initializeBucket() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(configProperties.getBucket()).build())) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(configProperties.getBucket()).build());
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioConfigProperties.getBucket()).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(minioConfigProperties.getBucket()).build());
         }
     }
 

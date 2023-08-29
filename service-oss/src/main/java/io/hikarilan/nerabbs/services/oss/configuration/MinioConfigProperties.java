@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "minio")
-public class ConfigProperties {
+public class MinioConfigProperties {
 
     @NotBlank
     private String endpoint;
