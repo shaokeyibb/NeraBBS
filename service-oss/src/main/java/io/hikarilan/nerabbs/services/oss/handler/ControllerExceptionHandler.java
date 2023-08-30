@@ -2,6 +2,7 @@ package io.hikarilan.nerabbs.services.oss.handler;
 
 import io.hikarilan.nerabbs.common.data.ErrorMessage;
 import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
+import jakarta.validation.ConstraintViolationException;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
@@ -34,6 +35,12 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(value = {IllegalArgumentException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage illegalArgumentException(IllegalArgumentException e) {
+        return new ErrorMessage(e.getMessage());
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessage badRequestException(ConstraintViolationException e) {
         return new ErrorMessage(e.getMessage());
     }
 

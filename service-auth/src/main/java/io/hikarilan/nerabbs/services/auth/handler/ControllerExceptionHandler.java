@@ -7,6 +7,7 @@ import io.grpc.StatusRuntimeException;
 import io.hikarilan.nerabbs.common.data.ErrorMessage;
 import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import io.hikarilan.nerabbs.services.auth.exception.UserInfoMismatchException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +45,12 @@ public class ControllerExceptionHandler {
             case INVALID_ARGUMENT -> ResponseEntity.badRequest().body(new ErrorMessage("Bad request."));
             default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage(e.getMessage()));
         };
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessage badRequestException(ConstraintViolationException e) {
+        return new ErrorMessage(e.getMessage());
     }
 
 }
