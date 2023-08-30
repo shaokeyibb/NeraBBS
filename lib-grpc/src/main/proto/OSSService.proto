@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.hikarilan.nerabbs.lib.services.oss.grpc";
+option java_outer_classname = "OSSServiceProto";
+
+package oss_service;
+
+service Storage{
+  rpc UploadFile(UploadFileRequest) returns (UploadFileResponse);
+}
+
+message MultipartFile{
+  string name = 1;
+  string originalFileName = 2;
+  string contentType = 3;
+  bytes bytes = 4;
+}
+
+message UploadFileRequest{
+  uint64 userID = 1;
+  MultipartFile file = 2;
+}
+
+message UploadFileResponse{
+  string object = 1;
+}

@@ -17,10 +17,14 @@ configurations {
 dependencies {
     implementation(project(":common"))
 
+    implementation(project(":lib-grpc"))
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+
+    implementation(libs.grpc.spring.boot.starter)
 
     implementation(libs.minio)
 

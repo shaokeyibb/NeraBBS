@@ -15,6 +15,11 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+grpc:
+  server:
+    security:
+      enabled: false
+
 minio:
   endpoint: "http://minio:9000"
   user: nerabbs
