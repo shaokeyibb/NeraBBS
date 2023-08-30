@@ -43,7 +43,7 @@ services:
       service-oss:
         condition: service_started
     ports:
-      - "80:80"
+      - "8475:80"
     networks:
       - services
       - redis
@@ -186,6 +186,33 @@ services:
       - services
       - consul
       - minio
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  service-user-profile:
+    build:
+      context: .
+      target: service-user-profile
+    container_name: "NeraBBS-Service-UserProfile"
+    restart: on-failure
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - redis
+      - postgres
+      - consul
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s

@@ -10,6 +10,7 @@ include("service-oss")
 include("service-auth")
 include("service-webauthn")
 include("service-user")
+include("service-user-profile")
 include("service-post")
 
 include("frontend")
