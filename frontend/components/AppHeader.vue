@@ -2,7 +2,7 @@
 import useLocale from "~/hooks/locale";
 import useDarkMode from "~/hooks/dark_mode";
 import {storeToRefs} from "pinia";
-import {useUserInfoStore} from "~/stores/user_info";
+import {useUserProfileStore} from "~/stores/user";
 import {useDarkModeStore} from "~/stores/dark_mode";
 import useUser from "~/hooks/user";
 
@@ -15,7 +15,7 @@ const {getLocalizedLocalName, setLocalePermanently} = useLocale()
 const {mode} = storeToRefs(useDarkModeStore())
 const {toggleDarkMode} = useDarkMode($pinia)
 
-const {userInfo} = storeToRefs(useUserInfoStore())
+const {userProfile} = storeToRefs(useUserProfileStore())
 const {signout} = useUser($pinia)
 
 const isMenuDrawerOpen = ref(false)
@@ -65,7 +65,7 @@ const isMobileUserDrawerOpen = ref(false)
           </div>
         </div>
       </div>
-      <template v-if="!userInfo">
+      <template v-if="!userProfile">
         <NuxtLink class="px-3 dark:text-white" to="/signup">{{ $t("sign_up") }}</NuxtLink>
         <NuxtLink class="px-3 dark:text-white" to="/signin">{{ $t("sign_in") }}</NuxtLink>
       </template>
@@ -74,8 +74,7 @@ const isMobileUserDrawerOpen = ref(false)
                 type="button">
           <span aria-hidden="true"
                 class="icon-[material-symbols--account-circle] dark:text-white text-2xl mr-1 align-top"/>
-          <!--          FIXME {{ userInfo.username }} -->
-          <NuxtLink :to="`/user`" class="dark:text-white">{{ userInfo.username }}</NuxtLink>
+          <NuxtLink :to="`/user`" class="dark:text-white">{{ userProfile.username }}</NuxtLink>
         </button>
         <div class="absolute peer-hover/user:block hover:block hidden">
           <!--Placeholder used to as a replace of margin-top to make hover work correctly-->

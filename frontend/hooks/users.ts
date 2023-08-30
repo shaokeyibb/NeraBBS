@@ -1,4 +1,4 @@
-import {UserInfo} from "~/data/common";
+import {UserInfo, UserProfile} from "~/data/common";
 
 export default function useUsers() {
 
@@ -9,8 +9,16 @@ export default function useUsers() {
         })
     }
 
+    async function getUserProfile(id: number): Promise<UserProfile> {
+        return await $fetch(`/api/users/${id}/profile`, {
+            method: "GET",
+            parseResponse: JSON.parse
+        })
+    }
+
     return {
-        getUserInfo
+        getUserInfo,
+        getUserProfile
     }
 
 }

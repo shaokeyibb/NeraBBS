@@ -3,7 +3,7 @@
 import MarkdownEditor from "~/components/MarkdownEditor.vue";
 import usePost from "~/hooks/post";
 import {withJumpUnauthorize} from "~/utils/fetch";
-import {useUserInfoStore} from "~/stores/user_info";
+import {useUserInfoStore} from "~/stores/user";
 import {storeToRefs} from "pinia";
 import {PreviewPost} from "~/data/common";
 import {useTimeAgoLocalized} from "~/utils/time";
@@ -15,7 +15,7 @@ const title = ref<string | undefined>()
 const {t} = useI18n()
 
 const {publishPost, getPreviewPosts} = usePost()
-const {getUserInfo} = useUsers()
+const {getUserProfile} = useUsers()
 const router = useRouter()
 
 const {userInfo} = storeToRefs(useUserInfoStore())
@@ -68,7 +68,7 @@ function getUserName(id: number) {
 }
 
 async function requireUserName(id: number) {
-  const data = getUserInfo(id)
+  const data = getUserProfile(id)
   userNames[id] = {
     pending: true,
   }

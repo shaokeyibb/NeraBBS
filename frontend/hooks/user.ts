@@ -1,22 +1,35 @@
 import {Pinia} from "pinia";
-import {useUserInfoStore} from "~/stores/user_info";
+import {useUserInfoStore, useUserProfileStore} from "~/stores/user";
+import useUsers from "~/hooks/users";
 
 export default function useUser(pinia: Pinia) {
-    const store = useUserInfoStore(pinia)
+    const users = useUsers()
+    const userInfoStore = useUserInfoStore(pinia)
+    const userProfileStore = useUserProfileStore(pinia)
 
-    async function requestUserInfo() {
+    async function requestUser() {
         try {
-            store.userInfo = await $fetch("/api/users", {
-                method: "GET",
-                parseResponse: JSON.parse
-            })
+            await requestUserInfo()
+            await requestUserProfile(userInfoStore.userInfo!.id)
         } catch (e: any) {
             if (e.status === 401) {
-                store.clearUserInfo()
+                userInfoStore.clearUserInfo()
+                userProfileStore.clearUserProfile()
                 return
             }
             throw e
         }
+    }
+
+    async function requestUserInfo() {
+        userInfoStore.userInfo = await $fetch("/api/users", {
+            method: "GET",
+            parseResponse: JSON.parse
+        })
+    }
+
+    async function requestUserProfile(id: number) {
+        userProfileStore.userProfile = await users.getUserProfile(id)
     }
 
     async function signin(email: string, password: string) {
@@ -27,7 +40,7 @@ export default function useUser(pinia: Pinia) {
                 password,
             }
         })
-        await requestUserInfo()
+        await requestUser()
     }
 
     async function signup(email: string, password: string) {
@@ -38,19 +51,20 @@ export default function useUser(pinia: Pinia) {
                 password,
             }
         })
-        await requestUserInfo()
+        await requestUser()
     }
 
     async function signout() {
         const signout = $fetch("/api/authorization/signout", {
             method: "POST"
         })
-        store.clearUserInfo()
+        userInfoStore.clearUserInfo()
+        userProfileStore.clearUserProfile()
         await signout
     }
 
     return {
-        requestUserInfo,
+        requestUserInfo: requestUser,
         signin,
         signup,
         signout

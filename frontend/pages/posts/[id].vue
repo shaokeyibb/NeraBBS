@@ -2,11 +2,11 @@
 import MarkdownViewer from "~/components/MarkdownViewer.vue";
 import usePost from "~/hooks/post";
 import useUsers from "~/hooks/users";
-import {Post, UserInfo} from "~/data/common";
+import {Post, UserProfile} from "~/data/common";
 
 const route = useRoute()
 const {getPost} = usePost()
-const {getUserInfo} = useUsers()
+const {getUserProfile} = useUsers()
 
 const id = route.params.id as string
 
@@ -18,7 +18,7 @@ const {
   data: userData,
   pending: userPending,
   error: userError
-} = useAsyncData<UserInfo>(() => data.value ? getUserInfo(data.value.posterID) : Promise.reject(), {
+} = useAsyncData<UserProfile>(() => data.value ? getUserProfile(data.value.posterID) : Promise.reject(), {
   lazy: true,
   pick: ['username'],
   watch: [data]

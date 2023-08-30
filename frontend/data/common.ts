@@ -19,3 +19,16 @@ export type UserInfo = {
     email: string,
     createAt: string
 }
+
+export type UserProfile = {
+    userID: number,
+    username: string,
+    avatarPath: string,
+    signature: string,
+}
+
+export type UserProfilePutReq = Omit<UserProfile, 'avatarPath'> & {
+    avatar: File | null
+}
+
+export type UserProfilePatchReq = Partial<UserProfilePutReq>
