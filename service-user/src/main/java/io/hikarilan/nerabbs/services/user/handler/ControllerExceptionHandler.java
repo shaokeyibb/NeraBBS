@@ -31,4 +31,10 @@ public class ControllerExceptionHandler {
         return new ErrorMessage(e.getMessage());
     }
 
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessage illegalArgumentException(IllegalArgumentException e) {
+        return new ErrorMessage(e.getMessage());
+    }
+
 }

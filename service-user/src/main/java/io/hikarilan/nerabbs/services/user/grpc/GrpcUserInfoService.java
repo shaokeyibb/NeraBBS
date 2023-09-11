@@ -1,6 +1,7 @@
 package io.hikarilan.nerabbs.services.user.grpc;
 
 import io.grpc.stub.StreamObserver;
+import io.hikarilan.nerabbs.common.exception.UserNotFoundException;
 import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
 import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoResponse;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
@@ -25,8 +26,7 @@ public class GrpcUserInfoService extends UserInfoGrpc.UserInfoImplBase {
         };
 
         if (!exists) {
-            responseObserver.onNext(null);
-            responseObserver.onCompleted();
+            responseObserver.onError(new UserNotFoundException());
             return;
         }
 

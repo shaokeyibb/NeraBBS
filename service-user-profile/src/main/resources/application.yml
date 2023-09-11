@@ -44,3 +44,6 @@ grpc:
     nerabbs-service-oss:
       address: 'discovery:///nerabbs-service-oss'
       negotiationType: PLAINTEXT
+    nerabbs-service-user:
+      address: 'discovery:///nerabbs-service-user'
+      negotiationType: PLAINTEXT

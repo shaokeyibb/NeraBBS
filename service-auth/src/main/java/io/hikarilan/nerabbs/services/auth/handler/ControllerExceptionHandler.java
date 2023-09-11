@@ -40,6 +40,8 @@ public class ControllerExceptionHandler {
         return switch (e.getStatus().getCode()) {
             case ALREADY_EXISTS ->
                     ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage("The resource you requested already exists."));
+            case NOT_FOUND ->
+                    ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage("The resource you requested does not exist."));
             case UNAUTHENTICATED ->
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage("Not logged in."));
             case INVALID_ARGUMENT -> ResponseEntity.badRequest().body(new ErrorMessage("Bad request."));

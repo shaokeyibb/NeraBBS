@@ -1,11 +1,14 @@
 package io.hikarilan.nerabbs.services.userprofile.service;
 
+import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
+import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
 import io.hikarilan.nerabbs.services.userprofile.data.vo.UserProfileVo;
 import io.hikarilan.nerabbs.services.userprofile.database.entity.UserProfileEntity;
 import io.hikarilan.nerabbs.services.userprofile.database.repository.UserProfileRepository;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,6 +28,9 @@ public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
 
+    @GrpcClient("nerabbs-service-user")
+    private UserInfoGrpc.UserInfoBlockingStub userInfoStub;
+
 
     @Cacheable(value = "userProfile", key = "#id")
     public UserProfileVo getUserProfile(long id) {
@@ -37,6 +43,9 @@ public class UserProfileService {
                                   @NotNull @Length(min = 3) String username,
                                   @Nullable MultipartFile avatar,
                                   @NotNull @Length(max = 100) String signature) throws IOException {
+        // Check if user exists
+        id = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setId(id).build()).getId();
+
         String avatarPath = null;
         if (avatar != null) {
             avatarPath = avatarService.uploadAvatar(id, avatar);
