@@ -2,13 +2,14 @@ package io.hikarilan.nerabbs.services.userprofile.data.vo;
 
 
 import io.hikarilan.nerabbs.services.userprofile.database.entity.UserProfileEntity;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 
 public record UserProfileVo(
         long userID,
-        String username,
-        String avatarPath,
-        String signature
+        @Nullable String username,
+        @Nullable String avatarPath,
+        @Nullable String signature
 ) {
 
     @NotNull
