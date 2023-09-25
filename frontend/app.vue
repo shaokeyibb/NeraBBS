@@ -9,7 +9,7 @@ const {darkModeClass} = useDarkMode($pinia)
 const {requestUserInfo} = useUser($pinia)
 requestUserInfo()
 
-const {locale, setLocale, defaultLocale} = useI18n()
+const {locale, setLocale, defaultLocale, t} = useI18n()
 
 setLocale(useCookie("locale").value ?? defaultLocale)
 
@@ -19,16 +19,11 @@ watchEffect(() => {
       class: [darkModeClass],
       lang: locale.value
     },
-    title: "NearBBS",
+    title: t("app.name"),
   })
 })
 
 </script>
-
 <template>
-  <div class="dark:bg-black">
-    <NuxtLayout>
-      <NuxtPage/>
-    </NuxtLayout>
-  </div>
+  <NuxtPage/>
 </template>

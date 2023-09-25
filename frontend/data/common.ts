@@ -22,9 +22,9 @@ export type UserInfo = {
 
 export type UserProfile = {
     userID: number,
-    username: string,
-    avatarPath: string,
-    signature: string,
+    username?: string,
+    avatarPath?: string,
+    signature?: string,
 }
 
 export type UserProfilePutReq = Omit<UserProfile, 'avatarPath'> & {

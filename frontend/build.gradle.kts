@@ -9,8 +9,6 @@ plugins {
 frontend {
     nodeVersion.set("18.17.0")
     assembleScript.set("run build")
-//    cleanScript.set("run clean")
-//    checkScript.set("run check")
     verboseModeEnabled.set(true)
 
     // disable http proxy
@@ -26,10 +24,6 @@ tasks.named<InstallFrontendTask>("installFrontend") {
     if (ciPlatformPresent) {
         retainedMetadataFileNames = setOf(lockFilePath)
     } else {
-        // The naive configuration below allows to skip the task if the last successful execution did not change neither
-        // the package.json file, nor the lock file, nor the node_modules directory. Any other scenario where for
-        // example the lock file is regenerated will lead to another execution before the task is "up-to-date" because
-        // the lock file is both an input and an output of the task.
         retainedMetadataFileNames = mutableSetOf("${projectDir}/package.json")
         if (Files.exists(Path(lockFilePath))) {
             retainedMetadataFileNames.add(lockFilePath)

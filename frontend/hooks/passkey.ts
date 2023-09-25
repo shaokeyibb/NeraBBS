@@ -22,7 +22,7 @@ export default function usePasskey() {
                 PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(),
                 PublicKeyCredential.isConditionalMediationAvailable(),
             ])
-            if (results.every(r => r === true)) {
+            if (results.every(r => r)) {
                 return true;
             }
         }

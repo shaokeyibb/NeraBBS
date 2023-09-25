@@ -1,6 +1,7 @@
 import {Pinia} from "pinia";
 import {useUserInfoStore, useUserProfileStore} from "~/stores/user";
 import useUsers from "~/hooks/users";
+import {UserInfo, UserProfile, UserProfilePatchReq} from "~/data/common";
 
 export default function useUser(pinia: Pinia) {
     const users = useUsers()
@@ -22,7 +23,7 @@ export default function useUser(pinia: Pinia) {
     }
 
     async function requestUserInfo() {
-        userInfoStore.userInfo = await $fetch("/api/users", {
+        userInfoStore.userInfo = await $fetch<UserInfo>("/api/users", {
             method: "GET",
             parseResponse: JSON.parse
         })
@@ -63,10 +64,25 @@ export default function useUser(pinia: Pinia) {
         await signout
     }
 
+    async function updateUserProfile(profile: UserProfilePatchReq) {
+        const data = new FormData()
+        for (const name in profile) {
+            // @ts-ignore
+            data.append(name, profile[name]);
+        }
+
+        userProfileStore.userProfile = await $fetch<UserProfile>(`/api/users/${profile.userID}/profile`, {
+            method: "PATCH",
+            body: data,
+            parseResponse: JSON.parse
+        })
+    }
+
     return {
         requestUserInfo: requestUser,
         signin,
         signup,
-        signout
+        signout,
+        updateUserProfile
     }
 }
