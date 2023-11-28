@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
   initialPanes?: Pane | 'auto'
   floatingActionButtonLabel?: string,
   sizeClass: SizeClass,
-  panes: Pane,
+  panes: Pane
 }>(), {
   initialSizeClass: 'auto',
   initialPanes: 'auto',
@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<{
 const emits = defineEmits<{
   'update:sizeClass': [value: SizeClass],
   'update:panes': [value: Pane],
+  'clickFabBtn': [],
 }>()
 
 defineSlots<{
@@ -102,7 +103,8 @@ const mainPadding = computed(() => {
     <h-floating-action-button v-if="'floatingActionButtonIcon' in $slots || floatingActionButtonLabel"
                               :label="floatingActionButtonLabel"
                               class="fab-btn"
-                              kind="small">
+                              kind="standard"
+                              @click="$emit('clickFabBtn')">
       <slot name="floatingActionButtonIcon"/>
     </h-floating-action-button>
   </template>
@@ -130,7 +132,8 @@ const mainPadding = computed(() => {
                        :fabLabel="floatingActionButtonLabel"
                        :hasDrawer="'navigationDrawerContent' in $slots"
                        :hasFab="'floatingActionButtonIcon' in $slots || floatingActionButtonLabel"
-                       v-bind="$attrs">
+                       v-bind="$attrs"
+                       @fab-click="$emit('clickFabBtn')">
       <template #content>
         <slot name="navigationRailContent"/>
       </template>
@@ -185,7 +188,7 @@ const mainPadding = computed(() => {
 
 .fab-btn {
   position: fixed;
-  bottom: 80px;
+  bottom: 0;
   right: 0;
 }
 
