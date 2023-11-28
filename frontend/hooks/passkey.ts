@@ -1,7 +1,6 @@
+import type {CredentialCreationOptionsJSON, CredentialRequestOptionsJSON} from "@github/webauthn-json/browser-ponyfill"
 import {
     create,
-    CredentialCreationOptionsJSON,
-    CredentialRequestOptionsJSON,
     get,
     parseCreationOptionsFromJSON,
     parseRequestOptionsFromJSON

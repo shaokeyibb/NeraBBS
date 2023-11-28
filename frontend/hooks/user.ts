@@ -1,4 +1,4 @@
-import {Pinia} from "pinia";
+import type {Pinia} from "pinia";
 import {useUserInfoStore, useUserProfileStore} from "~/stores/user";
 import useUsers from "~/hooks/users";
 import type {UserInfo, UserProfile, UserProfilePatchReq} from "~/data/common";

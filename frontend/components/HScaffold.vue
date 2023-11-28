@@ -144,11 +144,11 @@ const mainPadding = computed(() => {
   </template>
 
   <div v-if="panes === 2" class="main two-panes">
-    <div class="pane default-pane">
+    <div class="pane default-pane overflow-y-auto">
       <slot name="defaultContent"/>
     </div>
     <div class="spacer"></div>
-    <div class="pane extra-pane">
+    <div class="pane extra-pane overflow-y-auto">
       <slot name="extraPaneContent"/>
     </div>
   </div>
@@ -161,9 +161,21 @@ const mainPadding = computed(() => {
 
 <style scoped>
 .main {
-  min-height: 100vh;
-  width: 100vw;
   padding: v-bind(mainPadding);
+}
+
+.two-panes .default-pane {
+  max-height: 100vh;
+}
+
+.two-panes .default-pane::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.two-panes .default-pane::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
 }
 
 .main.two-panes {

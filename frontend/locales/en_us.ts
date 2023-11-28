@@ -51,6 +51,7 @@ export default {
     "settings.security.passkey.subtitle": "Passkey is a security token used to protect your account. By setting up a passkey, you can sign in to your account on your devices without entering your email and password.",
     "settings.security.passkey.unsupported": "Could not set up passkey because your browser does not support Webauthn API.",
     "posts.title": "Post Content",
+    "posts.failed.internal": "An internal error occurred while loading post content: {err}",
     "user_profile": "User Profile",
     "menu": "Menu",
     "back": "Back",

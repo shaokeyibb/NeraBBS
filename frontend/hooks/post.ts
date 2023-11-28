@@ -19,7 +19,7 @@ export default function usePost() {
         })
     }
 
-    async function getPost(id: string): Promise<Post> {
+    async function getPost(id: number): Promise<Post> {
         return await $fetch<Post>(`/api/posts/${id}`, {
             method: "GET",
             parseResponse: JSON.parse

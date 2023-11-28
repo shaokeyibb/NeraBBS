@@ -1,4 +1,4 @@
-import {Pinia} from "pinia";
+import type {Pinia} from "pinia";
 import {useDarkModeStore} from "~/stores/dark_mode";
 import {useMediaQuery} from "@vueuse/core";
 

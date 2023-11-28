@@ -4,7 +4,7 @@ import useLocale from "~/hooks/locale";
 import {storeToRefs} from "pinia";
 import {useUserInfoStore, useUserProfileStore} from "~/stores/user";
 import useUser from "~/hooks/user";
-import type {PreviewPost, UserProfile} from "~/data/common";
+import type {PreviewPost} from "~/data/common";
 import usePost from "~/hooks/post";
 import useUsers from "~/hooks/users";
 
@@ -23,7 +23,7 @@ const isLanguageSelectorOpen = ref(false)
 const selectedLanguage = ref<string>(locale.value)
 
 const {signout} = useUser($pinia)
-const {getUserProfile} = useUsers()
+const {getUserProfile, getCachedUserProfile} = useUsers()
 const {publishPost, getPreviewPosts} = usePost()
 
 const {userInfo} = storeToRefs(useUserInfoStore())
@@ -42,22 +42,8 @@ const allPosts = reactive<PreviewPost[]>([
   {
     id: 2,
     posterID: 1,
-    title: "tation postulant commune lectus condimentum",
+    title: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam",
     content: "Deterruissetdissentiunt metus hinc mus vestibulum class varius animal intellegat inceptos netus populo sed.  Hasmauris dictumst civibus vero sea vituperata mus sollicitudin dignissim necessitatibus ceteros ultricies dissentiunt quot vituperata elaboraret volutpat non.  Graecovituperata omittam atomorum suas nec meliore mandamus eruditi luctus constituto nonumes deseruisse magnis sagittis voluptatibus reformidans mediocritatem et.  Adpri a facilis posuere delicata laoreet amet sapien congue ultricies signiferumque quot placerat iaculis in.  Constituamdis fabulas mauris ea potenti vel vehicula dicat urbanitas ei graece.  Primissolet quo ponderum audire maecenas appareat dictumst eget tellus nonumy nihil ius malorum mnesarchum.",
-    createAt: "2023-09-10T07:14:27.796Z",
-  },
-  {
-    id: 3,
-    posterID: 1,
-    title: "tation postulant commune lectus condimentum",
-    content: "Deterruissetdissentiunt metus hinc mus vestibulum class varius animal intellegat inceptos netus populo sed.  Hasmauris dictumst civibus vero sea vituperata mus sollicitudin dignissim necessitatibus ceteros ultricies dissentiunt quot vituperata elaboraret volutpat non.  Graecovituperata omittam atomorum suas nec meliore mandamus eruditi luctus constituto nonumes deseruisse magnis sagittis voluptatibus reformidans mediocritatem et.  Adpri a facilis posuere delicata laoreet amet sapien congue ultricies signiferumque quot placerat iaculis in.  Constituamdis fabulas mauris ea potenti vel vehicula dicat urbanitas ei graece.  Primissolet quo ponderum audire maecenas appareat dictumst eget tellus nonumy nihil ius malorum mnesarchum.",
-    createAt: "2023-09-10T07:14:27.796Z",
-  },
-  {
-    id: 4,
-    posterID: 1,
-    title: "tation postulant commune lectus condimentum",
-    content: "Deterruissetdissentiunt metus hinc mus vestibulum class varius animal intellegat inceptos netus populo sed.  Hasmauris dictumst civibus vero sea vituperata mus sollicitudin dignissim necessitatibus ceteros ultricies dissentiunt quot vituperata elaboraret volutpat non.  Graecovituperata omittam atomorum suas nec meliore mandamus eruditi luctus constituto nonumes deseruisse magnis sagittis voluptatibus reformidans mediocritatem et.  Adpri a facilis posuere delicata laoreet amet sapien congue ultricies signiferumque quot placerat iaculis in.  Constituamdis fabulas mauris ea potenti vel vehicula dicat urbanitas ei graece.  Primissolet quo ponderum audire maecenas appare",
     createAt: "2023-09-10T07:14:27.796Z",
   }
 ])
@@ -79,34 +65,6 @@ watch(panes, (value) => {
   if (value !== 1 || !currentPostID.value) return
   router.push(`/posts/${currentPostID.value}`)
 })
-
-const cachedUserProfiles = reactive<Record<number, {
-  pending: boolean,
-  error?: Error,
-  data?: UserProfile
-}>>({})
-
-function getCachedUserProfile(id: number) {
-  if (!cachedUserProfiles[id]) {
-    requireUserProfile(id)
-  }
-  return cachedUserProfiles[id]
-}
-
-async function requireUserProfile(id: number) {
-  const data = getUserProfile(id)
-  cachedUserProfiles[id] = {
-    pending: true,
-  }
-  try {
-    cachedUserProfiles[id].data = (await data)
-  } catch (e: any) {
-    cachedUserProfiles[id].error = e
-  } finally {
-    cachedUserProfiles[id].pending = false
-  }
-  return data
-}
 </script>
 
 <template>
@@ -192,8 +150,8 @@ async function requireUserProfile(id: number) {
           </HMenu>
         </template>
       </HTopAppBar>
-      <div class="flex flex-col gap-3">
-        <HCard v-for="post in allPosts" :interactable="true" kind="filled" @click="currentPostID = post.posterID">
+      <div class="flex flex-col gap-3 pb-3">
+        <HCard v-for="post in allPosts" :interactable="true" kind="filled" @click="currentPostID = post.id">
           <div class="flex flex-col py-3 gap-3">
             <div class="flex flex-row items-center">
               <div class="h-8 w-8 mr-2">
@@ -205,7 +163,7 @@ async function requireUserProfile(id: number) {
               </div>
               <div class="flex flex-col">
                 <span v-if="getCachedUserProfile(post.posterID).pending"
-                      class="h-4 w-full bg-halcyon-tertiary animate-pulse"/>
+                      class="h-4 w-full bg-slate-200 animate-pulse rounded"/>
                 <span v-else-if="getCachedUserProfile(post.posterID).error" class="text-sm">UID: {{
                     post.posterID
                   }}</span>
@@ -227,7 +185,8 @@ async function requireUserProfile(id: number) {
       </div>
     </template>
     <template #extraPaneContent>
-      <Posts v-if="currentPostID" :postID="currentPostID"/>
+      <Post v-if="currentPostID" :postID="currentPostID"
+            :previewPost="allPosts.find(it=>it.id===currentPostID)"/>
     </template>
     <template #floatingActionButtonIcon>
       <svg class="icon-[material-symbols--add]"/>

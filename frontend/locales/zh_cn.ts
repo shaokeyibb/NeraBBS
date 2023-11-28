@@ -51,6 +51,7 @@ export default {
     "settings.security.passkey.subtitle": "Passkey 是一种用于保护您的账号的安全令牌，通过设置 Passkey，您可在您的设备上免去输入电子邮件和密码以直接登录到您的账号上。",
     "settings.security.passkey.unsupported": "无法设置 Passkey，因为您的浏览器不支持 Webauthn API。",
     "posts.title": "帖子内容",
+    "posts.failed.internal": "加载帖子内容时发生内部错误：{err}",
     "user_profile": "用户资料",
     "menu": "菜单",
     "back": "返回",

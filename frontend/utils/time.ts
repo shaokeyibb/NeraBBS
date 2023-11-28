@@ -1,4 +1,5 @@
-import {MaybeRefOrGetter, useTimeAgo, UseTimeAgoMessages} from "@vueuse/core";
+import type {MaybeRefOrGetter, UseTimeAgoMessages} from "@vueuse/core";
+import {useTimeAgo} from "@vueuse/core";
 
 const zhCNNumberMap = ['零', '一', '两', '三', '四', '五', '六', '七', '八', '九']
 
@@ -25,7 +26,7 @@ export function useTimeAgoLocalized(time: MaybeRefOrGetter<Date | number | strin
 
     return useTimeAgo(time, {
         max: "week",
-        fullDateFormatter: (date) => date.toLocaleTimeString(locale.value),
+        fullDateFormatter: (date) => date.toLocaleString(locale.value),
         messages: messages[locale.value]
     })
 }

@@ -5,7 +5,7 @@ import {NuxtLink} from "#components";
 
 const props = defineProps<{
   title: string,
-  component: Component,
+  component?: Component,
   backTo: string
 }>()
 
@@ -30,5 +30,6 @@ watch(panes, (value) => {
       </HIconButton>
     </template>
   </HTopAppBar>
-  <component :is="component" v-bind="$attrs"/>
+  <component :is="component" v-if="component" v-bind="$attrs"/>
+  <slot v-else/>
 </template>
