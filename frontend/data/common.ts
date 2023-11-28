@@ -12,7 +12,7 @@ export type Post = {
     createAt: string
 }
 
-export type PreviewPost = Post
+export type PreviewPost = Readonly<Post>
 
 export type UserInfo = {
     id: number,

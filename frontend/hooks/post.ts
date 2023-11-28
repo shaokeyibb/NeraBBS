@@ -1,4 +1,4 @@
-import {Post, PostCreation, PreviewPost} from "~/data/common";
+import type {Post, PostCreation, PreviewPost} from "~/data/common";
 
 export default function usePost() {
     async function publishPost(data: PostCreation): Promise<number> {

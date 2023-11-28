@@ -1,7 +1,7 @@
 import {Pinia} from "pinia";
 import {useUserInfoStore, useUserProfileStore} from "~/stores/user";
 import useUsers from "~/hooks/users";
-import {UserInfo, UserProfile, UserProfilePatchReq} from "~/data/common";
+import type {UserInfo, UserProfile, UserProfilePatchReq} from "~/data/common";
 
 export default function useUser(pinia: Pinia) {
     const users = useUsers()

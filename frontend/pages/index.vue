@@ -4,7 +4,7 @@ import useLocale from "~/hooks/locale";
 import {storeToRefs} from "pinia";
 import {useUserInfoStore, useUserProfileStore} from "~/stores/user";
 import useUser from "~/hooks/user";
-import {PreviewPost, UserProfile} from "~/data/common";
+import type {PreviewPost, UserProfile} from "~/data/common";
 import usePost from "~/hooks/post";
 import useUsers from "~/hooks/users";
 

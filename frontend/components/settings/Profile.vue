@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {UserProfilePatchReq} from "~/data/common";
+import type {UserProfilePatchReq} from "~/data/common";
 import {ComputedRef} from "vue";
 import {storeToRefs} from "pinia";
 import useUser from "~/hooks/user";

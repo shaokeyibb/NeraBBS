@@ -1,4 +1,4 @@
-import {UserInfo, UserProfile} from "~/data/common";
+import type {UserInfo, UserProfile} from "~/data/common";
 
 export default function useUsers() {
 
