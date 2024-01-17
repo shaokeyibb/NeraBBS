@@ -24,6 +24,7 @@ const emits = defineEmits<{
 }>()
 
 defineSlots<{
+  header(): any,
   navigationBarContent(): any,
   navigationDrawerContent(): any,
   navigationRailContent(): any,
@@ -62,6 +63,14 @@ watchEffect(() => {
 
 watchEffect(() => {
   emits('update:panes', autoPanes.value)
+})
+
+const header = ref<HTMLDivElement | null>(null)
+const defaultPane = ref<HTMLDivElement | null>(null)
+const headerWidth = computed(() => `${defaultPane.value?.clientWidth ?? 0}px`)
+const headerHeight = computed(() => header.value?.clientHeight ?? 0)
+watchEffect(() => {
+  defaultPane.value && (defaultPane.value.style.paddingTop = `${headerHeight.value}px`)
 })
 
 const mainPadding = computed(() => {
@@ -147,7 +156,10 @@ const mainPadding = computed(() => {
   </template>
 
   <div v-if="panes === 2" class="main two-panes">
-    <div class="pane default-pane overflow-y-auto">
+    <div ref="defaultPane" class="pane default-pane overflow-y-auto">
+      <div ref="header" class="header absolute">
+        <slot name="header"/>
+      </div>
       <slot name="defaultContent"/>
     </div>
     <div class="spacer"></div>
@@ -156,6 +168,7 @@ const mainPadding = computed(() => {
     </div>
   </div>
   <div v-else class="main">
+    <slot name="header"/>
     <div class="pane default-pane">
       <slot name="defaultContent"/>
     </div>
@@ -192,4 +205,9 @@ const mainPadding = computed(() => {
   right: 0;
 }
 
+.header {
+  width: v-bind(headerWidth);
+  transform: translateY(-100%);
+  background: var(--halcyon-surface);
+}
 </style>

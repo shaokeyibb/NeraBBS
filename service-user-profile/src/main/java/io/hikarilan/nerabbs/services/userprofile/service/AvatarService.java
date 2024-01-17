@@ -18,7 +18,7 @@ public class AvatarService {
     private StorageGrpc.StorageBlockingStub storageStub;
 
     public String uploadAvatar(long userID, MultipartFile avatar) throws IOException {
-        return "/storages/" + storageStub.uploadFile(UploadFileRequest.newBuilder()
+        return "/api/storages/" + storageStub.uploadFile(UploadFileRequest.newBuilder()
                 .setUserID(userID)
                 .setFile(io.hikarilan.nerabbs.lib.services.oss.grpc.MultipartFile.newBuilder()
                         .setName(avatar.getName())

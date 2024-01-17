@@ -31,22 +31,7 @@ const {userProfile} = storeToRefs(useUserProfileStore())
 
 const pageSize = 20
 const currentPage = ref(0)
-const allPosts = reactive<PreviewPost[]>([
-  {
-    id: 1,
-    posterID: 1,
-    title: "tation postulant commune lectus condimentum",
-    content: "Electrammalorum porttitor.  Legereevertitur justo invidunt commodo aliquip nostrum alienum nobis dapibus maluisset efficiantur commodo tacimates.  Mediocremlibris reprimique dissentiunt appetere consul menandri montes eruditi prodesset erroribus interesset errem congue hac mei feugait egestas erroribus.  Patrioquenam mentitum pericula platonem id habitant.  Quaequelacinia legimus dis contentiones velit constituto euripidis consetetur quisque invenire qualisque lacinia mediocrem conceptam penatibus orci mediocritatem ridiculus convenire.  Vulputatescripserit gravida eros maiorum accumsan consul leo ipsum interesset theophrastus condimentum quaeque tale commune nulla ocurreret litora tantas.",
-    createAt: "2021-09-25T14:00:00.000Z",
-  },
-  {
-    id: 2,
-    posterID: 1,
-    title: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam",
-    content: "Deterruissetdissentiunt metus hinc mus vestibulum class varius animal intellegat inceptos netus populo sed.  Hasmauris dictumst civibus vero sea vituperata mus sollicitudin dignissim necessitatibus ceteros ultricies dissentiunt quot vituperata elaboraret volutpat non.  Graecovituperata omittam atomorum suas nec meliore mandamus eruditi luctus constituto nonumes deseruisse magnis sagittis voluptatibus reformidans mediocritatem et.  Adpri a facilis posuere delicata laoreet amet sapien congue ultricies signiferumque quot placerat iaculis in.  Constituamdis fabulas mauris ea potenti vel vehicula dicat urbanitas ei graece.  Primissolet quo ponderum audire maecenas appareat dictumst eget tellus nonumy nihil ius malorum mnesarchum.",
-    createAt: "2023-09-10T07:14:27.796Z",
-  }
-])
+const allPosts = reactive<PreviewPost[]>([])
 const {data: newPagePosts, pending, error, refresh} = useAsyncData(() => getPreviewPosts(currentPage.value, pageSize), {
   lazy: true,
   server: false,
@@ -74,7 +59,7 @@ watch(panes, (value) => {
              :floatingActionButtonLabel="floatingActionButtonLabel"
              initial-panes="auto"
              initialSizeClass="auto">
-    <template #defaultContent>
+    <template #header>
       <HTopAppBar :title="$t('app.name')" kind="small">
         <template v-if="sizeClass === 'compact'" #navigation-icon>
           <HIconButton :label="$t('menu')" :noTooltip="true" kind="standard">
@@ -150,6 +135,8 @@ watch(panes, (value) => {
           </HMenu>
         </template>
       </HTopAppBar>
+    </template>
+    <template #defaultContent>
       <div class="flex flex-col gap-3 pb-3">
         <HCard v-for="post in allPosts" :interactable="true" kind="filled" @click="currentPostID = post.id">
           <div class="flex flex-col py-3 gap-3">
