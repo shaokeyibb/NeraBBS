@@ -1,7 +1,7 @@
 {
   "name": "nerabbs-frontend",
   "private": true,
-  "packageManager": "pnpm@8.11.0",
+  "packageManager": "pnpm@8.14.1",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -10,17 +10,17 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.147",
+    "@iconify/json": "^2.2.170",
     "@iconify/tailwind": "^0.1.4",
     "@nuxt/devtools": "latest",
-    "@nuxtjs/i18n": "8.0.0-rc.5",
+    "@nuxtjs/i18n": "^8.0.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
-    "@vueuse/core": "^10.6.1",
-    "@vueuse/nuxt": "^10.6.1",
-    "autoprefixer": "^10.4.16",
-    "nuxt": "^3.8.2",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5"
+    "@vueuse/core": "^10.7.2",
+    "@vueuse/nuxt": "^10.7.2",
+    "autoprefixer": "^10.4.17",
+    "nuxt": "^3.9.3",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1"
   },
   "dependencies": {
     "@bytemd/plugin-breaks": "^1.21.0",
