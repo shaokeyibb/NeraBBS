@@ -1,4 +1,4 @@
-FROM gradle:8-jdk17 AS build
+FROM gradle:8-jdk21 AS build
 LABEL org.opencontainers.image.authors="HikariLan"
 
 WORKDIR /build
@@ -6,18 +6,20 @@ COPY . .
 
 RUN gradle build --no-daemon --parallel
 
-FROM node:18 AS frontend
+FROM node:22 AS frontend
 LABEL org.opencontainers.image.authors="HikariLan"
 
 EXPOSE 3000
 
 WORKDIR /app
 
-COPY --from=build /build/frontend/.output .
+COPY --from=build /build/frontend/dist .
 
-ENTRYPOINT ["node" ,"server/index.mjs"]
+RUN npm install --global serve
 
-FROM openjdk:17 AS service-auth
+ENTRYPOINT ["serve"]
+
+FROM openjdk:21 AS service-auth
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-auth
@@ -30,7 +32,7 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
-FROM openjdk:17 AS service-user
+FROM openjdk:21 AS service-user
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-user
@@ -43,7 +45,7 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
-FROM openjdk:17 AS service-user-profile
+FROM openjdk:21 AS service-user-profile
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-user-profile
@@ -56,7 +58,7 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
-FROM openjdk:17 AS service-post
+FROM openjdk:21 AS service-post
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-post
@@ -69,7 +71,7 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
-FROM openjdk:17 AS service-webauthn
+FROM openjdk:21 AS service-webauthn
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-webauthn
@@ -82,7 +84,7 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
-FROM openjdk:17 AS service-oss
+FROM openjdk:21 AS service-oss
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-oss
@@ -95,7 +97,7 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
-FROM openjdk:17 AS gateway
+FROM openjdk:21 AS gateway
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=gateway

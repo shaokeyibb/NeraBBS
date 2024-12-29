@@ -1,5 +1,3 @@
-version: "3.4"
-
 services:
 
   frontend:
@@ -43,7 +41,7 @@ services:
       service-oss:
         condition: service_started
     ports:
-      - "8475:80"
+      - "8080:80"
     networks:
       - services
       - redis

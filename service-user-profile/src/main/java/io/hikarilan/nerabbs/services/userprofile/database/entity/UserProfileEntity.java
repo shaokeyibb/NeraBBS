@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
 @NoArgsConstructor
@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name = "user_profiles")
 @SQLDelete(sql = "UPDATE user_profiles SET is_deleted = true WHERE id = ?")
-@Where(clause = "is_deleted=false")
+@SQLRestriction("is_deleted = false")
 @Data
 @Builder
 public class UserProfileEntity {

@@ -24,6 +24,19 @@ public class UserProfileController {
 
     @GetMapping
     @ResponseBody
+    public UserProfileVo getUserProfileFromHeader(@RequestHeader(BizConstants.USER_ID_HEADER) long userID, @PathVariable("id") long _userID) {
+        if (_userID != -1) {
+            throw new IllegalArgumentException();
+        }
+
+        if (userID == BizConstants.USER_ID_UNAUTHORIZED)
+            throw new UnauthorizedException();
+
+        return userProfileService.getUserProfile(userID);
+    }
+
+    @GetMapping
+    @ResponseBody
     public UserProfileVo getUserProfile(@PathVariable("id") long userID) {
         return userProfileService.getUserProfile(userID);
     }

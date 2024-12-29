@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
 import java.util.Date;
@@ -18,7 +18,7 @@ import java.util.Date;
 @Entity
 @Table(name = "posts")
 @SQLDelete(sql = "UPDATE posts SET is_deleted = true WHERE id = ?")
-@Where(clause = "is_deleted=false")
+@SQLRestriction("is_deleted = false")
 @Data
 public class PostEntity {
 

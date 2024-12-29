@@ -1,36 +1,34 @@
 [versions]
-springboot = "3.1.1"
-springDependencyManagement = "1.1.0"
-protobufPlugin = "0.9.1"
-frontendGradlePlugin = "7.0.0"
+springboot = "3.4.1"
+springDependencyManagement = "1.1.7"
+protobufPlugin = "0.9.4"
+frontendGradlePlugin = "10.0.0"
 
-springCloud = "2022.0.3"
-springData = "2023.0.2"
+springCloud = "2024.0.0"
+springData = "2024.1.1"
 
-grpc = "1.56.1"
-protobuf = "3.22.3"
+grpc = "1.58.0"
+protobuf = "3.23.4"
 
-grpcSpringBootStarter = "2.13.1.RELEASE"
+grpcSpringBootStarter = "3.1.0.RELEASE"
 
-javaxAnnotation = "1.3.2"
+jakartaAnnotation = "1.3.5"
 
-saToken = "1.35.0.RC"
+saToken = "1.39.0"
 
-hutool = "5.8.20"
+hutool = "5.8.35"
 
-webauthnServerCore = "2.5.0"
+webauthnServerCore = "2.5.4"
 
-hypersistenceUtils = "3.5.0"
+hypersistenceUtils = "3.9.0"
 
-jackson-module-jakarta-xmlbind-annotations = "2.15.2"
+jackson-module-jakarta-xmlbind-annotations = "2.18.2"
 
-minio = "8.4.3"
+minio = "8.5.14"
 [libraries]
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
-grpc-services = { module = "io.grpc:grpc-services", version.ref = "grpc" }
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
-grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc" }
-javax-annotation = { module = "javax.annotation:javax.annotation-api", version.ref = "javaxAnnotation" }
+jakarta-annotation = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakartaAnnotation" }
 
 grpc-spring-boot-starter = { module = "net.devh:grpc-spring-boot-starter", version.ref = "grpcSpringBootStarter" }
 

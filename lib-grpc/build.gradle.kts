@@ -1,24 +1,24 @@
 plugins {
-    id("java")
+    id("java-library")
     alias(libs.plugins.protobuf)
 }
 
 repositories {
-    maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+    mavenCentral()
 }
 
 dependencies {
     implementation(libs.grpc.protobuf)
-    implementation(libs.grpc.services)
     implementation(libs.grpc.stub)
 
-    implementation("javax.annotation:javax.annotation-api:1.3.2")
-
-    runtimeOnly(libs.grpc.netty.shaded)
+    implementation(libs.jakarta.annotation)
 }
 
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.orNull}" }
+    tasks.named("clean") {
+        delete(generatedFilesBaseDir)
+    }
     plugins {
         register("grpc") {
             artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.orNull}"

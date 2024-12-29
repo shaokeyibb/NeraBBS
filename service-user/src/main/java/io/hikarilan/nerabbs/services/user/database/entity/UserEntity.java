@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
@@ -20,7 +20,7 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id = ?")
-@Where(clause = "is_deleted=false")
+@SQLRestriction("is_deleted = false")
 @Data
 public final class UserEntity {
 
