@@ -1,0 +1,2 @@
+/** @type {PageDecl} */
+export default {};

@@ -1,0 +1,16 @@
+{
+  "site.title": "NeraBBS",
+  "locale.switcher.tooltip": "语言",
+  "locale.name": "简体中文",
+  "locale.intl.name": "Chinese (Simplified)",
+  "page.explore.title": "探索",
+  "page.explore.reachEnd": "已经到底了",
+  "theme.switcher.tooltip": "主题：{theme}",
+  "theme.auto": "跟随系统",
+  "theme.light": "浅色",
+  "theme.dark": "深色",
+  "search.label": "搜点什么...",
+  "signIn": "登录",
+  "signUp": "注册",
+  "loading": "加载中..."
+}

@@ -1,0 +1,16 @@
+{
+  "site.title": "NeraBBS",
+  "locale.switcher.tooltip": "Languages",
+  "locale.name": "English",
+  "locale.intl.name": "English",
+  "page.explore.title": "Explore",
+  "page.explore.reachEnd": "You've reached the end.",
+  "theme.switcher.tooltip": "Theme：{theme}",
+  "theme.auto": "Auto",
+  "theme.light": "Light",
+  "theme.dark": "Dark",
+  "search.label": "Search Something...",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "loading": "Loading..."
+}

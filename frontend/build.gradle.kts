@@ -7,7 +7,7 @@ plugins {
 }
 
 frontend {
-    nodeVersion.set("18.17.0")
+    nodeVersion.set("22.12.0")
     assembleScript.set("run build")
     verboseModeEnabled.set(true)
 
@@ -18,8 +18,8 @@ frontend {
 }
 
 tasks.named<InstallFrontendTask>("installFrontend") {
-    val ciPlatformPresent = providers.environmentVariable("CI").isPresent()
-    val lockFilePath = "${projectDir}/yarn.lock"
+    val ciPlatformPresent = providers.environmentVariable("CI").isPresent
+    val lockFilePath = "${projectDir}/pnpm-lock.yaml"
     val retainedMetadataFileNames: Set<String>
     if (ciPlatformPresent) {
         retainedMetadataFileNames = setOf(lockFilePath)
