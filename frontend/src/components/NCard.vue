@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {onMounted, provide, type Ref, ref, useTemplateRef} from "vue";
-import {isInNCard} from "../utils/symbol.ts";
+import { onMounted, provide, type Ref, ref, useTemplateRef } from "vue";
+import { isInNCard } from "../utils/symbol.ts";
 
-const {variant = "filled", clickable = false} = defineProps<{
+const { variant = "filled", clickable = false } = defineProps<{
   variant?: "elevated" | "filled" | "outlined";
   clickable?: boolean;
 }>();
@@ -27,8 +27,8 @@ const removeDuplicateContainer = (el: Ref<HTMLElement | undefined>) => {
   if (el.value == undefined || card.value == undefined) return;
   if (el.value.children.length !== 1) {
     console.error(
-        "NCard children element must have exactly one child.",
-        el.value,
+      "NCard children element must have exactly one child.",
+      el.value,
     );
   }
   const innerEl = el.value.firstElementChild!;
@@ -50,13 +50,13 @@ onMounted(() => {
 <template>
   <mdui-card ref="card" :clickable="clickable" :variant="variant" class="card">
     <div v-if="header" ref="headerEl" class="card--header">
-      <slot name="header"/>
+      <slot name="header" />
     </div>
     <div v-if="media" class="card--media">
-      <slot name="media"/>
+      <slot name="media" />
     </div>
     <div v-if="_default" ref="contentEl" class="card--content">
-      <slot name="default"/>
+      <slot name="default" />
     </div>
   </mdui-card>
 </template>

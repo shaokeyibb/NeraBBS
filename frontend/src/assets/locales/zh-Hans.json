@@ -5,6 +5,9 @@
   "locale.intl.name": "Chinese (Simplified)",
   "page.explore.title": "探索",
   "page.explore.reachEnd": "已经到底了",
+  "page.signIn.title": "@:signIn",
+  "page.signIn.welcome": "欢迎回来！",
+  "page.signIn.continue_with": "或使用以下方式登录",
   "theme.switcher.tooltip": "主题：{theme}",
   "theme.auto": "跟随系统",
   "theme.light": "浅色",
@@ -12,5 +15,14 @@
   "search.label": "搜点什么...",
   "signIn": "登录",
   "signUp": "注册",
-  "loading": "加载中..."
+  "email": "电子邮件地址",
+  "password": "密码",
+  "passkey": "通行密钥",
+  "loading": "加载中...",
+  "error.signIn.unauthorized": "用户名或密码错误",
+  "error.signUp.forbidden": "您指定的电子邮件地址已被注册",
+  "error.bad_request": "请求参数无效，请检查您的输入",
+  "error.forbidden": "您没有权限访问此资源",
+  "error.not_found": "找不到指定的资源",
+  "error.unknown": "未知错误: {message}"
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed} from "vue";
+import { computed } from "vue";
 
 const {
   scale = "body",
@@ -27,6 +27,6 @@ const styles = computed(() => {
 
 <template>
   <component :is="as" :style="styles">
-    <slot/>
+    <slot />
   </component>
 </template>

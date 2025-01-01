@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import NText from "./NText.vue";
 
-const {title, subhead, supportingText} = defineProps<{
+const { title, subhead, supportingText } = defineProps<{
   title?: string;
   subhead?: string;
   supportingText?: string;
 }>();
 
-const {default: _default, actions} = defineSlots<{
+const { default: _default, actions } = defineSlots<{
   default: unknown; // will not be shown when supportingText is present
   actions: unknown;
 }>();
@@ -16,23 +16,21 @@ const {default: _default, actions} = defineSlots<{
 <template>
   <div class="card--content">
     <div v-if="title || subhead" class="card--content--headline">
-      <NText v-if="title" class="title" scale="body" size="large">{{
-          title
-        }}
+      <NText v-if="title" class="title" scale="body" size="large"
+        >{{ title }}
       </NText>
-      <NText v-if="subhead" class="subhead" scale="body" size="medium">{{
-          subhead
-        }}
+      <NText v-if="subhead" class="subhead" scale="body" size="medium"
+        >{{ subhead }}
       </NText>
     </div>
     <div v-if="supportingText || _default" class="card--content--supporting">
       <NText v-if="supportingText" class="supporting" scale="body"
-      >{{ supportingText }}
+        >{{ supportingText }}
       </NText>
-      <slot v-else-if="_default" name="default"/>
+      <slot v-else-if="_default" name="default" />
     </div>
     <div v-if="actions" class="card--content--actions">
-      <slot name="actions"/>
+      <slot name="actions" />
     </div>
   </div>
 </template>

@@ -1,4 +1,4 @@
-import {createHead} from "@unhead/vue";
+import { createHead } from "@unhead/vue";
 
 const head = createHead();
 

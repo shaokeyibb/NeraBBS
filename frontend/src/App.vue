@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import {useHead} from "@unhead/vue";
-import {useI18n} from "vue-i18n";
+import { useHead } from "@unhead/vue";
+import { useI18n } from "vue-i18n";
 import useLocale from "./hooks/locale.ts";
 import useTheme from "./hooks/theme.ts";
-import {useRoute} from "vue-router";
-import {computed} from "vue";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 
-const {t} = useI18n();
-const {locale, syncLocale} = useLocale();
-const {syncTheme} = useTheme();
+const { t } = useI18n();
+const { locale, syncLocale } = useLocale();
+const { syncTheme } = useTheme();
 const route = useRoute();
 
 syncLocale();
 syncTheme();
 
 const titleTemplate = computed(
-    () =>
-        `%s %separator ${route.meta.title ? t(route.meta.title) : ""} %separator ${t("site.title")}`,
+  () =>
+    `%s %separator ${route.meta.title ? t(route.meta.title) : ""} %separator ${t("site.title")}`,
 );
 
 useHead({
@@ -28,7 +28,7 @@ useHead({
     lang: locale.value,
   },
   link: [
-    {rel: "preconnect", href: "https://fonts.googleapis.com"},
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
     {
       rel: "preconnect",
       href: "https://fonts.gstatic.com",
@@ -47,7 +47,7 @@ useHead({
 </script>
 
 <template>
-  <RouterView/>
+  <RouterView />
 </template>
 
 <style scoped></style>

@@ -135,9 +135,11 @@ const topAppBarHeight = l.topAppBar.height + "px";
         <mdui-button-icon slot="end-icon" icon="search" />
       </mdui-text-field>
       <mdui-tooltip v-if="isLargeScreen" :content="t('signIn')">
-        <mdui-button-icon>
-          <mdui-icon name="login" />
-        </mdui-button-icon>
+        <router-link :to="{ name: 'signin' }">
+          <mdui-button-icon>
+            <mdui-icon name="login" />
+          </mdui-button-icon>
+        </router-link>
       </mdui-tooltip>
       <mdui-button-icon
         v-if="!isLargeScreen"

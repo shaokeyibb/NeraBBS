@@ -17,6 +17,7 @@
     "serve": "serve dist"
   },
   "dependencies": {
+    "@github/webauthn-json": "^2.1.1",
     "@unhead/vue": "^1.11.14",
     "@vueuse/core": "^12.2.0",
     "@yeger/vue-masonry-wall": "^5.0.16",

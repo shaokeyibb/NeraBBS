@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users/{id}/profile")
+@RequestMapping("/users/profile")
 @Validated
 public class UserProfileController {
 
@@ -24,24 +24,20 @@ public class UserProfileController {
 
     @GetMapping
     @ResponseBody
-    public UserProfileVo getUserProfileFromHeader(@RequestHeader(BizConstants.USER_ID_HEADER) long userID, @PathVariable("id") long _userID) {
-        if (_userID != -1) {
-            throw new IllegalArgumentException();
-        }
-
+    public UserProfileVo getUserProfileFromHeader(@RequestHeader(BizConstants.USER_ID_HEADER) long userID) {
         if (userID == BizConstants.USER_ID_UNAUTHORIZED)
             throw new UnauthorizedException();
 
         return userProfileService.getUserProfile(userID);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @ResponseBody
     public UserProfileVo getUserProfile(@PathVariable("id") long userID) {
         return userProfileService.getUserProfile(userID);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void updateUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long requestUserID,
                                   @PathVariable("id") long userID,
             /* restful api compatible */ @RequestParam("userID") long operationUserID,
@@ -63,7 +59,7 @@ public class UserProfileController {
         userProfileService.updateUserProfile(userID, username, avatar, signature);
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     @ResponseBody
     public UserProfileVo patchUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long requestUserID,
                                           @PathVariable("id") long userID,

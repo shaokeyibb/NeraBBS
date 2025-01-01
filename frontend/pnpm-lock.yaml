@@ -7,6 +7,9 @@ settings:
 importers:
   .:
     dependencies:
+      "@github/webauthn-json":
+        specifier: ^2.1.1
+        version: 2.1.1
       "@unhead/vue":
         specifier: ^1.11.14
         version: 1.11.14(vue@3.5.13(typescript@5.6.3))
@@ -506,6 +509,13 @@ packages:
       {
         integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==,
       }
+
+  "@github/webauthn-json@2.1.1":
+    resolution:
+      {
+        integrity: sha512-XrftRn4z75SnaJOmZQbt7Mk+IIjqVHw+glDGOxuHwXkZBZh/MBoRS7MHjSZMDaLhT4RjN2VqiEU7EOYleuJWSQ==,
+      }
+    hasBin: true
 
   "@humanfs/core@0.19.1":
     resolution:
@@ -3772,6 +3782,8 @@ snapshots:
       levn: 0.4.1
 
   "@floating-ui/utils@0.2.8": {}
+
+  "@github/webauthn-json@2.1.1": {}
 
   "@humanfs/core@0.19.1": {}
 

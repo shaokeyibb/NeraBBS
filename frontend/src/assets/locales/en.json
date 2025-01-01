@@ -5,6 +5,9 @@
   "locale.intl.name": "English",
   "page.explore.title": "Explore",
   "page.explore.reachEnd": "You've reached the end.",
+  "page.signIn.title": "@:signIn",
+  "page.signIn.welcome": "Welcome back!",
+  "page.signIn.continue_with": "Or continue with",
   "theme.switcher.tooltip": "Theme：{theme}",
   "theme.auto": "Auto",
   "theme.light": "Light",
@@ -12,5 +15,14 @@
   "search.label": "Search Something...",
   "signIn": "Sign In",
   "signUp": "Sign Up",
-  "loading": "Loading..."
+  "email": "Email",
+  "password": "Password",
+  "passkey": "Passkey",
+  "loading": "Loading...",
+  "error.signIn.unauthorized": "Invalid email or password",
+  "error.signUp.forbidden": "This email has been registered",
+  "error.bad_request": "Invalid request parameters, please check your input",
+  "error.forbidden": "You do not have permission to access this resource",
+  "error.not_found": "The requested resource was not found",
+  "error.unknown": "Unknown error: {message}"
 }

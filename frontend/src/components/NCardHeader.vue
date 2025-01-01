@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import {computed, inject, onMounted, ref} from "vue";
-import {isInNCard} from "../utils/symbol.ts";
+import { computed, inject, onMounted, ref } from "vue";
+import { isInNCard } from "../utils/symbol.ts";
 import NText from "./NText.vue";
 
-const {header, subhead} = defineProps<{
+const { header, subhead } = defineProps<{
   header?: string;
   subhead?: string;
 }>();
 
-const {monogram, button} = defineSlots<{
+const { monogram, button } = defineSlots<{
   monogram: unknown;
   button: unknown;
 }>();
@@ -34,9 +34,9 @@ onMounted(() => {
   <div ref="cardHeader" class="card--header">
     <div class="card--header--content">
       <slot
-          v-if="monogram"
-          class="card--header--content-monogram"
-          name="monogram"
+        v-if="monogram"
+        class="card--header--content-monogram"
+        name="monogram"
       ></slot>
       <div v-if="header || subhead" class="card--header--content--text">
         <NText v-if="header" class="header" scale="title">{{ header }}</NText>

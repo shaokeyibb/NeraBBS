@@ -15,22 +15,25 @@ import {
 import type { PreviewPost } from "../../types/backend.ts";
 import { useTimeAgoLocalized } from "../../utils/time.ts";
 import { useInfiniteScroll } from "@vueuse/core";
-import useBackend from "../../hooks/backend.ts";
 import { layout } from "../../utils/symbol.ts";
 import { useI18n } from "vue-i18n";
 import type { ErrorMessage } from "../../types/error-handling.ts";
 import NText from "../../components/NText.vue";
-import { snackbar } from "mdui";
+import useErrorHandling from "../../hooks/error-handling.ts";
+import usePost from "../../hooks/post.ts";
+import useUser from "../../hooks/user.ts";
 
 const { t } = useI18n();
-const { getPreviewPost, getUserProfile } = useBackend();
+const { getPreviewPost } = usePost();
+const { getUserProfile } = useUser();
+const { handle: handleError } = useErrorHandling();
 
-const wallContainer = useTemplateRef<HTMLDivElement>("wallContainer");
+const wallContainer = useTemplateRef<HTMLDivElement>("wall-container");
 
 const { page, loading, error, reachedEnd } = {
   page: ref(0),
   loading: ref(false),
-  error: ref<string | undefined>(),
+  error: ref<ErrorMessage | undefined>(),
   reachedEnd: ref(false),
 };
 const items = ref<PreviewPost[]>([]);
@@ -52,7 +55,7 @@ onMounted(() => {
         }
         items.value = items.value.concat(res);
       } catch (e: unknown) {
-        error.value = (e as ErrorMessage).message;
+        error.value = e as ErrorMessage;
         reachedEnd.value = true;
       }
 
@@ -71,12 +74,7 @@ onMounted(() => {
 
 watch(error, (newError) => {
   if (newError !== undefined) {
-    snackbar({
-      message: newError,
-      closeable: true,
-      queue: "error",
-      autoCloseDelay: 3000,
-    });
+    handleError(newError);
   }
 });
 
@@ -91,7 +89,7 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
 </script>
 
 <template>
-  <div ref="wallContainer" class="wallContainer">
+  <div ref="wall-container" class="wall-container">
     <MasonryWall
       ref="wall"
       :columnWidth="282"
@@ -125,8 +123,8 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
         </NCard>
       </template>
     </MasonryWall>
-    <div v-if="reachedEnd" class="reachedEnd">
-      <mdui-divider class="reachedEnd--divider" />
+    <div v-if="reachedEnd" class="reached-end">
+      <mdui-divider class="reached-end--divider" />
       <NText>
         {{ t("page.explore.reachEnd") }}
       </NText>
@@ -135,7 +133,7 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
 </template>
 
 <style scoped>
-.wallContainer {
+.wall-container {
   display: flex;
   flex-direction: column;
 
@@ -147,7 +145,7 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
   padding: 16px 24px;
 }
 
-.reachedEnd {
+.reached-end {
   width: 30%;
 
   align-self: center;
@@ -155,7 +153,7 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
   text-align: center;
 }
 
-.reachedEnd--divider {
+.reached-end--divider {
   margin: 12px 0;
 }
 </style>
