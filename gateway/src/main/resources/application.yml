@@ -14,7 +14,7 @@ spring:
   cloud:
     consul:
       host: consul
-      post: 8500
+      port: 8500
 
 sa-token:
   token-name: nerabbs

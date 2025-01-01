@@ -32,7 +32,7 @@ spring:
   cloud:
     consul:
       host: consul
-      post: 8500
+      port: 8500
 
 grpc:
   server:
