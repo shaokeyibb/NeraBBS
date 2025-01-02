@@ -29,7 +29,7 @@ public final class UserEntity {
     @Column(nullable = false)
     @Getter
     @Setter
-    private long id;
+    private Long id;
 
     @Nullable
     @Email
@@ -57,7 +57,7 @@ public final class UserEntity {
 
     @NotNull
     public static UserEntity fromUserBasicRegistrationDto(@NotNull UserBasicRegistrationDto userBasicRegistrationDto) {
-        return new UserEntity(-1, userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), Date.from(Instant.now()), false);
+        return new UserEntity(null, userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), Date.from(Instant.now()), false);
     }
 
 }

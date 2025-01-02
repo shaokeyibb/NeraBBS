@@ -27,7 +27,7 @@ public class PostEntity {
     @Column(nullable = false)
     @Getter
     @Setter
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     @Getter
@@ -60,7 +60,7 @@ public class PostEntity {
 
     @NotNull
     public static PostEntity fromPostCreationBo(@NotNull PostCreationBo postCreationBo) {
-        return new PostEntity(-1, postCreationBo.userId(), postCreationBo.title(), postCreationBo.content(), Date.from(Instant.now()), false);
+        return new PostEntity(null, postCreationBo.userId(), postCreationBo.title(), postCreationBo.content(), Date.from(Instant.now()), false);
     }
 
 }

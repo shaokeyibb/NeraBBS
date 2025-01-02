@@ -30,7 +30,7 @@ public class WebauthnCredentialEntity {
     @Column(nullable = false)
     @Getter
     @Setter
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     @Getter
@@ -50,7 +50,7 @@ public class WebauthnCredentialEntity {
                                                                          PublicKeyCredentialCreationOptions request,
                                                                          RegistrationResult result) {
         return new WebauthnCredentialEntity(
-                -1,
+                null,
                 id,
                 CredentialRegistration.builder()
                         .userIdentity(request.getUser())
