@@ -1,33 +1,29 @@
 import useBackend from "./backend.ts";
-import type { ErrorMessage } from "../types/error-handling.ts";
+import {useSessionStore} from "../stores/session.ts";
+import useUser from "./user.ts";
+import {computed} from "vue";
 
 export default function useAuth() {
-  const { _signIn, _signUp, _signOut, _getUserInfo } = useBackend();
+  const { _signIn, _signUp, _signOut } = useBackend();
+  const sessionStore = useSessionStore();
+  const { refreshUserSession } = useUser();
 
   const signIn = async (email: string, password: string) => {
     await _signIn(email, password);
+    await refreshUserSession();
   };
 
   const signUp = async (email: string, password: string) => {
     await _signUp(email, password);
+    await refreshUserSession();
   };
 
   const signOut = async () => {
     await _signOut();
+    sessionStore.clearSession();
   };
 
-  const isLoggedIn = async () => {
-    try {
-      await _getUserInfo();
-      return true;
-    } catch (e) {
-      const err = e as ErrorMessage;
-      if (err.code == 401) {
-        return false;
-      }
-      throw e;
-    }
-  };
+  const isLoggedIn = computed(() => sessionStore.userInfo !== undefined);
 
   return {
     signIn,

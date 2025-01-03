@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import { useRoute, useRouter } from "vue-router";
-import { computed, provide, useTemplateRef, watchEffect } from "vue";
-import { useI18n } from "vue-i18n";
-import { computedAsync, useMediaQuery } from "@vueuse/core";
+import {NavigationDrawer} from "mdui";
+import NText from "../components/NText.vue";
+import {useRoute, useRouter} from "vue-router";
+import {computed, provide, useTemplateRef, watchEffect,} from "vue";
+import {useI18n} from "vue-i18n";
+import {useMediaQuery} from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
 import useLocale from "../hooks/locale.ts";
-import { availableLocales, getLocalizedLocalName } from "../utils/locale.ts";
-import { NavigationDrawer } from "mdui";
-import { layout } from "../utils/symbol.ts";
+import {availableLocales, getLocalizedLocalName} from "../utils/locale.ts";
+import {layout} from "../utils/symbol.ts";
 import useAuth from "../hooks/auth.ts";
-import useUser from "../hooks/user.ts";
+import {useSessionStore} from "../stores/session.ts";
+import {storeToRefs} from "pinia";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -17,8 +19,8 @@ const route = useRoute();
 
 const { theme, toggleTheme } = useTheme();
 const { locale, setLocale } = useLocale();
-const { isLoggedIn: _isLoggedIn } = useAuth();
-const { getUserProfile } = useUser();
+const { signOut, isLoggedIn } = useAuth();
+const { userProfile } = storeToRefs(useSessionStore());
 
 const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
@@ -40,7 +42,7 @@ const navigationItems = computed(() =>
 const navigationDrawer = useTemplateRef<NavigationDrawer>("navigationDrawer");
 
 watchEffect(() => {
-  if (route.matched.length === 1 && route.matched[0].name === route.name) {
+  if (route.matched.length === 1 && route.matched[0].name === "index") {
     router.replace({ name: "explore" });
   }
 });
@@ -55,8 +57,6 @@ provide(layout, l);
 
 const navigationBarHeight = (l.navigationBar?.height ?? 0) + "px";
 const topAppBarHeight = l.topAppBar.height + "px";
-
-const isLoggedIn = computedAsync(_isLoggedIn, false);
 </script>
 
 <template>
@@ -140,13 +140,19 @@ const isLoggedIn = computedAsync(_isLoggedIn, false);
       >
         <mdui-button-icon slot="end-icon" icon="search" />
       </mdui-text-field>
-      <template v-if="isLoggedIn">
-        <router-link :to="{ name: 'settings' }">
-          <mdui-avatar :src="getUserProfile().value?.avatarPath" />
-        </router-link>
-      </template>
-      <template v-else>
-        <mdui-tooltip v-if="isLargeScreen" :content="t('signIn')">
+      <template v-if="isLargeScreen">
+        <mdui-dropdown v-if="isLoggedIn">
+          <mdui-avatar :src="userProfile?.avatarPath" slot="trigger" />
+          <mdui-menu>
+            <mdui-menu-item @click="router.push('settings')">
+              <n-text>{{ t("settings") }}</n-text>
+            </mdui-menu-item>
+            <mdui-menu-item @click="signOut()">
+              <n-text>{{ t("sign_out") }}</n-text>
+            </mdui-menu-item>
+          </mdui-menu>
+        </mdui-dropdown>
+        <mdui-tooltip v-else :content="t('sign_in')">
           <router-link :to="{ name: 'signin' }">
             <mdui-button-icon>
               <mdui-icon name="login" />
@@ -155,7 +161,7 @@ const isLoggedIn = computedAsync(_isLoggedIn, false);
         </mdui-tooltip>
       </template>
       <mdui-button-icon
-        v-if="!isLargeScreen"
+        v-else
         icon="menu"
         @click="navigationDrawer!.open = true"
       />
@@ -197,13 +203,31 @@ const isLoggedIn = computedAsync(_isLoggedIn, false);
       </mdui-list>
       <mdui-divider />
       <mdui-list>
-        <mdui-list-item icon="login" v-if="isLoggedIn"
-          >{{ t("signIn") }}
-        </mdui-list-item>
-        <mdui-list-item icon="login" v-else>
-          {{ getUserProfile().value?.username }}
-          <mdui-avatar slot="icon" :src="getUserProfile().value?.avatarPath" />
-        </mdui-list-item>
+        <mdui-collapse>
+          <mdui-collapse-item>
+            <template v-if="isLoggedIn">
+              <mdui-list-item icon="login" slot="header">
+                {{ userProfile?.username }}
+                <mdui-avatar slot="icon" :src="userProfile?.avatarPath" />
+              </mdui-list-item>
+              <div style="margin-left: 2.5rem">
+                <mdui-list-item @click="router.push('settings')">
+                  <n-text>{{ t("settings") }}</n-text>
+                </mdui-list-item>
+                <mdui-list-item @click="signOut()">
+                  <n-text>{{ t("sign_out") }}</n-text>
+                </mdui-list-item>
+              </div>
+            </template>
+            <mdui-list-item
+              icon="login"
+              slot="header"
+              v-else
+              @click="router.push('signin')"
+              >{{ t("sign_in") }}
+            </mdui-list-item>
+          </mdui-collapse-item>
+        </mdui-collapse>
       </mdui-list>
     </mdui-navigation-drawer>
     <mdui-layout-main>

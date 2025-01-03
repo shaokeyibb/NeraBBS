@@ -1,17 +1,12 @@
-import { createFetch } from "@vueuse/core";
-import { apiBaseUrl } from "../config.ts";
+import {createFetch} from "@vueuse/core";
+import {apiBaseUrl} from "../config.ts";
+import type {Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
+import type {ErrorMessage} from "../types/error-handling.ts";
 import type {
-  Post,
-  PreviewPost,
-  UserInfo,
-  UserProfile,
-} from "../types/backend.ts";
-import type { ErrorMessage } from "../types/error-handling.ts";
-import type {
-  AuthenticationPublicKeyCredential,
-  CredentialCreationOptionsJSON,
-  CredentialRequestOptionsJSON,
-  RegistrationPublicKeyCredential,
+    AuthenticationPublicKeyCredential,
+    CredentialCreationOptionsJSON,
+    CredentialRequestOptionsJSON,
+    RegistrationPublicKeyCredential,
 } from "@github/webauthn-json/browser-ponyfill";
 
 const $fetch = createFetch({
@@ -102,7 +97,7 @@ export default function useBackend() {
     registrationPublicKeyCredential: RegistrationPublicKeyCredential,
   ) => {
     const res = await $fetch("authorization/passkey/registration")
-      .post(registrationPublicKeyCredential)
+      .post(registrationPublicKeyCredential, "json")
       .json();
     if (res.error.value) {
       throw res.error.value as ErrorMessage;
@@ -123,7 +118,7 @@ export default function useBackend() {
     authenticationPublicKeyCredential: AuthenticationPublicKeyCredential,
   ) => {
     const res = await $fetch("authorization/passkey/assertion")
-      .post(authenticationPublicKeyCredential)
+      .post(authenticationPublicKeyCredential, "json")
       .json();
     if (res.error.value) {
       throw res.error.value as ErrorMessage;

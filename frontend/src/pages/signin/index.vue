@@ -76,13 +76,13 @@ const onContinueWith = async (e: MouseEvent) => {
 
   try {
     switch (action) {
-      case "continue_with_passkey":
+      case "passkey":
         await onContinueWithPasskey();
         break;
     }
     await router.push({ name: "index" });
   } catch (e) {
-    handleError(e as ErrorMessage);
+    handleError(e as ErrorMessage, action);
   } finally {
     loading.value = false;
     button.loading = false;
@@ -93,9 +93,10 @@ const onContinueWithPasskey = async () => {
   await validatePasskeyCredential();
 };
 
-onMounted(async () => {
-  if (!(await isLoggedIn())) return;
-  await router.push({ name: "index" });
+onMounted(() => {
+  if (isLoggedIn) {
+    router.push({ name: "index" });
+  }
 });
 </script>
 
@@ -104,7 +105,7 @@ onMounted(async () => {
     <div class="container">
       <div class="title">
         <n-text scale="display" size="large"
-          >{{ t("page.signIn.welcome") }}
+          >{{ t("page.sign_in.welcome") }}
         </n-text>
       </div>
       <div class="form">
@@ -141,7 +142,7 @@ onMounted(async () => {
             type="button"
             variant="filled"
             @click="onSubmit"
-            >{{ t("signIn") }}
+            >{{ t("sign_in") }}
           </mdui-button>
           <mdui-button
             :disabled="loading"
@@ -149,17 +150,17 @@ onMounted(async () => {
             type="button"
             variant="tonal"
             @click="onSubmit"
-            >{{ t("signUp") }}
+            >{{ t("sign_up") }}
           </mdui-button>
         </div>
       </div>
       <div class="sign-in-with">
-        <n-text>{{ t("page.signIn.continue_with") }}</n-text>
+        <n-text>{{ t("page.sign_in.continue_with") }}</n-text>
         <mdui-divider class="divider" />
         <div class="sign-in-with--actions">
           <mdui-button
             :disabled="loading || !isSupportedPasskey"
-            data-action="continue_with_passkey"
+            data-action="passkey"
             type="button"
             variant="tonal"
             @click="onContinueWith"
