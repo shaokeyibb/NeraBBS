@@ -2,12 +2,14 @@
 import { useRoute, useRouter } from "vue-router";
 import { computed, provide, useTemplateRef, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
-import { useMediaQuery } from "@vueuse/core";
+import { computedAsync, useMediaQuery } from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
 import useLocale from "../hooks/locale.ts";
 import { availableLocales, getLocalizedLocalName } from "../utils/locale.ts";
 import { NavigationDrawer } from "mdui";
 import { layout } from "../utils/symbol.ts";
+import useAuth from "../hooks/auth.ts";
+import useUser from "../hooks/user.ts";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -15,6 +17,8 @@ const route = useRoute();
 
 const { theme, toggleTheme } = useTheme();
 const { locale, setLocale } = useLocale();
+const { isLoggedIn: _isLoggedIn } = useAuth();
+const { getUserProfile } = useUser();
 
 const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
@@ -51,6 +55,8 @@ provide(layout, l);
 
 const navigationBarHeight = (l.navigationBar?.height ?? 0) + "px";
 const topAppBarHeight = l.topAppBar.height + "px";
+
+const isLoggedIn = computedAsync(_isLoggedIn, false);
 </script>
 
 <template>
@@ -134,13 +140,20 @@ const topAppBarHeight = l.topAppBar.height + "px";
       >
         <mdui-button-icon slot="end-icon" icon="search" />
       </mdui-text-field>
-      <mdui-tooltip v-if="isLargeScreen" :content="t('signIn')">
-        <router-link :to="{ name: 'signin' }">
-          <mdui-button-icon>
-            <mdui-icon name="login" />
-          </mdui-button-icon>
+      <template v-if="isLoggedIn">
+        <router-link :to="{ name: 'settings' }">
+          <mdui-avatar :src="getUserProfile().value?.avatarPath" />
         </router-link>
-      </mdui-tooltip>
+      </template>
+      <template v-else>
+        <mdui-tooltip v-if="isLargeScreen" :content="t('signIn')">
+          <router-link :to="{ name: 'signin' }">
+            <mdui-button-icon>
+              <mdui-icon name="login" />
+            </mdui-button-icon>
+          </router-link>
+        </mdui-tooltip>
+      </template>
       <mdui-button-icon
         v-if="!isLargeScreen"
         icon="menu"
@@ -184,7 +197,13 @@ const topAppBarHeight = l.topAppBar.height + "px";
       </mdui-list>
       <mdui-divider />
       <mdui-list>
-        <mdui-list-item icon="login">{{ t("signIn") }}</mdui-list-item>
+        <mdui-list-item icon="login" v-if="isLoggedIn"
+          >{{ t("signIn") }}
+        </mdui-list-item>
+        <mdui-list-item icon="login" v-else>
+          {{ getUserProfile().value?.username }}
+          <mdui-avatar slot="icon" :src="getUserProfile().value?.avatarPath" />
+        </mdui-list-item>
       </mdui-list>
     </mdui-navigation-drawer>
     <mdui-layout-main>
