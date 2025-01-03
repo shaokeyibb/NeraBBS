@@ -8,14 +8,14 @@ import useErrorHandling from "../../hooks/error-handling.ts";
 import type { ErrorMessage } from "../../types/error-handling.ts";
 import useAuth from "../../hooks/auth.ts";
 import { useRouter } from "vue-router";
-import { ref, useTemplateRef } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 import { isSupported as _isSupportedPasskey } from "../../utils/passkey.ts";
 import { computedAsync } from "@vueuse/core";
 import usePasskey from "../../hooks/passkey.ts";
 
 const { t } = useI18n();
 const { handle: handleError } = useErrorHandling();
-const { signIn, signUp } = useAuth();
+const { signIn, signUp, isLoggedIn } = useAuth();
 const { validatePasskeyCredential } = usePasskey();
 const router = useRouter();
 
@@ -92,6 +92,11 @@ const onContinueWith = async (e: MouseEvent) => {
 const onContinueWithPasskey = async () => {
   await validatePasskeyCredential();
 };
+
+onMounted(async () => {
+  if (!(await isLoggedIn())) return;
+  await router.push({ name: "index" });
+});
 </script>
 
 <template>
