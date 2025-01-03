@@ -1,10 +1,11 @@
 import useBackend from "./backend.ts";
 import {
-  create,
-  get,
-  parseCreationOptionsFromJSON,
-  parseRequestOptionsFromJSON,
+    create,
+    get,
+    parseCreationOptionsFromJSON,
+    parseRequestOptionsFromJSON,
 } from "@github/webauthn-json/browser-ponyfill";
+import useUser from "./user.ts";
 
 export default function usePasskey() {
   const {
@@ -13,6 +14,8 @@ export default function usePasskey() {
     _getPasskeyAssertionOptions,
     _verifyPasskeyAssertion,
   } = useBackend();
+
+  const { refreshUserSession } = useUser();
 
   const createPasskeyCredential = async () => {
     const options = parseCreationOptionsFromJSON(
@@ -28,6 +31,7 @@ export default function usePasskey() {
     );
     const resp = await get(options);
     await _verifyPasskeyAssertion(resp);
+    await refreshUserSession();
   };
 
   return {

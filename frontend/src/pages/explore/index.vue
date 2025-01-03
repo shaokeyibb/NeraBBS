@@ -4,20 +4,13 @@ import NCard from "../../components/NCard.vue";
 import NCardHeader from "../../components/NCardHeader.vue";
 import NCardMain from "../../components/NCardMain.vue";
 
-import {
-  inject,
-  onMounted,
-  onUnmounted,
-  ref,
-  useTemplateRef,
-  watch,
-} from "vue";
-import type { PreviewPost } from "../../types/backend.ts";
-import { useTimeAgoLocalized } from "../../utils/time.ts";
-import { useInfiniteScroll } from "@vueuse/core";
-import { layout } from "../../utils/symbol.ts";
-import { useI18n } from "vue-i18n";
-import type { ErrorMessage } from "../../types/error-handling.ts";
+import {inject, onMounted, onUnmounted, ref, useTemplateRef, watch,} from "vue";
+import type {PreviewPost} from "../../types/backend.ts";
+import {useTimeAgoLocalized} from "../../utils/time.ts";
+import {computedAsync, useInfiniteScroll} from "@vueuse/core";
+import {layout} from "../../utils/symbol.ts";
+import {useI18n} from "vue-i18n";
+import type {ErrorMessage} from "../../types/error-handling.ts";
 import NText from "../../components/NText.vue";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import usePost from "../../hooks/post.ts";
@@ -103,17 +96,21 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
           <template #header>
             <NCardHeader
               :header="
-                getUserProfile(item.posterID).value?.username ?? t('loading')
+                computedAsync(() => getUserProfile(item.posterID)).value
+                  ?.username ?? t('loading')
               "
               :subhead="useTimeAgoLocalized(item.createAt).value"
             >
               <template #monogram>
                 <mdui-avatar
-                  :src="getUserProfile(item.posterID).value?.avatarPath"
+                  :src="
+                    computedAsync(() => getUserProfile(item.posterID)).value
+                      ?.avatarPath
+                  "
                 >
                   {{
-                    (getUserProfile(item.posterID).value?.username ?? "")[0] ??
-                    ""
+                    (computedAsync(() => getUserProfile(item.posterID)).value
+                      ?.username ?? "")[0] ?? ""
                   }}
                 </mdui-avatar>
               </template>
@@ -126,7 +123,7 @@ const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
     <div v-if="reachedEnd" class="reached-end">
       <mdui-divider class="reached-end--divider" />
       <NText>
-        {{ t("page.explore.reachEnd") }}
+        {{ t("page.explore.reached_end") }}
       </NText>
     </div>
   </div>

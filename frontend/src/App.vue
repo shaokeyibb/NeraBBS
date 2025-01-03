@@ -1,18 +1,22 @@
 <script lang="ts" setup>
-import { useHead } from "@unhead/vue";
-import { useI18n } from "vue-i18n";
+import {useHead} from "@unhead/vue";
+import {useI18n} from "vue-i18n";
 import useLocale from "./hooks/locale.ts";
 import useTheme from "./hooks/theme.ts";
-import { useRoute } from "vue-router";
-import { computed } from "vue";
+import {useRoute} from "vue-router";
+import {computed} from "vue";
+import useUser from "./hooks/user.ts";
 
 const { t } = useI18n();
 const { locale, syncLocale } = useLocale();
 const { syncTheme } = useTheme();
 const route = useRoute();
+const { refreshUserSession } = useUser();
 
 syncLocale();
 syncTheme();
+
+refreshUserSession();
 
 const titleTemplate = computed(
   () =>

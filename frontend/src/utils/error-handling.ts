@@ -1,11 +1,14 @@
-import type { ErrorMap, ErrorMessage } from "../types/error-handling.ts";
+import type {ErrorMap, ErrorMessage} from "../types/error-handling.ts";
 
 export const errorMap: ErrorMap = {
   sign_in: {
-    "401": "error.signIn.unauthorized",
+    "401": "error.sign_in.unauthorized",
   },
   sign_up: {
-    "403": "error.signUp.forbidden",
+    "403": "error.sign_up.forbidden",
+  },
+  passkey: {
+    "401": "error.passkey.unauthorized",
   },
   default: {
     "400": "error.bad_request",
