@@ -18,7 +18,7 @@ public class RoutesConfiguration {
                 .route("service-oss", r -> r.path("/api/storages/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://nerabbs-service-oss"))
-                .route("service-user-profile", r -> r.path("/api/users/*/profile/**")
+                .route("service-user-profile", r -> r.path("/api/users/profile/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://nerabbs-service-user-profile"))
                 .route("service-user", r -> r.path("/api/users/**")
