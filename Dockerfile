@@ -1,10 +1,26 @@
+FROM node:22-slim AS build-frontend
+LABEL org.opencontainers.image.authors="HikariLan"
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+WORKDIR /build/frontend
+COPY ./frontend/ .
+
+RUN --mount=type=cache,id=build-frontend,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
+
 FROM gradle:8-jdk21 AS build
 LABEL org.opencontainers.image.authors="HikariLan"
+
+ENV GRADLE_USER_HOME="/gradle"
+ENV PATH="$GRADLE_USER_HOME:$PATH"
 
 WORKDIR /build
 COPY . .
 
-RUN gradle build --no-daemon --parallel
+RUN --mount=type=cache,id=build,target=/gradle/cache gradle build -x :frontend:build --no-daemon --parallel
 
 FROM node:22 AS frontend
 LABEL org.opencontainers.image.authors="HikariLan"
@@ -13,7 +29,7 @@ EXPOSE 3000
 
 WORKDIR /app
 
-COPY --from=build /build/frontend/dist .
+COPY --from=build-frontend /build/frontend/dist .
 
 RUN npm install --global serve
 

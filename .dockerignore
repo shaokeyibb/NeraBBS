@@ -44,10 +44,9 @@ bin/
 .gitignore
 data/
 
-*/node_modules/
-*/.frontend-gradle-plugin/
-*/.nuxt/
-*/.output/
-*/node
+**/node_modules/
+**/.frontend-gradle-plugin/
+**/node
+**/dist
 
 **/*.md

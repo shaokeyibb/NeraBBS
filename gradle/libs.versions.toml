@@ -51,4 +51,4 @@ minio = { module = "io.minio:minio", version.ref = "minio" }
 spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
-frontend-gradle = { id = "org.siouan.frontend-jdk17", version.ref = "frontendGradlePlugin" }
+frontend-gradle = { id = "org.siouan.frontend-jdk21", version.ref = "frontendGradlePlugin" }
