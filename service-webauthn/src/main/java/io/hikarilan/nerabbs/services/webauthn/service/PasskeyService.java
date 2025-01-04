@@ -8,6 +8,7 @@ import com.yubico.webauthn.exception.AssertionFailedException;
 import com.yubico.webauthn.exception.RegistrationFailedException;
 import io.hikarilan.nerabbs.lib.services.user.grpc.BasicUserInfoRequest;
 import io.hikarilan.nerabbs.lib.services.user.grpc.UserInfoGrpc;
+import io.hikarilan.nerabbs.services.webauthn.data.vo.PasskeyVo;
 import io.hikarilan.nerabbs.services.webauthn.database.entity.WebauthnCredentialEntity;
 import io.hikarilan.nerabbs.services.webauthn.database.repository.WebauthnCredentialRepository;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -110,5 +114,16 @@ public class PasskeyService {
         webauthnCredentialRepository.saveAndFlush(entity);
     }
 
+    public Optional<PasskeyVo> getPasskey(long id) {
+        return webauthnCredentialRepository.findById(id).map(PasskeyVo::fromWebauthnCredentialEntity);
+    }
+
+    public List<PasskeyVo> getPasskeys(long userID) {
+        return webauthnCredentialRepository.findAllByUserID(userID).stream().map(PasskeyVo::fromWebauthnCredentialEntity).toList();
+    }
+
+    public void deletePasskey(long passkeyID) {
+        webauthnCredentialRepository.findById(passkeyID).ifPresent(webauthnCredentialRepository::delete);
+    }
 
 }

@@ -15,6 +15,7 @@ import org.hibernate.annotations.Type;
 
 import java.time.Clock;
 import java.util.TreeSet;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -62,6 +63,7 @@ public class WebauthnCredentialEntity {
                                 .publicKeyCose(result.getPublicKeyCose())
                                 .signatureCount(result.getSignatureCount())
                                 .build())
+                        .credentialNickname(UUID.randomUUID().toString())
                         .build(),
                 false
         );
