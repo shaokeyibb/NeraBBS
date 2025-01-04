@@ -13,29 +13,52 @@ export default function usePasskey() {
     _verifyPasskeyRegistration,
     _getPasskeyAssertionOptions,
     _verifyPasskeyAssertion,
+    _getPasskeys,
+    _removePasskey,
   } = useBackend();
 
   const { refreshUserSession } = useUser();
 
+  const getCreationOptions = async () =>
+    parseCreationOptionsFromJSON(await _getPasskeyRegistrationOptions());
+
+  const getRequestOptions = async () =>
+    parseRequestOptionsFromJSON(await _getPasskeyAssertionOptions());
+
   const createPasskeyCredential = async () => {
-    const options = parseCreationOptionsFromJSON(
-      await _getPasskeyRegistrationOptions(),
-    );
+    const options = await getCreationOptions();
     const resp = await create(options);
     await _verifyPasskeyRegistration(resp);
   };
 
-  const validatePasskeyCredential = async () => {
-    const options = parseRequestOptionsFromJSON(
-      await _getPasskeyAssertionOptions(),
-    );
+  const validatePasskeyCredential = async (
+    conditional?: boolean,
+    hooks?: {
+      beforeVerifyAssertion?: () => void;
+    },
+  ) => {
+    const options = await getRequestOptions();
+
+    if (conditional) {
+      options.mediation = "conditional";
+    }
+
     const resp = await get(options);
+    if (hooks?.beforeVerifyAssertion) {
+      hooks.beforeVerifyAssertion();
+    }
     await _verifyPasskeyAssertion(resp);
     await refreshUserSession();
   };
 
+  const getPasskeys = async () => await _getPasskeys();
+
+  const removePasskey = async (id: number) => await _removePasskey(id);
+
   return {
     createPasskeyCredential,
     validatePasskeyCredential,
+    getPasskeys,
+    removePasskey,
   };
 }

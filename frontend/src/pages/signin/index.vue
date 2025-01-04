@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import NText from "../../components/NText.vue";
-import type { TextField } from "mdui/components/text-field.js";
-import type { Button } from "mdui/components/button.js";
+import type {TextField} from "mdui/components/text-field.js";
+import type {Button} from "mdui/components/button.js";
 
-import { useI18n } from "vue-i18n";
+import {useI18n} from "vue-i18n";
 import useErrorHandling from "../../hooks/error-handling.ts";
-import type { ErrorMessage } from "../../types/error-handling.ts";
+import type {ErrorMessage} from "../../types/error-handling.ts";
 import useAuth from "../../hooks/auth.ts";
-import { useRouter } from "vue-router";
-import { onMounted, ref, useTemplateRef } from "vue";
-import { isSupported as _isSupportedPasskey } from "../../utils/passkey.ts";
-import { computedAsync } from "@vueuse/core";
+import {useRouter} from "vue-router";
+import {onMounted, ref, useTemplateRef} from "vue";
+import {isSupported as _isSupportedPasskey} from "../../utils/passkey.ts";
+import {computedAsync} from "@vueuse/core";
 import usePasskey from "../../hooks/passkey.ts";
 
 const { t } = useI18n();
@@ -21,8 +21,10 @@ const router = useRouter();
 
 const emailEl = useTemplateRef<TextField>("emailEl");
 const passwordEl = useTemplateRef<TextField>("passwordEl");
+const passkeyEl = useTemplateRef<Button>("passkeyEl");
 
 const loading = ref(false);
+const isPasskeyConditionalUIRunning = ref(false);
 const isSupportedPasskey = computedAsync(_isSupportedPasskey, false);
 
 const onSubmit = async (e: MouseEvent) => {
@@ -93,10 +95,37 @@ const onContinueWithPasskey = async () => {
   await validatePasskeyCredential();
 };
 
-onMounted(() => {
-  if (isLoggedIn) {
-    router.push({ name: "index" });
+const activatePasskeyConditionalUI = async () => {
+  if (isSupportedPasskey.value) {
+    return;
   }
+
+  isPasskeyConditionalUIRunning.value = true;
+
+  try {
+    await validatePasskeyCredential(true, {
+      beforeVerifyAssertion: () => {
+        loading.value = true;
+        passkeyEl.value!.loading = true;
+      },
+    });
+    await router.push({ name: "index" });
+  } catch (e) {
+    handleError(e as ErrorMessage, "passkey");
+  } finally {
+    isPasskeyConditionalUIRunning.value = false;
+    loading.value = false;
+    if (passkeyEl.value) {
+      passkeyEl.value.loading = false;
+    }
+  }
+};
+
+onMounted(async () => {
+  if (isLoggedIn.value) {
+    await router.push({ name: "index" });
+  }
+  await activatePasskeyConditionalUI();
 });
 </script>
 
@@ -112,7 +141,7 @@ onMounted(() => {
         <mdui-text-field
           ref="emailEl"
           :label="t('email')"
-          autocomplete="email"
+          autocomplete="email webauthn"
           enterkeyhint="next"
           error-icon="error"
           icon="email"
@@ -159,7 +188,10 @@ onMounted(() => {
         <mdui-divider class="divider" />
         <div class="sign-in-with--actions">
           <mdui-button
-            :disabled="loading || !isSupportedPasskey"
+            ref="passkeyEl"
+            :disabled="
+              loading || !isSupportedPasskey || isPasskeyConditionalUIRunning
+            "
             data-action="passkey"
             type="button"
             variant="tonal"

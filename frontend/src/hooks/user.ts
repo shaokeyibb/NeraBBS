@@ -42,9 +42,7 @@ export default function useUser() {
     return await _getUserInfoMemorized(id);
   };
 
-  const refreshUserSession = async () => {
-    await getUserInfo();
-  };
+  const refreshUserSession = async () => await getUserInfo();
 
   return {
     getUserInfo,

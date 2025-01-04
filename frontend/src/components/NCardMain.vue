@@ -23,11 +23,11 @@ const { default: _default, actions } = defineSlots<{
         >{{ subhead }}
       </NText>
     </div>
-    <div v-if="supportingText || _default" class="card--content--supporting">
-      <NText v-if="supportingText" class="supporting" scale="body"
-        >{{ supportingText }}
-      </NText>
-      <slot v-else-if="_default" name="default" />
+    <div v-if="supportingText" class="card--content--supporting">
+      <NText class="supporting" scale="body">{{ supportingText }} </NText>
+    </div>
+    <div v-else-if="_default">
+      <slot name="default" />
     </div>
     <div v-if="actions" class="card--content--actions">
       <slot name="actions" />

@@ -28,3 +28,11 @@ export type UserProfilePutReq = Omit<UserProfile, "avatarPath"> & {
 };
 
 export type UserProfilePatchReq = Partial<UserProfilePutReq>;
+
+export type Passkey = {
+  id: number;
+  userId: number;
+  nickname: string;
+  signatureCount: number;
+  createAt: string;
+};

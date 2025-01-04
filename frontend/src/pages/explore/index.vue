@@ -4,8 +4,9 @@ import NCard from "../../components/NCard.vue";
 import NCardHeader from "../../components/NCardHeader.vue";
 import NCardMain from "../../components/NCardMain.vue";
 
-import {inject, onMounted, onUnmounted, ref, useTemplateRef, watch,} from "vue";
-import type {PreviewPost} from "../../types/backend.ts";
+import type {Ref} from "vue";
+import {computed, inject, onMounted, onUnmounted, ref, shallowRef, toValue, useTemplateRef, watch,} from "vue";
+import type {PreviewPost, UserProfile} from "../../types/backend.ts";
 import {useTimeAgoLocalized} from "../../utils/time.ts";
 import {computedAsync, useInfiniteScroll} from "@vueuse/core";
 import {layout} from "../../utils/symbol.ts";
@@ -15,6 +16,7 @@ import NText from "../../components/NText.vue";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import usePost from "../../hooks/post.ts";
 import useUser from "../../hooks/user.ts";
+import type {Layout} from "../../types/layout.ts";
 
 const { t } = useI18n();
 const { getPreviewPost } = usePost();
@@ -29,7 +31,7 @@ const { page, loading, error, reachedEnd } = {
   error: ref<ErrorMessage | undefined>(),
   reachedEnd: ref(false),
 };
-const items = ref<PreviewPost[]>([]);
+const items = shallowRef<PreviewPost[]>([]);
 
 let infiniteScroll: ReturnType<typeof useInfiniteScroll>;
 
@@ -76,41 +78,56 @@ onUnmounted(() => {
   infiniteScroll.reset();
 });
 
-const l = inject(layout);
+const l = inject(layout) as Layout;
 
-const topAppBarHeight = (l?.topAppBar?.height ?? 0) + "px";
+const topAppBarHeight = computed(
+  () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
+);
+
+l.updateLayout({
+  fab: {
+    icon: "add",
+    onClick: () => {},
+  },
+});
+
+const cachedUserProfile: {
+  [key: number]: Ref<UserProfile | undefined>;
+} = {};
+
+const getUserProfileCached = (id: number) => {
+  if (cachedUserProfile[id] === undefined) {
+    cachedUserProfile[id] = computedAsync(async () => await getUserProfile(id));
+  }
+  return cachedUserProfile[id];
+};
 </script>
 
 <template>
   <div ref="wall-container" class="wall-container">
     <MasonryWall
-      ref="wall"
       :columnWidth="282"
       :gap="8"
       :items="items"
       :scroll-container="wallContainer"
-      class="wall"
     >
       <template #default="{ item }">
         <NCard clickable>
           <template #header>
             <NCardHeader
               :header="
-                computedAsync(() => getUserProfile(item.posterID)).value
-                  ?.username ?? t('loading')
+                getUserProfileCached(item.posterID).value?.username ??
+                t('loading')
               "
               :subhead="useTimeAgoLocalized(item.createAt).value"
             >
               <template #monogram>
                 <mdui-avatar
-                  :src="
-                    computedAsync(() => getUserProfile(item.posterID)).value
-                      ?.avatarPath
-                  "
+                  :src="getUserProfileCached(item.posterID).value?.avatarPath"
                 >
                   {{
-                    (computedAsync(() => getUserProfile(item.posterID)).value
-                      ?.username ?? "")[0] ?? ""
+                    (getUserProfileCached(item.posterID).value?.username ??
+                      "")[0] ?? ""
                   }}
                 </mdui-avatar>
               </template>

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import {NavigationDrawer} from "mdui";
 import NText from "../components/NText.vue";
-import {useRoute, useRouter} from "vue-router";
-import {computed, provide, useTemplateRef, watchEffect,} from "vue";
+import {type RouteRecordNameGeneric, useRoute, useRouter} from "vue-router";
+import {computed, provide, ref, toValue, useTemplateRef, watch, watchEffect,} from "vue";
 import {useI18n} from "vue-i18n";
 import {useMediaQuery} from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
@@ -12,6 +12,7 @@ import {layout} from "../utils/symbol.ts";
 import useAuth from "../hooks/auth.ts";
 import {useSessionStore} from "../stores/session.ts";
 import {storeToRefs} from "pinia";
+import type {Fab, Layout} from "../types/layout.ts";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -19,7 +20,7 @@ const route = useRoute();
 
 const { theme, toggleTheme } = useTheme();
 const { locale, setLocale } = useLocale();
-const { signOut, isLoggedIn } = useAuth();
+const { signOut: _signOut, isLoggedIn } = useAuth();
 const { userProfile } = storeToRefs(useSessionStore());
 
 const isLargeScreen = useMediaQuery("(min-width: 1024px)");
@@ -47,16 +48,51 @@ watchEffect(() => {
   }
 });
 
-const l = {
-  navigationRail: isLargeScreen.value ? { width: 80 } : undefined,
-  navigationBar: !isLargeScreen.value ? { height: 80 } : undefined,
+const cachedLayout: Record<
+  RouteRecordNameGeneric & (string | symbol),
+  Parameters<Layout["updateLayout"]>[0]
+> = {};
+
+const fab = ref<Fab>();
+const l: Layout = {
+  isLargeScreen,
+  navigationRail: computed(() =>
+    isLargeScreen.value ? { width: 80 } : undefined,
+  ),
+  navigationBar: computed(() =>
+    !isLargeScreen.value ? { height: 80 } : undefined,
+  ),
   topAppBar: { height: 64 },
+  updateLayout: (data) => {
+    cachedLayout[route.name!] = data;
+    updateLayout0(data);
+  },
 };
+
+const updateLayout0 = (data: Parameters<Layout["updateLayout"]>[0]) => {
+  fab.value = data.fab;
+};
+
+watch(
+  () => route.name!,
+  (newName) => {
+    updateLayout0(cachedLayout[newName] ?? {});
+  },
+);
 
 provide(layout, l);
 
-const navigationBarHeight = (l.navigationBar?.height ?? 0) + "px";
-const topAppBarHeight = l.topAppBar.height + "px";
+const navigationBarHeight = computed(
+  () => (toValue(l.navigationBar)?.height ?? 0) + "px",
+);
+const topAppBarHeight = computed(
+  () => (toValue(l.topAppBar)?.height ?? 0) + "px",
+);
+
+const signOut = async () => {
+  await _signOut();
+  await router.push({ name: "index" });
+};
 </script>
 
 <template>
@@ -67,7 +103,12 @@ const topAppBarHeight = l.topAppBar.height + "px";
       alignment="center"
       @change="router.replace({ name: $event.target.value })"
     >
-      <mdui-fab slot="top" icon="add--outlined"></mdui-fab>
+      <mdui-fab
+        slot="top"
+        v-if="fab !== undefined"
+        :icon="fab.icon"
+        @click="fab.onClick"
+      />
       <mdui-navigation-rail-item
         v-for="item in navigationItems"
         :key="item.name"
@@ -232,7 +273,12 @@ const topAppBarHeight = l.topAppBar.height + "px";
     </mdui-navigation-drawer>
     <mdui-layout-main>
       <RouterView />
-      <mdui-fab v-if="!isLargeScreen" class="fab" icon="add" />
+      <mdui-fab
+        v-if="fab !== undefined && !isLargeScreen"
+        class="fab"
+        :icon="fab.icon"
+        @click="fab.onClick"
+      />
     </mdui-layout-main>
   </mdui-layout>
 </template>

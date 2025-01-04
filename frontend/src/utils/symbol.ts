@@ -1,15 +1,6 @@
-import type { InjectionKey } from "vue";
+import type {InjectionKey} from "vue";
+import type {Layout} from "../types/layout.ts";
 
 export const isInNCard = Symbol() as InjectionKey<boolean>;
 
-export const layout = Symbol() as InjectionKey<{
-  navigationRail?: {
-    width: number;
-  };
-  navigationBar?: {
-    height: number;
-  };
-  topAppBar?: {
-    height: number;
-  };
-}>;
+export const layout = Symbol() as InjectionKey<Layout>;

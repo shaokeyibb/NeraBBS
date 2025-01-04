@@ -1,6 +1,6 @@
-import type { RouteRecordRaw } from "vue-router";
-import { createRouter, createWebHashHistory } from "vue-router";
-import type { PageDecl } from "../types/route.ts";
+import type {RouteRecordRaw} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
+import type {PageDecl} from "../types/route.ts";
 
 const buildRoutes = () => {
   const pages = import.meta.glob<PageDecl>("../pages/**/page.ts", {
@@ -8,7 +8,7 @@ const buildRoutes = () => {
     import: "default",
   });
 
-  const components = import.meta.glob("../pages/**/*.vue");
+  const components = import.meta.glob("../pages/**/index.vue");
 
   const unresolvedRoutes = Object.keys(pages)
     .map((_path) => {

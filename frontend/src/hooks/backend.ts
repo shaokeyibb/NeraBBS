@@ -1,6 +1,5 @@
-import {createFetch} from "@vueuse/core";
 import {apiBaseUrl} from "../config.ts";
-import type {Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
+import type {Passkey, Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
 import type {ErrorMessage} from "../types/error-handling.ts";
 import type {
     AuthenticationPublicKeyCredential,
@@ -9,120 +8,161 @@ import type {
     RegistrationPublicKeyCredential,
 } from "@github/webauthn-json/browser-ponyfill";
 
-const $fetch = createFetch({
-  baseUrl: apiBaseUrl,
-  options: {
-    onFetchError: (ctx) => {
-      ctx.error = {
-        code: ctx.response?.status ?? ctx.error.code ?? -1,
-        message: ctx.data?.message ?? ctx.error.message ?? "Internal error",
-      } as ErrorMessage;
+const $fetch = async <T>(
+  options:
+    | {
+        path: string;
+        method?: "GET";
+        data?: Record<string, string | number | undefined>;
+        requestOptions?: RequestInit;
+      }
+    | {
+        path: string;
+        method: "POST" | "PUT" | "PATCH" | "DELETE";
+        data?: object;
+        requestOptions?: RequestInit;
+      }
+    | string,
+) => {
+  const {
+    path,
+    method = "GET",
+    data = undefined,
+    requestOptions = {},
+  } = typeof options === "string" ? { path: options } : options;
 
-      return ctx;
-    },
-  },
-});
+  const url = new URL(`${window.location.origin}${apiBaseUrl}/${path}`);
+
+  if (method === "GET" && data !== undefined) {
+    const _data = data as Record<string, string | number | undefined>;
+    for (const k in _data) {
+      const v = _data[k];
+      if (v !== undefined) url.searchParams.append(k, v.toString());
+    }
+  }
+
+  let res: Response;
+
+  try {
+    res = await fetch(url.toString(), {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:
+        method === "GET" || data === undefined
+          ? undefined
+          : JSON.stringify(data),
+      ...requestOptions,
+    });
+  } catch {
+    throw {
+      code: -1,
+      message: "Network error",
+    } as ErrorMessage;
+  }
+
+  const _resp = await res.text();
+  const resp = /^(\{.*})|(\[.*])$/.test(_resp) ? JSON.parse(_resp) : {};
+
+  if (!res.ok) {
+    const error = resp as ErrorMessage;
+
+    throw {
+      code: res.status ?? -1,
+      message: error.message ?? "Internal error",
+    } as ErrorMessage;
+  }
+
+  return resp as T;
+};
 
 export default function useBackend() {
   const _getPost = async (id: number) => {
-    const res = await $fetch(`posts/${id}`).get().json<Post>();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
-    return res.data.value!;
+    return await $fetch<Post>(`posts/${id}`);
   };
 
   const _getPreviewPost = async (page: number, size: number) => {
-    const res = await $fetch(`posts?page=${page}&size=${size}`)
-      .get()
-      .json<PreviewPost[]>();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
-    return res.data.value!;
+    return await $fetch<PreviewPost[]>({
+      path: `posts`,
+      data: {
+        page,
+        size,
+      },
+    });
   };
 
   const _getUserInfo = async (id?: number) => {
-    const res = await $fetch(`users${id === undefined ? "" : `/${id}`}`)
-      .get()
-      .json<UserInfo>();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
-    return res.data.value!;
+    return await $fetch<UserInfo>(`users${id === undefined ? "" : `/${id}`}`);
   };
 
   const _getUserProfile = async (id?: number) => {
-    const res = await $fetch(`users/profile${id === undefined ? "" : `/${id}`}`)
-      .get()
-      .json<UserProfile>();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
-    return res.data.value!;
+    return await $fetch<UserProfile>(
+      `users/profile${id === undefined ? "" : `/${id}`}`,
+    );
   };
 
   const _signIn = async (email: string, password: string) => {
-    const res = await $fetch("authorization/signin").post({ email, password });
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
+    await $fetch({
+      path: "authorization/signin",
+      method: "POST",
+      data: { email, password },
+    });
   };
 
   const _signUp = async (email: string, password: string) => {
-    const res = await $fetch("authorization/signup").post({ email, password });
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
+    await $fetch({
+      path: "authorization/signup",
+      method: "POST",
+      data: { email, password },
+    });
   };
 
   const _signOut = async () => {
-    const res = await $fetch("authorization/signout").post();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
+    await $fetch({ path: "authorization/signout", method: "POST" });
   };
 
   const _getPasskeyRegistrationOptions = async () => {
-    const res = await $fetch("authorization/passkey/registration/options")
-      .get()
-      .json<CredentialCreationOptionsJSON>();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
-    return res.data.value!;
+    return await $fetch<CredentialCreationOptionsJSON>(
+      "authorization/passkey/registration/options",
+    );
   };
 
   const _verifyPasskeyRegistration = async (
     registrationPublicKeyCredential: RegistrationPublicKeyCredential,
   ) => {
-    const res = await $fetch("authorization/passkey/registration")
-      .post(registrationPublicKeyCredential, "json")
-      .json();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
+    return await $fetch({
+      path: "authorization/passkey/registration",
+      method: "POST",
+      data: registrationPublicKeyCredential,
+    });
   };
 
   const _getPasskeyAssertionOptions = async () => {
-    const res = await $fetch("authorization/passkey/assertion/options")
-      .get()
-      .json<CredentialRequestOptionsJSON>();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
-    return res.data.value!;
+    return await $fetch<CredentialRequestOptionsJSON>(
+      "authorization/passkey/assertion/options",
+    );
   };
 
   const _verifyPasskeyAssertion = async (
     authenticationPublicKeyCredential: AuthenticationPublicKeyCredential,
   ) => {
-    const res = await $fetch("authorization/passkey/assertion")
-      .post(authenticationPublicKeyCredential, "json")
-      .json();
-    if (res.error.value) {
-      throw res.error.value as ErrorMessage;
-    }
+    return await $fetch({
+      path: "authorization/passkey/assertion",
+      method: "POST",
+      data: authenticationPublicKeyCredential,
+    });
+  };
+
+  const _getPasskeys = async () => {
+    return await $fetch<Passkey[]>("webauthn/passkey");
+  };
+
+  const _removePasskey = async (id: number) => {
+    return await $fetch({
+      path: `webauthn/passkey/${id}`,
+      method: "DELETE",
+    });
   };
 
   return {
@@ -137,5 +177,7 @@ export default function useBackend() {
     _verifyPasskeyRegistration,
     _getPasskeyAssertionOptions,
     _verifyPasskeyAssertion,
+    _getPasskeys,
+    _removePasskey,
   };
 }

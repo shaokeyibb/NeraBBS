@@ -1,10 +1,9 @@
-import {computedAsync} from "@vueuse/core";
 import useBackend from "./backend.ts";
 
 export default function usePost() {
   const { _getPost, _getPreviewPost } = useBackend();
 
-  const getPost = (id: number) => computedAsync(() => _getPost(id));
+  const getPost = async (id: number) => await _getPost(id);
 
   return {
     getPost,
