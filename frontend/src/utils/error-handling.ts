@@ -1,4 +1,4 @@
-import type {ErrorMap, ErrorMessage} from "../types/error-handling.ts";
+import type { ErrorMap, ErrorMessage } from "../types/error-handling.ts";
 
 export const errorMap: ErrorMap = {
   sign_in: {

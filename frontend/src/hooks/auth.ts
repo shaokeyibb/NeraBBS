@@ -1,7 +1,7 @@
 import useBackend from "./backend.ts";
-import {useSessionStore} from "../stores/session.ts";
+import { useSessionStore } from "../stores/session.ts";
 import useUser from "./user.ts";
-import {computed} from "vue";
+import { computed } from "vue";
 
 export default function useAuth() {
   const { _signIn, _signUp, _signOut } = useBackend();

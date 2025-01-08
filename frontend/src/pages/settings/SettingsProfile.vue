@@ -7,7 +7,19 @@ const { insideCard = false } = defineProps<{
 </script>
 
 <template>
-  <component :is="insideCard ? NCardMain : 'div'"> </component>
+  <component :is="insideCard ? NCardMain : 'div'" class="list"> </component>
 </template>
 
-<style scoped></style>
+<style scoped>
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.list-headline {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+</style>

@@ -1,6 +1,6 @@
-import type {RouteRecordRaw} from "vue-router";
-import {createRouter, createWebHashHistory} from "vue-router";
-import type {PageDecl} from "../types/route.ts";
+import type { RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
+import type { PageDecl } from "../types/route.ts";
 
 const buildRoutes = () => {
   const pages = import.meta.glob<PageDecl>("../pages/**/page.ts", {

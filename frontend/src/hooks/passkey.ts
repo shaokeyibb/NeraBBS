@@ -36,7 +36,7 @@ export default function usePasskey() {
     signal?: AbortSignal,
     hooks?: {
       beforeVerifyAssertion?: () => void;
-    }
+    },
   ) => {
     const options = await getRequestOptions();
 

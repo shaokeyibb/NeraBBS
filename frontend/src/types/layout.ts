@@ -1,5 +1,5 @@
-import type {MaybeRefOrGetter} from "@vueuse/core";
-import type {ComputedRef} from "vue";
+import type { MaybeRefOrGetter } from "@vueuse/core";
+import type { ComputedRef } from "vue";
 
 export type Fab = { icon: string; onClick: () => void };
 

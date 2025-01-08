@@ -1,5 +1,5 @@
-import type {InjectionKey} from "vue";
-import type {Layout} from "../types/layout.ts";
+import type { InjectionKey } from "vue";
+import type { Layout } from "../types/layout.ts";
 
 export const isInNCard = Symbol() as InjectionKey<boolean>;
 

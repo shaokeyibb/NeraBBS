@@ -1,6 +1,6 @@
-import {defineStore} from "pinia";
-import type {UserInfo, UserProfile} from "../types/backend.ts";
-import {ref} from "vue";
+import { defineStore } from "pinia";
+import type { UserInfo, UserProfile } from "../types/backend.ts";
+import { ref } from "vue";
 
 export const useSessionStore = defineStore(
   "session",

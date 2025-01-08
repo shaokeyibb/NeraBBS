@@ -1,6 +1,6 @@
-import {useMemoize} from "@vueuse/core";
+import { useMemoize } from "@vueuse/core";
 import useBackend from "./backend.ts";
-import {useSessionStore} from "../stores/session.ts";
+import { useSessionStore } from "../stores/session.ts";
 
 export default function useUser() {
   const { _getUserInfo, _getUserProfile } = useBackend();

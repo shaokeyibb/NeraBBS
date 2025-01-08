@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import type {Component} from "vue";
-import {computed, inject, ref, shallowRef, toValue, useTemplateRef,} from "vue";
-import type {Layout} from "../../types/layout.ts";
-import {layout} from "../../utils/symbol.ts";
+import type { Component } from "vue";
+import {
+  computed,
+  inject,
+  ref,
+  shallowRef,
+  toValue,
+  useTemplateRef,
+} from "vue";
+import type { Layout } from "../../types/layout.ts";
+import { layout } from "../../utils/symbol.ts";
 import MasonryWall from "@yeger/vue-masonry-wall";
 import SettingsProfile from "./SettingsProfile.vue";
 import NCard from "../../components/NCard.vue";
 import NCardHeader from "../../components/NCardHeader.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 import SettingsSecurity from "./SettingsSecurity.vue";
 import NCardMain from "../../components/NCardMain.vue";
 

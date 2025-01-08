@@ -1,11 +1,17 @@
-import {apiBaseUrl} from "../config.ts";
-import type {Passkey, Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
-import type {ErrorMessage} from "../types/error-handling.ts";
+import { apiBaseUrl } from "../config.ts";
 import type {
-    AuthenticationPublicKeyCredential,
-    CredentialCreationOptionsJSON,
-    CredentialRequestOptionsJSON,
-    RegistrationPublicKeyCredential,
+  Passkey,
+  Post,
+  PreviewPost,
+  UserInfo,
+  UserProfile,
+} from "../types/backend.ts";
+import type { ErrorMessage } from "../types/error-handling.ts";
+import type {
+  AuthenticationPublicKeyCredential,
+  CredentialCreationOptionsJSON,
+  CredentialRequestOptionsJSON,
+  RegistrationPublicKeyCredential,
 } from "@github/webauthn-json/browser-ponyfill";
 
 const $fetch = async <T>(

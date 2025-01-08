@@ -1,18 +1,26 @@
 <script lang="ts" setup>
-import {NavigationDrawer} from "mdui";
+import { NavigationDrawer } from "mdui";
 import NText from "../components/NText.vue";
-import {type RouteRecordNameGeneric, useRoute, useRouter} from "vue-router";
-import {computed, provide, ref, toValue, useTemplateRef, watch, watchEffect,} from "vue";
-import {useI18n} from "vue-i18n";
-import {useMediaQuery} from "@vueuse/core";
+import { type RouteRecordNameGeneric, useRoute, useRouter } from "vue-router";
+import {
+  computed,
+  provide,
+  ref,
+  toValue,
+  useTemplateRef,
+  watch,
+  watchEffect,
+} from "vue";
+import { useI18n } from "vue-i18n";
+import { useMediaQuery } from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
 import useLocale from "../hooks/locale.ts";
-import {availableLocales, getLocalizedLocalName} from "../utils/locale.ts";
-import {layout} from "../utils/symbol.ts";
+import { availableLocales, getLocalizedLocalName } from "../utils/locale.ts";
+import { layout } from "../utils/symbol.ts";
 import useAuth from "../hooks/auth.ts";
-import {useSessionStore} from "../stores/session.ts";
-import {storeToRefs} from "pinia";
-import type {Fab, Layout} from "../types/layout.ts";
+import { useSessionStore } from "../stores/session.ts";
+import { storeToRefs } from "pinia";
+import type { Fab, Layout } from "../types/layout.ts";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -183,7 +191,14 @@ const signOut = async () => {
       </mdui-text-field>
       <template v-if="isLargeScreen">
         <mdui-dropdown v-if="isLoggedIn">
-          <mdui-avatar :src="userProfile?.avatarPath" slot="trigger" />
+          <mdui-avatar slot="trigger">
+            <img
+              v-if="userProfile?.avatarPath !== undefined"
+              :src="userProfile?.avatarPath"
+              alt="Avatar"
+            />
+            <mdui-icon v-else name="manage_accounts" />
+          </mdui-avatar>
           <mdui-menu>
             <mdui-menu-item @click="router.push('settings')">
               <n-text>{{ t("settings") }}</n-text>
