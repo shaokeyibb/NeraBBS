@@ -37,10 +37,8 @@ public class UserProfileController {
         return userProfileService.getUserProfile(userID);
     }
 
-    @PutMapping("/{id}")
-    public void updateUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long requestUserID,
-                                  @PathVariable("id") long userID,
-            /* restful api compatible */ @RequestParam("userID") long operationUserID,
+    @PutMapping
+    public void updateUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long userID,
                                   @RequestParam @NotNull @Length(min = 3) String username,
             /* null means reset avatar */ @RequestPart @Nullable MultipartFile avatar,
                                   @RequestParam @NotNull @Length(max = 100) String signature) throws IOException {
@@ -48,30 +46,17 @@ public class UserProfileController {
             throw new UnauthorizedException();
         }
 
-        if (requestUserID != userID) {
-            throw new UnauthorizedException(); //TODO: Allow people have "userprofile:update" permission to update other's profile
-        }
-
-        if (operationUserID != userID) {
-            throw new IllegalArgumentException("User ID in path variable and request body are not equal");
-        }
-
         userProfileService.updateUserProfile(userID, username, avatar, signature);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping
     @ResponseBody
-    public UserProfileVo patchUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long requestUserID,
-                                          @PathVariable("id") long userID,
+    public UserProfileVo patchUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long userID,
             /* can be undefined */@Nullable String username,
             /* can be undefined, null means reset avatar */ @Nullable MultipartFile avatar,
             /* can be undefined */@Nullable String signature) throws IOException {
         if (userID == BizConstants.USER_ID_UNAUTHORIZED) {
             throw new UnauthorizedException();
-        }
-
-        if (requestUserID != userID) {
-            throw new UnauthorizedException(); //TODO: Allow people have "userprofile:update" permission to update other's profile
         }
 
         return userProfileService.patchUserProfile(userID, username, avatar, signature);
