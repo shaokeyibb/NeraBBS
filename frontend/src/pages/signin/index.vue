@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import NText from "../../components/NText.vue";
-import type {TextField} from "mdui/components/text-field.js";
-import type {Button} from "mdui/components/button.js";
+import type { TextField } from "mdui/components/text-field.js";
+import type { Button } from "mdui/components/button.js";
 
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 import useErrorHandling from "../../hooks/error-handling.ts";
-import type {ErrorMessage} from "../../types/error-handling.ts";
+import type { ErrorMessage } from "../../types/error-handling.ts";
 import useAuth from "../../hooks/auth.ts";
-import {useRouter} from "vue-router";
-import {onMounted, ref, useTemplateRef} from "vue";
-import {isSupported as _isSupportedPasskey} from "../../utils/passkey.ts";
-import {computedAsync} from "@vueuse/core";
+import { useRouter } from "vue-router";
+import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
+import { isSupported as _isSupportedPasskey } from "../../utils/passkey.ts";
+import { computedAsync } from "@vueuse/core";
 import usePasskey from "../../hooks/passkey.ts";
 
 const { t } = useI18n();
@@ -102,8 +102,12 @@ const activatePasskeyConditionalUI = async () => {
 
   isPasskeyConditionalUIRunning.value = true;
 
+  const controller = new AbortController();
+  onUnmounted(async () => {
+    controller.abort({ code: -1 });
+  });
   try {
-    await validatePasskeyCredential(true, {
+    await validatePasskeyCredential(true, controller.signal, {
       beforeVerifyAssertion: () => {
         loading.value = true;
         passkeyEl.value!.loading = true;
@@ -111,6 +115,7 @@ const activatePasskeyConditionalUI = async () => {
     });
     await router.push({ name: "index" });
   } catch (e) {
+    if (e.code === -1) return; // ignore abort
     handleError(e as ErrorMessage, "passkey");
   } finally {
     isPasskeyConditionalUIRunning.value = false;

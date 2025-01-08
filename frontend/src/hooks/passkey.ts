@@ -1,9 +1,9 @@
 import useBackend from "./backend.ts";
 import {
-    create,
-    get,
-    parseCreationOptionsFromJSON,
-    parseRequestOptionsFromJSON,
+  create,
+  get,
+  parseCreationOptionsFromJSON,
+  parseRequestOptionsFromJSON,
 } from "@github/webauthn-json/browser-ponyfill";
 import useUser from "./user.ts";
 
@@ -33,14 +33,19 @@ export default function usePasskey() {
 
   const validatePasskeyCredential = async (
     conditional?: boolean,
+    signal?: AbortSignal,
     hooks?: {
       beforeVerifyAssertion?: () => void;
-    },
+    }
   ) => {
     const options = await getRequestOptions();
 
     if (conditional) {
       options.mediation = "conditional";
+    }
+
+    if (signal) {
+      options.signal = signal;
     }
 
     const resp = await get(options);
