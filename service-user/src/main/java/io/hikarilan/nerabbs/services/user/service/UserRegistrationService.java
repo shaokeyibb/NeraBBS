@@ -1,12 +1,15 @@
 package io.hikarilan.nerabbs.services.user.service;
 
 import io.hikarilan.nerabbs.common.exception.UserAlreadyExistsException;
+import io.hikarilan.nerabbs.lib.services.userprofile.grpc.UpdateUserProfileRequest;
+import io.hikarilan.nerabbs.lib.services.userprofile.grpc.UserProfileGrpc;
 import io.hikarilan.nerabbs.services.user.data.dto.UserBasicRegistrationDto;
 import io.hikarilan.nerabbs.services.user.database.entity.UserEntity;
 import io.hikarilan.nerabbs.services.user.database.repository.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,11 +20,20 @@ public class UserRegistrationService {
 
     private final UserRepository userRepository;
 
+    @GrpcClient("nerabbs-service-user-profile")
+    private UserProfileGrpc.UserProfileBlockingStub userProfileStub;
+
     public long registerUser(@Valid @NotNull UserBasicRegistrationDto userBasicRegistrationDto) {
         if (userRepository.existsByEmail(userBasicRegistrationDto.email()))
             throw new UserAlreadyExistsException();
 
         var saved = userRepository.save(UserEntity.fromUserBasicRegistrationDto(userBasicRegistrationDto));
+
+        userProfileStub.updateUserProfile(UpdateUserProfileRequest.newBuilder()
+                .setId(saved.getId())
+                .setUsername("User#" + saved.getId())
+                .setSignature("")
+                .build());
 
         return saved.getId();
     }

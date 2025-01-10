@@ -53,7 +53,7 @@ public class UserProfileController {
     @ResponseBody
     public UserProfileVo patchUserProfile(@RequestHeader(BizConstants.USER_ID_HEADER) long userID,
             /* can be undefined */@Nullable String username,
-            /* can be undefined, null means reset avatar */ @Nullable MultipartFile avatar,
+            /* can be undefined */ @Nullable MultipartFile avatar,
             /* can be undefined */@Nullable String signature) throws IOException {
         if (userID == BizConstants.USER_ID_UNAUTHORIZED) {
             throw new UnauthorizedException();

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.hikarilan.nerabbs.lib.services.userprofile.grpc";
+option java_outer_classname = "UserProfileServiceProto";
+
+package user_profile_service;
+import "google/protobuf/empty.proto";
+import "OSSService.proto";
+
+service UserProfile{
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (google.protobuf.Empty);
+}
+
+message UpdateUserProfileRequest{
+  uint64 id = 1;
+  string username = 2;
+  optional oss_service.MultipartFile avatar = 3;
+  string signature = 4;
+}
