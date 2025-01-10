@@ -38,13 +38,14 @@ const navigationItems = computed(() =>
     .filter(
       (child) =>
         child.meta !== undefined &&
-        child.meta.showInNavigationBar !== undefined,
+        child.meta.showInNavigationBar !== undefined &&
+        child.meta.title !== undefined,
     )
     .map((child) => ({
       name: child.name,
       title: child.meta!.title,
-      icon: child.meta!.showInNavigationBar.icon,
-      activeIcon: child.meta!.showInNavigationBar.activeIcon,
+      icon: child.meta!.showInNavigationBar!.icon,
+      activeIcon: child.meta!.showInNavigationBar!.activeIcon,
     })),
 );
 
@@ -123,7 +124,7 @@ const signOut = async () => {
         :active-icon="item.activeIcon"
         :icon="item.icon"
         :value="item.name"
-        >{{ t(item.title) }}
+        >{{ t(item.title!) }}
       </mdui-navigation-rail-item>
       <mdui-dropdown slot="bottom">
         <mdui-button-icon slot="trigger" icon="language" />
@@ -174,7 +175,7 @@ const signOut = async () => {
           :active-icon="item.activeIcon"
           :icon="item.icon"
           :value="item.name"
-          >{{ t(item.title) }}
+          >{{ t(item.title!) }}
         </mdui-navigation-bar-item>
       </mdui-navigation-bar>
     </template>

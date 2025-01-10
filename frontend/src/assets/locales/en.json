@@ -31,6 +31,7 @@
   "passkey": "Passkey",
   "loading": "Loading...",
   "settings": "Settings",
+  "avatar": "Avatar",
   "error.sign_in.unauthorized": "Invalid email or password",
   "error.sign_up.forbidden": "This email has been registered",
   "error.passkey.unauthorized": "Invalid or removed passkey, login failed",

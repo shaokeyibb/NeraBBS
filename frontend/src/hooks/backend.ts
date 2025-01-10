@@ -1,6 +1,7 @@
 import { apiBaseUrl } from "../config.ts";
 import type {
   Passkey,
+  PatchUserProfileReq,
   Post,
   PreviewPost,
   UserInfo,
@@ -50,15 +51,22 @@ const $fetch = async <T>(
   let res: Response;
 
   try {
+    const body =
+      method === "GET" || data === undefined
+        ? undefined
+        : data instanceof FormData
+          ? data
+          : JSON.stringify(data);
+
+    const headers = new Headers();
+    if (method !== "GET" && !(data instanceof FormData)) {
+      headers.set("Content-Type", "application/json");
+    }
+
     res = await fetch(url.toString(), {
       method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body:
-        method === "GET" || data === undefined
-          ? undefined
-          : JSON.stringify(data),
+      headers,
+      body,
       ...requestOptions,
     });
   } catch {
@@ -106,6 +114,18 @@ export default function useBackend() {
     return await $fetch<UserProfile>(
       `users/profile${id === undefined ? "" : `/${id}`}`,
     );
+  };
+
+  const _patchUserProfile = async (data: PatchUserProfileReq) => {
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value);
+    }
+    return await $fetch<UserProfile>({
+      path: `users/profile`,
+      method: "PATCH",
+      data: formData,
+    });
   };
 
   const _signIn = async (email: string, password: string) => {
@@ -176,6 +196,7 @@ export default function useBackend() {
     _getPreviewPost,
     _getUserInfo,
     _getUserProfile,
+    _patchUserProfile,
     _signIn,
     _signUp,
     _signOut,

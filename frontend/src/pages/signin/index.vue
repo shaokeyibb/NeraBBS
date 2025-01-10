@@ -115,8 +115,9 @@ const activatePasskeyConditionalUI = async () => {
     });
     await router.push({ name: "index" });
   } catch (e) {
-    if (e.code === -1) return; // ignore abort
-    handleError(e as ErrorMessage, "passkey");
+    const err = e as ErrorMessage;
+    if (err.code === -1) return; // ignore abort
+    handleError(err, "passkey");
   } finally {
     isPasskeyConditionalUIRunning.value = false;
     loading.value = false;

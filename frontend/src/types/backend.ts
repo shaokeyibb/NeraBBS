@@ -23,11 +23,15 @@ export type UserProfile = {
   signature?: string;
 };
 
-export type UserProfilePutReq = Omit<UserProfile, "avatarPath"> & {
+export type PutUserProfileReq = Omit<UserProfile, "avatarPath" | "userID"> & {
   avatar: File | null;
 };
 
-export type UserProfilePatchReq = Partial<UserProfilePutReq>;
+export type PatchUserProfileReq = Partial<
+  Omit<PutUserProfileReq, "avatar"> & {
+    avatar: File;
+  }
+>;
 
 export type Passkey = {
   id: number;

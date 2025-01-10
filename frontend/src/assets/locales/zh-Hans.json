@@ -31,6 +31,7 @@
   "passkey": "通行密钥",
   "loading": "加载中...",
   "settings": "设置",
+  "avatar": "头像",
   "error.sign_in.unauthorized": "用户名或密码错误",
   "error.sign_up.forbidden": "您指定的电子邮件地址已被注册",
   "error.passkey.unauthorized": "通行密钥无效或已被移除，登录失败",
