@@ -3,7 +3,7 @@ import type { RouteMeta, RouteRecordNameGeneric } from "vue-router";
 export interface PageDecl {
   name?: RouteRecordNameGeneric;
   parent?: NonNullable<RouteRecordNameGeneric>;
-  meta: RouteMeta;
+  meta?: RouteMeta;
 }
 
 type ShowInNavigationBar = {
@@ -11,19 +11,10 @@ type ShowInNavigationBar = {
   activeIcon: string;
 };
 
-interface RouteMetaBase {
-  title?: string;
-}
-
-interface RouteMetaWithNav extends RouteMetaBase {
-  showInNavigationBar: ShowInNavigationBar;
-  title: string;
-}
-
-interface RouteMetaWithoutNav extends RouteMetaBase {
-  showInNavigationBar?: undefined;
-}
-
 declare module "vue-router" {
-  interface RouteMeta extends RouteMetaWithNav, RouteMetaWithoutNav {}
+  interface RouteMeta {
+    title?: string;
+    showInNavigationBar?: ShowInNavigationBar;
+    requireUserSession?: "MUST_SIGNED_IN" | "MUST_NOT_SIGNED_IN";
+  }
 }

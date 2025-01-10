@@ -1,4 +1,5 @@
-/** @type {PageDecl} */
+import type { PageDecl } from "../../types/route.ts";
+
 export default {
   parent: "index",
   meta: {
@@ -8,4 +9,4 @@ export default {
       activeIcon: "home",
     },
   },
-};
+} satisfies PageDecl;

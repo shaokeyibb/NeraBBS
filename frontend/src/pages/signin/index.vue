@@ -15,7 +15,7 @@ import usePasskey from "../../hooks/passkey.ts";
 
 const { t } = useI18n();
 const { handle: handleError } = useErrorHandling();
-const { signIn, signUp, isLoggedIn } = useAuth();
+const { signIn, signUp } = useAuth();
 const { validatePasskeyCredential } = usePasskey();
 const router = useRouter();
 
@@ -127,9 +127,6 @@ const activatePasskeyConditionalUI = async () => {
 };
 
 onMounted(async () => {
-  if (isLoggedIn.value) {
-    await router.push({ name: "index" });
-  }
   await activatePasskeyConditionalUI();
 });
 </script>
