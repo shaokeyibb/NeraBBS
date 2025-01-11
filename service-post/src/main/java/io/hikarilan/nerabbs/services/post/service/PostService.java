@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class PostService {
 
 
     @CacheEvict(value = "previewPosts", allEntries = true)
+    @Transactional
     public long createPost(@Valid PostCreationBo postCreationBo) {
         return postRepository.save(PostEntity.fromPostCreationBo(postCreationBo)).getId();
     }

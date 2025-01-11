@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class UserRegistrationService {
     @GrpcClient("nerabbs-service-user-profile")
     private UserProfileGrpc.UserProfileBlockingStub userProfileStub;
 
+    @Transactional
     public long registerUser(@Valid @NotNull UserBasicRegistrationDto userBasicRegistrationDto) {
         if (userRepository.existsByEmail(userBasicRegistrationDto.email()))
             throw new UserAlreadyExistsException();
