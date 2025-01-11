@@ -46,7 +46,7 @@ public class UserProfileController {
             throw new UnauthorizedException();
         }
 
-        userProfileService.updateUserProfile(userID, username, avatar, signature);
+        userProfileService.updateUserProfile(userID, username, avatar, signature, true);
     }
 
     @PatchMapping

@@ -26,7 +26,7 @@ public class GrpcUserProfileService extends UserProfileGrpc.UserProfileImplBase 
                     request.getAvatar().getOriginalFileName(),
                     request.getAvatar().getContentType(),
                     request.getAvatar().getBytes().toByteArray()
-            ) : null, request.getSignature());
+            ) : null, request.getSignature(), false);
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (IOException e) {

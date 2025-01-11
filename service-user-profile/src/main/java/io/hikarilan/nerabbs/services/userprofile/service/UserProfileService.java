@@ -42,9 +42,11 @@ public class UserProfileService {
     public void updateUserProfile(long id,
                                   @NotNull @Length(min = 3) String username,
                                   @Nullable MultipartFile avatar,
-                                  @NotNull @Length(max = 100) String signature) throws IOException {
-        // Check if user exists
-        id = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setId(id).build()).getId();
+                                  @NotNull @Length(max = 100) String signature,
+                                  boolean checkUserExist) throws IOException {
+        if (checkUserExist) {
+            id = userInfoStub.getUserInfo(BasicUserInfoRequest.newBuilder().setId(id).build()).getId();
+        }
 
         String avatarPath = null;
         if (avatar != null) {
