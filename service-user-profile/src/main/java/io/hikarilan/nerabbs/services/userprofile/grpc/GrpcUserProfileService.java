@@ -22,11 +22,11 @@ public class GrpcUserProfileService extends UserProfileGrpc.UserProfileImplBase 
     @Override
     public void updateUserProfile(UpdateUserProfileRequest request, StreamObserver<Empty> responseObserver) {
         try {
-            userProfileService.updateUserProfile(request.getId(), request.getUsername(), new CustomMultipartFile("file",
+            userProfileService.updateUserProfile(request.getId(), request.getUsername(), request.hasAvatar() ? new CustomMultipartFile("file",
                     request.getAvatar().getOriginalFileName(),
                     request.getAvatar().getContentType(),
                     request.getAvatar().getBytes().toByteArray()
-            ), request.getSignature());
+            ) : null, request.getSignature());
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
         } catch (IOException e) {

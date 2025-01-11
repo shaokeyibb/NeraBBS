@@ -32,7 +32,7 @@ public class UserRegistrationService {
         userProfileStub.updateUserProfile(UpdateUserProfileRequest.newBuilder()
                 .setId(saved.getId())
                 .setUsername("User#" + saved.getId())
-                .setSignature("")
+                .setSignature("No Signature yet")
                 .build());
 
         return saved.getId();

@@ -38,3 +38,7 @@ grpc:
   server:
     security:
       enabled: false
+  client:
+    nerabbs-service-user-profile:
+      address: 'discovery:///nerabbs-service-user-profile'
+      negotiationType: PLAINTEXT
