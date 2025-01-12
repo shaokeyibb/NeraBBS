@@ -1,18 +1,26 @@
 <script lang="ts" setup>
-import {NavigationDrawer} from "mdui";
+import { NavigationDrawer } from "mdui";
 import NText from "../components/NText.vue";
-import {type RouteRecordNameGeneric, useRoute, useRouter} from "vue-router";
-import {computed, provide, ref, toValue, useTemplateRef, watch, watchEffect,} from "vue";
-import {useI18n} from "vue-i18n";
-import {useMediaQuery} from "@vueuse/core";
+import { type RouteRecordNameGeneric, useRoute, useRouter } from "vue-router";
+import {
+  computed,
+  provide,
+  ref,
+  toValue,
+  useTemplateRef,
+  watch,
+  watchEffect,
+} from "vue";
+import { useI18n } from "vue-i18n";
+import { useMediaQuery } from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
 import useLocale from "../hooks/locale.ts";
-import {availableLocales, getLocalizedLocalName} from "../utils/locale.ts";
-import {layout} from "../utils/symbol.ts";
+import { availableLocales, getLocalizedLocalName } from "../utils/locale.ts";
+import { layout } from "../utils/symbol.ts";
 import useAuth from "../hooks/auth.ts";
-import {useSessionStore} from "../stores/session.ts";
-import {storeToRefs} from "pinia";
-import type {Fab, Layout} from "../types/layout.ts";
+import { useSessionStore } from "../stores/session.ts";
+import { storeToRefs } from "pinia";
+import type { Fab, Layout } from "../types/layout.ts";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -194,6 +202,9 @@ const signOut = async () => {
             <mdui-icon v-else name="manage_accounts" />
           </mdui-avatar>
           <mdui-menu>
+            <mdui-menu-item disabled>
+              <n-text>{{ userProfile?.username }}</n-text>
+            </mdui-menu-item>
             <mdui-menu-item @click="router.push('settings')">
               <n-text>{{ t("settings") }}</n-text>
             </mdui-menu-item>
@@ -258,7 +269,11 @@ const signOut = async () => {
             <template v-if="isLoggedIn">
               <mdui-list-item icon="login" slot="header">
                 {{ userProfile?.username }}
-                <mdui-avatar slot="icon" :src="userProfile?.avatarPath" />
+                <mdui-avatar
+                  v-if="userProfile?.avatarPath !== undefined"
+                  slot="icon"
+                  :src="userProfile?.avatarPath"
+                />
               </mdui-list-item>
               <div style="margin-left: 2.5rem">
                 <mdui-list-item @click="router.push('settings')">
