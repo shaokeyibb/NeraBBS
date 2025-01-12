@@ -1,13 +1,6 @@
-import { apiBaseUrl } from "../config.ts";
-import type {
-  Passkey,
-  PatchUserProfileReq,
-  Post,
-  PreviewPost,
-  UserInfo,
-  UserProfile,
-} from "../types/backend.ts";
-import type { ErrorMessage } from "../types/error-handling.ts";
+import {apiBaseUrl} from "../config.ts";
+import type {Passkey, PatchUserProfileReq, Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
+import type {ErrorMessage} from "../types/error-handling.ts";
 import type {
   AuthenticationPublicKeyCredential,
   CredentialCreationOptionsJSON,
@@ -77,7 +70,7 @@ const $fetch = async <T>(
   }
 
   const _resp = await res.text();
-  const resp = /^(\{.*})|(\[.*])$/.test(_resp) ? JSON.parse(_resp) : {};
+  const resp = /^(\{.*})|(\[.*])$/.test(_resp) ? JSON.parse(_resp) : _resp;
 
   if (!res.ok) {
     const error = resp as ErrorMessage;
@@ -103,6 +96,14 @@ export default function useBackend() {
         page,
         size,
       },
+    });
+  };
+
+  const _createPost = async (data: { title?: string; content: string }) => {
+    return await $fetch<number>({
+      path: `posts`,
+      method: "POST",
+      data,
     });
   };
 
@@ -194,6 +195,7 @@ export default function useBackend() {
   return {
     _getPost,
     _getPreviewPost,
+    _createPost,
     _getUserInfo,
     _getUserProfile,
     _patchUserProfile,

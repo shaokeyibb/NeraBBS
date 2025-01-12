@@ -1,12 +1,11 @@
 import useBackend from "./backend.ts";
 
 export default function usePost() {
-  const { _getPost, _getPreviewPost } = useBackend();
-
-  const getPost = async (id: number) => await _getPost(id);
+  const { _getPost, _getPreviewPost, _createPost } = useBackend();
 
   return {
-    getPost,
+    getPost: _getPost,
     getPreviewPost: _getPreviewPost,
+    createPost: _createPost,
   };
 }

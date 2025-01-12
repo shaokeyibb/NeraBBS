@@ -1,4 +1,4 @@
-import { defineConfig, UserConfig } from "vite";
+import {defineConfig, UserConfig} from "vite";
 import vue from "@vitejs/plugin-vue";
 
 import autoprefixer from "autoprefixer";
@@ -26,6 +26,7 @@ export default defineConfig(({ command }) => {
           manualChunks: {
             "vueuse-core": ["@vueuse/core"],
             mdui: ["mdui"],
+            "vue-markdown-it": ["@f3ve/vue-markdown-it"],
           },
         },
       },

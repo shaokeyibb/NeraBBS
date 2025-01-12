@@ -4,30 +4,22 @@ import NCard from "../../components/NCard.vue";
 import NCardHeader from "../../components/NCardHeader.vue";
 import NCardMain from "../../components/NCardMain.vue";
 
-import type { Ref } from "vue";
-import {
-  computed,
-  inject,
-  onMounted,
-  onUnmounted,
-  ref,
-  shallowRef,
-  toValue,
-  useTemplateRef,
-  watch,
-} from "vue";
-import type { PreviewPost, UserProfile } from "../../types/backend.ts";
-import { useTimeAgoLocalized } from "../../utils/time.ts";
-import { computedAsync, useInfiniteScroll } from "@vueuse/core";
-import { layout } from "../../utils/symbol.ts";
-import { useI18n } from "vue-i18n";
-import type { ErrorMessage } from "../../types/error-handling.ts";
+import type {Ref} from "vue";
+import {computed, inject, onMounted, onUnmounted, ref, shallowRef, toValue, useTemplateRef, watch,} from "vue";
+import type {PreviewPost, UserProfile} from "../../types/backend.ts";
+import {useTimeAgoLocalized} from "../../utils/time.ts";
+import {computedAsync, useInfiniteScroll} from "@vueuse/core";
+import {layout} from "../../utils/symbol.ts";
+import {useI18n} from "vue-i18n";
+import type {ErrorMessage} from "../../types/error-handling.ts";
 import NText from "../../components/NText.vue";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import usePost from "../../hooks/post.ts";
 import useUser from "../../hooks/user.ts";
-import type { Layout } from "../../types/layout.ts";
+import type {Layout} from "../../types/layout.ts";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const { t } = useI18n();
 const { getPreviewPost } = usePost();
 const { getUserProfile } = useUser();
@@ -97,7 +89,9 @@ const topAppBarHeight = computed(
 l.updateLayout({
   fab: {
     icon: "add",
-    onClick: () => {},
+    onClick: () => {
+      router.push("create");
+    },
   },
 });
 
@@ -122,7 +116,10 @@ const getUserProfileCached = (id: number) => {
       :scroll-container="wallContainer"
     >
       <template #default="{ item }">
-        <NCard clickable>
+        <NCard
+          clickable
+          @click="router.push({ name: 'post', params: { id: item.id } })"
+        >
           <template #header>
             <NCardHeader
               :header="
