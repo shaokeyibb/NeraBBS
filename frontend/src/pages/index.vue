@@ -114,9 +114,9 @@ const signOut = async () => {
     >
       <mdui-fab
         slot="top"
-        v-if="fab !== undefined"
-        :icon="fab.icon"
-        @click="fab.onClick"
+        v-show="fab !== undefined"
+        :icon="fab?.icon"
+        @click="fab?.onClick"
       />
       <mdui-navigation-rail-item
         v-for="item in navigationItems"
