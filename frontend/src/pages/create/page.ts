@@ -4,5 +4,6 @@ export default {
   parent: "index",
   meta: {
     title: "page.create.title",
+    requireUserSession: "MUST_SIGNED_IN",
   },
 } satisfies PageDecl;
