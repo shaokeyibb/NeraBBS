@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,14 @@ public class PostService {
     @Cacheable(value = "previewPosts", key = "#page + '-' + #size")
     public List<PreviewPostVo> getPreviewPosts(int page, int size) {
         return postRepository.findAll(PageRequest.of(page, size, Sort.by("createAt").descending())).map(PreviewPostVo::fromPostEntity).toList();
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "post", key = "#id"),
+            @CacheEvict(value = "previewPosts", allEntries = true)
+    })
+    public void deletePost(long id) {
+        postRepository.deleteById(id);
     }
 
 }

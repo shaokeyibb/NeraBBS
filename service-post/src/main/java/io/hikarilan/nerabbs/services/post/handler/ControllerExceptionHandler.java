@@ -1,6 +1,7 @@
 package io.hikarilan.nerabbs.services.post.handler;
 
 import io.hikarilan.nerabbs.common.data.ErrorMessage;
+import io.hikarilan.nerabbs.common.exception.ForbiddenException;
 import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -29,5 +30,11 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage badRequestException(ConstraintViolationException e) {
         return new ErrorMessage(e.getMessage());
+    }
+
+    @ExceptionHandler(value = {ForbiddenException.class})
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public ErrorMessage forbiddenException() {
+        return new ErrorMessage("You do not have permission to access this resource.");
     }
 }

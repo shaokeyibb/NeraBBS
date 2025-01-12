@@ -1,6 +1,7 @@
 package io.hikarilan.nerabbs.services.post.controller;
 
 import io.hikarilan.nerabbs.common.BizConstants;
+import io.hikarilan.nerabbs.common.exception.ForbiddenException;
 import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
 import io.hikarilan.nerabbs.services.post.data.bo.PostCreationBo;
 import io.hikarilan.nerabbs.services.post.data.dto.PostCreationDto;
@@ -37,6 +38,20 @@ public class PostController {
             throw new UnauthorizedException();
 
         return postService.createPost(PostCreationBo.from(userID, postCreationDto));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public void deletePost(@RequestHeader(BizConstants.USER_ID_HEADER) long userID, @PathVariable long id) {
+        if (userID == BizConstants.USER_ID_UNAUTHORIZED)
+            throw new UnauthorizedException();
+
+        var post = postService.getPostByID(id);
+
+        if (post.posterID() != userID)
+            throw new ForbiddenException();
+
+        postService.deletePost(id);
     }
 
     @GetMapping

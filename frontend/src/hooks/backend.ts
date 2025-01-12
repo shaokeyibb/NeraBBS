@@ -1,18 +1,11 @@
-import { apiBaseUrl } from "../config.ts";
+import {apiBaseUrl} from "../config.ts";
+import type {Passkey, PatchUserProfileReq, Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
+import type {ErrorMessage} from "../types/error-handling.ts";
 import type {
-  Passkey,
-  PatchUserProfileReq,
-  Post,
-  PreviewPost,
-  UserInfo,
-  UserProfile,
-} from "../types/backend.ts";
-import type { ErrorMessage } from "../types/error-handling.ts";
-import type {
-  AuthenticationPublicKeyCredential,
-  CredentialCreationOptionsJSON,
-  CredentialRequestOptionsJSON,
-  RegistrationPublicKeyCredential,
+    AuthenticationPublicKeyCredential,
+    CredentialCreationOptionsJSON,
+    CredentialRequestOptionsJSON,
+    RegistrationPublicKeyCredential,
 } from "@github/webauthn-json/browser-ponyfill";
 
 const $fetch = async <T>(
@@ -114,6 +107,13 @@ export default function useBackend() {
     });
   };
 
+  const _deletePost = async (id: number) => {
+    return await $fetch({
+      path: `posts/${id}`,
+      method: "DELETE",
+    });
+  };
+
   const _getUserInfo = async (id?: number) => {
     return await $fetch<UserInfo>(`users${id === undefined ? "" : `/${id}`}`);
   };
@@ -203,6 +203,7 @@ export default function useBackend() {
     _getPost,
     _getPreviewPost,
     _createPost,
+    _deletePost,
     _getUserInfo,
     _getUserProfile,
     _patchUserProfile,

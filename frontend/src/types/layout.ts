@@ -1,7 +1,8 @@
-import type { MaybeRefOrGetter } from "@vueuse/core";
-import type { ComputedRef } from "vue";
+import type {MaybeRef, MaybeRefOrGetter} from "@vueuse/core";
+import type {ComputedRef} from "vue";
 
-export type Fab = { icon: string; onClick: () => void };
+export type IconBtn = { icon: string; onClick: () => void };
+export type IconBtnWithTooltip = IconBtn & { tooltip: MaybeRef<string> };
 
 export type Layout = {
   isLargeScreen: ComputedRef<boolean>;
@@ -24,9 +25,12 @@ export type Layout = {
     | undefined
   >;
   updateLayout: (data: {
-    fab?: {
-      icon: string;
-      onClick: () => void;
+    fab?: IconBtn;
+    topAppBar?: {
+      leadingIconBtn?: IconBtn;
+    };
+    bottomAppBar?: {
+      actions?: IconBtnWithTooltip[];
     };
   }) => void;
 };

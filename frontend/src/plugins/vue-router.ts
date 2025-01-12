@@ -1,7 +1,7 @@
-import type { RouteRecordRaw } from "vue-router";
-import { createRouter, createWebHashHistory } from "vue-router";
-import type { PageDecl } from "../types/route.ts";
-import { useSessionStore } from "../stores/session.ts";
+import type {RouteRecordRaw} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
+import type {PageDecl} from "../types/route.ts";
+import {useSessionStore} from "../stores/session.ts";
 
 const buildRoutes = () => {
   const pages = import.meta.glob<PageDecl>("../pages/**/page.ts", {
@@ -15,7 +15,10 @@ const buildRoutes = () => {
     .map((_path) => {
       const pageDecl = pages[_path];
       const path =
-        _path.replace(/^\.\.\/pages/, "").replace(/\/page.ts$/, "") || "/";
+        _path
+          .replace(/^\.\.\/pages/, "")
+          .replace(/\[([^\]]+)]/g, ":$1")
+          .replace(/\/page.ts$/, "") || "/";
       const component = components[_path.replace(/page.ts$/, "index.vue")];
       return {
         pageDecl,
@@ -40,7 +43,12 @@ const buildRoutes = () => {
     return {
       name:
         route.pageDecl.name ??
-        (route.path.split("/").filter(Boolean).join("-") || "index"),
+        (route.path
+          .split("/")
+          .filter(Boolean)
+          .map((value) => value.replace(/:([^\]]+)/g, "$1"))
+          .join("-") ||
+          "index"),
       path: route.path,
       component: route.component,
       meta: route.pageDecl.meta,

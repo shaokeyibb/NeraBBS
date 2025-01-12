@@ -1,26 +1,18 @@
 <script lang="ts" setup>
-import { NavigationDrawer } from "mdui";
+import {BottomAppBar, NavigationBar, NavigationDrawer} from "mdui";
 import NText from "../components/NText.vue";
-import { type RouteRecordNameGeneric, useRoute, useRouter } from "vue-router";
-import {
-  computed,
-  provide,
-  ref,
-  toValue,
-  useTemplateRef,
-  watch,
-  watchEffect,
-} from "vue";
-import { useI18n } from "vue-i18n";
-import { useMediaQuery } from "@vueuse/core";
+import {type RouteRecordNameGeneric, useRoute, useRouter} from "vue-router";
+import {computed, provide, ref, toValue, useTemplateRef, watch, watchEffect,} from "vue";
+import {useI18n} from "vue-i18n";
+import {useMediaQuery} from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
 import useLocale from "../hooks/locale.ts";
-import { availableLocales, getLocalizedLocalName } from "../utils/locale.ts";
-import { layout } from "../utils/symbol.ts";
+import {availableLocales, getLocalizedLocalName} from "../utils/locale.ts";
+import {layout} from "../utils/symbol.ts";
 import useAuth from "../hooks/auth.ts";
-import { useSessionStore } from "../stores/session.ts";
-import { storeToRefs } from "pinia";
-import type { Fab, Layout } from "../types/layout.ts";
+import {useSessionStore} from "../stores/session.ts";
+import {storeToRefs} from "pinia";
+import type {IconBtn, IconBtnWithTooltip, Layout} from "../types/layout.ts";
 import NUserAvatar from "../components/NUserAvatar.vue";
 
 const { t } = useI18n();
@@ -50,7 +42,10 @@ const navigationItems = computed(() =>
     })),
 );
 
-const navigationDrawer = useTemplateRef<NavigationDrawer>("navigationDrawer");
+const navigationDrawerEl =
+  useTemplateRef<NavigationDrawer>("navigationDrawerEl");
+const navigationBarEl = useTemplateRef<NavigationBar>("navigationBarEl");
+const bottomAppBarEl = useTemplateRef<BottomAppBar>("bottomAppBarEl");
 
 watchEffect(() => {
   if (route.matched.length === 1 && route.matched[0].name === "index") {
@@ -63,7 +58,15 @@ const cachedLayout: Record<
   Parameters<Layout["updateLayout"]>[0]
 > = {};
 
-const fab = ref<Fab>();
+const { fab, topAppBar, bottomAppBar } = {
+  fab: ref<IconBtn>(),
+  topAppBar: {
+    leadingIconBtn: ref<IconBtn>(),
+  },
+  bottomAppBar: ref<{
+    actions?: IconBtnWithTooltip[];
+  }>(),
+};
 const l: Layout = {
   isLargeScreen,
   navigationRail: computed(() =>
@@ -81,6 +84,8 @@ const l: Layout = {
 
 const updateLayout0 = (data: Parameters<Layout["updateLayout"]>[0]) => {
   fab.value = data.fab;
+  topAppBar.leadingIconBtn.value = data.topAppBar?.leadingIconBtn;
+  bottomAppBar.value = data.bottomAppBar;
 };
 
 watch(
@@ -167,6 +172,8 @@ const signOut = async () => {
     </mdui-navigation-rail>
     <template v-else>
       <mdui-navigation-bar
+        ref="navigationBarEl"
+        v-if="bottomAppBarEl === null"
         :value="route.name"
         @change="router.replace({ name: $event.target.value })"
       >
@@ -181,7 +188,11 @@ const signOut = async () => {
       </mdui-navigation-bar>
     </template>
     <mdui-top-app-bar class="top-app-bar">
-      <mdui-icon name="alternate_email"></mdui-icon>
+      <mdui-button-icon
+        v-if="topAppBar.leadingIconBtn.value !== undefined"
+        :icon="topAppBar.leadingIconBtn.value.icon"
+        @click="topAppBar.leadingIconBtn.value.onClick"
+      />
       <mdui-top-app-bar-title>{{ t("site.title") }}</mdui-top-app-bar-title>
       <mdui-text-field
         :label="t('search.label')"
@@ -217,11 +228,11 @@ const signOut = async () => {
       <mdui-button-icon
         v-else
         icon="menu"
-        @click="navigationDrawer!.open = true"
+        @click="navigationDrawerEl!.open = true"
       />
     </mdui-top-app-bar>
     <mdui-navigation-drawer
-      ref="navigationDrawer"
+      ref="navigationDrawerEl"
       close-on-esc
       close-on-overlay-click
       modal
@@ -287,12 +298,27 @@ const signOut = async () => {
     <mdui-layout-main>
       <RouterView />
       <mdui-fab
-        v-if="fab !== undefined && !isLargeScreen"
+        v-if="fab !== undefined && !isLargeScreen && bottomAppBar === null"
         class="fab"
         :icon="fab.icon"
         @click="fab.onClick"
       />
     </mdui-layout-main>
+    <mdui-bottom-app-bar v-if="bottomAppBar !== undefined" ref="bottomAppBarEl">
+      <mdui-tooltip
+        v-for="(action, idx) in bottomAppBar.actions"
+        :key="idx"
+        :content="toValue(action.tooltip)"
+      >
+        <mdui-button-icon :icon="action.icon" @click="action.onClick" />
+      </mdui-tooltip>
+      <div style="flex-grow: 1"></div>
+      <mdui-fab
+        v-if="fab !== undefined && !isLargeScreen"
+        :icon="fab.icon"
+        @click="fab.onClick"
+      />
+    </mdui-bottom-app-bar>
   </mdui-layout>
 </template>
 
