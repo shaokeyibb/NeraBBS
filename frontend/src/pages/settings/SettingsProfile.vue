@@ -9,6 +9,7 @@ import useUser from "../../hooks/user.ts";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import type { ErrorMessage } from "../../types/error-handling.ts";
 import { prompt } from "mdui/functions/prompt.js";
+import NUserAvatar from "../../components/NUserAvatar.vue";
 
 const { insideCard = false } = defineProps<{
   insideCard?: boolean;
@@ -99,7 +100,7 @@ const onModifyTextProfile = async (e: MouseEvent) => {
           v-if="loading === 'AVATAR_UPLOADING'"
           slot="end-icon"
         />
-        <mdui-avatar v-else slot="end-icon" :src="userProfile?.avatarPath" />
+        <n-user-avatar v-else slot="end-icon" :user="userProfile" />
       </mdui-list-item>
       <mdui-list-item
         :headline="t('username')"

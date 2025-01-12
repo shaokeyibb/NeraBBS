@@ -4,20 +4,31 @@ import NCard from "../../components/NCard.vue";
 import NCardHeader from "../../components/NCardHeader.vue";
 import NCardMain from "../../components/NCardMain.vue";
 
-import type {Ref} from "vue";
-import {computed, inject, onMounted, onUnmounted, ref, shallowRef, toValue, useTemplateRef, watch,} from "vue";
-import type {PreviewPost, UserProfile} from "../../types/backend.ts";
-import {useTimeAgoLocalized} from "../../utils/time.ts";
-import {computedAsync, useInfiniteScroll} from "@vueuse/core";
-import {layout} from "../../utils/symbol.ts";
-import {useI18n} from "vue-i18n";
-import type {ErrorMessage} from "../../types/error-handling.ts";
+import type { Ref } from "vue";
+import {
+  computed,
+  inject,
+  onMounted,
+  onUnmounted,
+  ref,
+  shallowRef,
+  toValue,
+  useTemplateRef,
+  watch,
+} from "vue";
+import type { PreviewPost, UserProfile } from "../../types/backend.ts";
+import { useTimeAgoLocalized } from "../../utils/time.ts";
+import { computedAsync, useInfiniteScroll } from "@vueuse/core";
+import { layout } from "../../utils/symbol.ts";
+import { useI18n } from "vue-i18n";
+import type { ErrorMessage } from "../../types/error-handling.ts";
 import NText from "../../components/NText.vue";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import usePost from "../../hooks/post.ts";
 import useUser from "../../hooks/user.ts";
-import type {Layout} from "../../types/layout.ts";
-import {useRouter} from "vue-router";
+import type { Layout } from "../../types/layout.ts";
+import { useRouter } from "vue-router";
+import NUserAvatar from "../../components/NUserAvatar.vue";
 
 const router = useRouter();
 const { t } = useI18n();
@@ -101,7 +112,12 @@ const cachedUserProfile: {
 
 const getUserProfileCached = (id: number) => {
   if (cachedUserProfile[id] === undefined) {
-    cachedUserProfile[id] = computedAsync(async () => await getUserProfile(id));
+    cachedUserProfile[id] = computedAsync(
+      async () => await getUserProfile(id),
+      {
+        userID: id,
+      },
+    );
   }
   return cachedUserProfile[id];
 };
@@ -124,19 +140,14 @@ const getUserProfileCached = (id: number) => {
             <NCardHeader
               :header="
                 getUserProfileCached(item.posterID).value?.username ??
-                t('loading')
+                item.posterID.toString()
               "
               :subhead="useTimeAgoLocalized(item.createAt).value"
             >
               <template #monogram>
-                <mdui-avatar
-                  :src="getUserProfileCached(item.posterID).value?.avatarPath"
-                >
-                  {{
-                    (getUserProfileCached(item.posterID).value?.username ??
-                      "")[0] ?? ""
-                  }}
-                </mdui-avatar>
+                <n-user-avatar
+                  :user="getUserProfileCached(item.posterID).value"
+                />
               </template>
             </NCardHeader>
           </template>

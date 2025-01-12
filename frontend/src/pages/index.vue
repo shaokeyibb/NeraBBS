@@ -21,6 +21,7 @@ import useAuth from "../hooks/auth.ts";
 import { useSessionStore } from "../stores/session.ts";
 import { storeToRefs } from "pinia";
 import type { Fab, Layout } from "../types/layout.ts";
+import NUserAvatar from "../components/NUserAvatar.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -192,15 +193,7 @@ const signOut = async () => {
       </mdui-text-field>
       <template v-if="isLargeScreen">
         <mdui-dropdown v-if="isLoggedIn">
-          <mdui-avatar slot="trigger">
-            <img
-              v-if="userProfile?.avatarPath !== undefined"
-              :src="userProfile?.avatarPath"
-              alt="Avatar"
-              style="height: 100%; width: 100%"
-            />
-            <mdui-icon v-else name="manage_accounts" />
-          </mdui-avatar>
+          <n-user-avatar slot="trigger" :user="userProfile" />
           <mdui-menu>
             <mdui-menu-item disabled>
               <n-text>{{ userProfile?.username }}</n-text>
@@ -269,11 +262,7 @@ const signOut = async () => {
             <template v-if="isLoggedIn">
               <mdui-list-item icon="login" slot="header">
                 {{ userProfile?.username }}
-                <mdui-avatar
-                  v-if="userProfile?.avatarPath !== undefined"
-                  slot="icon"
-                  :src="userProfile?.avatarPath"
-                />
+                <n-user-avatar slot="icon" :user="userProfile" />
               </mdui-list-item>
               <div style="margin-left: 2.5rem">
                 <mdui-list-item @click="router.push('settings')">
