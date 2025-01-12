@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class PostEntity {
     private long posterID;
 
     @Nullable
+    @Length(max = 100)
     @Getter
     @Setter
     private String title;
@@ -42,6 +44,7 @@ public class PostEntity {
     @NotNull
     @NotBlank
     @Basic(fetch = FetchType.LAZY)
+    @Length(max = 65535)
     @Column(columnDefinition = "TEXT", nullable = false)
     @Getter
     @Setter
