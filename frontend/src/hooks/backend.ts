@@ -1,6 +1,13 @@
-import {apiBaseUrl} from "../config.ts";
-import type {Passkey, PatchUserProfileReq, Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
-import type {ErrorMessage} from "../types/error-handling.ts";
+import { apiBaseUrl } from "../config.ts";
+import type {
+  Passkey,
+  PatchUserProfileReq,
+  Post,
+  PreviewPost,
+  UserInfo,
+  UserProfile,
+} from "../types/backend.ts";
+import type { ErrorMessage } from "../types/error-handling.ts";
 import type {
   AuthenticationPublicKeyCredential,
   CredentialCreationOptionsJSON,

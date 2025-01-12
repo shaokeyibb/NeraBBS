@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {VueMarkdownIt} from "@f3ve/vue-markdown-it";
+import { VueMarkdownIt } from "@f3ve/vue-markdown-it";
 
 const { title, content } = defineProps<{
   title?: string;

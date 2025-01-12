@@ -7,14 +7,18 @@
   "web-types": [
     "./node_modules/mdui/web-types.en.json"
   ],
+  "lint-staged": {
+    "**/*": "pnpm run prebuild"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint --fix",
-    "format": "prettier . --write",
+    "format": "prettier . --write --ignore-unknown",
     "prebuild": "pnpm run lint && pnpm run format",
-    "serve": "serve dist"
+    "serve": "serve dist",
+    "prepare": "cd .. && husky"
   },
   "dependencies": {
     "@f3ve/vue-markdown-it": "^0.2.3",
@@ -37,6 +41,8 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.32.0",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
     "postcss": "^8.4.49",
     "prettier": "3.4.2",
     "prettier-eslint": "^16.3.0",

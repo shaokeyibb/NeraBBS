@@ -1,4 +1,4 @@
-import type {PageDecl} from "../../types/route.ts";
+import type { PageDecl } from "../../types/route.ts";
 
 export default {
   parent: "index",

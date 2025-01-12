@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {computed, inject, ref, toValue, useTemplateRef} from "vue";
-import {layout} from "../../utils/symbol.ts";
-import type {Layout} from "../../types/layout.ts";
-import {useI18n} from "vue-i18n";
+import { computed, inject, ref, toValue, useTemplateRef } from "vue";
+import { layout } from "../../utils/symbol.ts";
+import type { Layout } from "../../types/layout.ts";
+import { useI18n } from "vue-i18n";
 import NPost from "../../components/NPost.vue";
-import type {TextField} from "mdui/components/text-field.js";
+import type { TextField } from "mdui/components/text-field.js";
 import usePost from "../../hooks/post.ts";
-import type {ErrorMessage} from "../../types/error-handling.ts";
+import type { ErrorMessage } from "../../types/error-handling.ts";
 import useErrorHandling from "../../hooks/error-handling.ts";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 const { t } = useI18n();
 const { createPost } = usePost();

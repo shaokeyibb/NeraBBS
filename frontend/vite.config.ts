@@ -1,4 +1,4 @@
-import {defineConfig, UserConfig} from "vite";
+import { defineConfig, UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 import autoprefixer from "autoprefixer";
