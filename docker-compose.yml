@@ -21,7 +21,7 @@ services:
     build:
       context: .
       target: gateway
-    container_name: "NeraBBS-Gateway"
+    container_name: "NeraBBS-Gateway-Application"
     restart: on-failure
     depends_on:
       redis:
@@ -40,13 +40,14 @@ services:
         condition: service_started
       service-oss:
         condition: service_started
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     networks:
       - services
       - redis
       - consul
       - frontend
+      - gateway
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:80/actuator/health" ]
       interval: 30s
@@ -292,6 +293,25 @@ services:
       - MINIO_ROOT_PASSWORD=nerabbs#strong_password@2023
     command: [ "server", "/data" ]
 
+  caddy:
+    image: caddy
+    container_name: "NeraBBS-Gateway-Caddy"
+    restart: on-failure
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - gateway
+    volumes:
+      - ./data/caddy:/data/caddy
+      - ./:/etc/caddy # mount Caddyfile
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+
 networks:
   frontend:
   services:
@@ -299,3 +319,4 @@ networks:
   postgres:
   consul:
   minio:
+  gateway:
