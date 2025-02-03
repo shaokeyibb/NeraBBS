@@ -3,6 +3,7 @@ package io.hikarilan.nerabbs.services.user.service;
 import io.hikarilan.nerabbs.common.exception.UserAlreadyExistsException;
 import io.hikarilan.nerabbs.lib.services.userprofile.grpc.UpdateUserProfileRequest;
 import io.hikarilan.nerabbs.lib.services.userprofile.grpc.UserProfileGrpc;
+import io.hikarilan.nerabbs.services.user.data.bo.UserChangePasswordBo;
 import io.hikarilan.nerabbs.services.user.data.dto.UserBasicRegistrationDto;
 import io.hikarilan.nerabbs.services.user.database.entity.UserEntity;
 import io.hikarilan.nerabbs.services.user.database.repository.UserRepository;
@@ -40,4 +41,10 @@ public class UserRegistrationService {
         return saved.getId();
     }
 
+    @Transactional
+    public void changePassword(@Valid @NotNull UserChangePasswordBo userChangePasswordBo) {
+        var user = userRepository.findById(userChangePasswordBo.userId()).orElseThrow();
+        user.changePassword(userChangePasswordBo.newPassword());
+        userRepository.save(user);
+    }
 }

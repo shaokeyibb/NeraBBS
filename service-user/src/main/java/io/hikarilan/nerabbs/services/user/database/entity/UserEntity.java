@@ -60,4 +60,7 @@ public final class UserEntity {
         return new UserEntity(null, userBasicRegistrationDto.email(), BCrypt.hashpw(userBasicRegistrationDto.password()), Date.from(Instant.now()), false);
     }
 
+    public void changePassword(String newPassword) {
+        this.password = BCrypt.hashpw(newPassword);
+    }
 }

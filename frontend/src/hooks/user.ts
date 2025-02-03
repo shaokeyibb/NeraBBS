@@ -1,10 +1,11 @@
-import { useMemoize } from "@vueuse/core";
+import {useMemoize} from "@vueuse/core";
 import useBackend from "./backend.ts";
-import { useSessionStore } from "../stores/session.ts";
-import type { PatchUserProfileReq } from "../types/backend.ts";
+import {useSessionStore} from "../stores/session.ts";
+import type {PatchUserProfileReq} from "../types/backend.ts";
 
 export default function useUser() {
-  const { _getUserInfo, _getUserProfile, _patchUserProfile } = useBackend();
+  const { _getUserInfo, _getUserProfile, _patchUserProfile, _changePassword } =
+    useBackend();
   const sessionStore = useSessionStore();
 
   const _getUserProfileMemorized = useMemoize(_getUserProfile, {
@@ -54,10 +55,15 @@ export default function useUser() {
     await getUserInfo();
   };
 
+  const changePassword = async (newPassword: string) => {
+    await _changePassword(newPassword);
+  };
+
   return {
     getUserInfo,
     getUserProfile,
     patchUserProfile,
     refreshUserSession,
+    changePassword,
   };
 }

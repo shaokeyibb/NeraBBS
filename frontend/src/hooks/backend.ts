@@ -199,6 +199,14 @@ export default function useBackend() {
     });
   };
 
+  const _changePassword = async (newPassword: string) => {
+    await $fetch({
+      path: `users/password`,
+      method: "PUT",
+      data: { newPassword },
+    });
+  };
+
   return {
     _getPost,
     _getPreviewPost,
@@ -216,5 +224,6 @@ export default function useBackend() {
     _verifyPasskeyAssertion,
     _getPasskeys,
     _removePasskey,
+    _changePassword,
   };
 }
