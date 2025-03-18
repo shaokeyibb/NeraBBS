@@ -12,6 +12,7 @@ include("service-webauthn")
 include("service-user")
 include("service-user-profile")
 include("service-post")
+include("service-search")
 
 include("frontend")
 

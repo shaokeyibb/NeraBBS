@@ -113,6 +113,19 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
 
+FROM openjdk:21 AS service-search
+LABEL org.opencontainers.image.authors="HikariLan"
+
+ARG SERVICE_NAME=service-search
+
+EXPOSE 8080
+
+WORKDIR /app
+
+COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+
+ENTRYPOINT ["java", "-jar", "application.jar"]
+
 FROM openjdk:21 AS gateway
 LABEL org.opencontainers.image.authors="HikariLan"
 

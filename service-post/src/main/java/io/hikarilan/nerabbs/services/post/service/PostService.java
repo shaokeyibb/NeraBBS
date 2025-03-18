@@ -1,5 +1,9 @@
 package io.hikarilan.nerabbs.services.post.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.hikarilan.nerabbs.lib.services.search.grpc.AddDocumentsRequest;
+import io.hikarilan.nerabbs.lib.services.search.grpc.DeleteDocumentsRequest;
+import io.hikarilan.nerabbs.lib.services.search.grpc.SearchGrpc;
 import io.hikarilan.nerabbs.services.post.data.bo.PostCreationBo;
 import io.hikarilan.nerabbs.services.post.data.vo.PostVo;
 import io.hikarilan.nerabbs.services.post.data.vo.PreviewPostVo;
@@ -7,6 +11,8 @@ import io.hikarilan.nerabbs.services.post.database.entity.PostEntity;
 import io.hikarilan.nerabbs.services.post.database.repository.PostRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -25,16 +31,26 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    @GrpcClient("nerabbs-service-search")
+    private SearchGrpc.SearchBlockingStub searchStub;
+
+    private final ObjectMapper objectMapper;
+
     @Cacheable(value = "post", key = "#id")
     public PostVo getPostByID(long id) {
         return postRepository.findById(id).map(PostVo::fromPostEntity).orElseThrow();
     }
 
 
+    @SneakyThrows
     @CacheEvict(value = "previewPosts", allEntries = true)
     @Transactional
     public long createPost(@Valid PostCreationBo postCreationBo) {
-        return postRepository.save(PostEntity.fromPostCreationBo(postCreationBo)).getId();
+        var entity = postRepository.save(PostEntity.fromPostCreationBo(postCreationBo));
+
+        searchStub.addDocuments(AddDocumentsRequest.newBuilder().setIndex("posts").setPrimaryKey("id").addDocument(objectMapper.writeValueAsString(entity)).build());
+
+        return entity.getId();
     }
 
     @Cacheable(value = "previewPosts", key = "#page + '-' + #size")
@@ -47,6 +63,8 @@ public class PostService {
             @CacheEvict(value = "previewPosts", allEntries = true)
     })
     public void deletePost(long id) {
+        searchStub.deleteDocuments(DeleteDocumentsRequest.newBuilder().setIndex("posts").addPrimaryKey(String.valueOf(id)).build());
+
         postRepository.deleteById(id);
     }
 

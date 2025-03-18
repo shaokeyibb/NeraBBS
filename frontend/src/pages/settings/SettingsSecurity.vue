@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import NCardMain from "../../components/NCardMain.vue";
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 import NText from "../../components/NText.vue";
 import usePasskey from "../../hooks/passkey.ts";
-import {computedAsync, useMemoize} from "@vueuse/core";
+import { computedAsync, useMemoize } from "@vueuse/core";
 import useErrorHandling from "../../hooks/error-handling.ts";
-import type {ErrorMessage} from "../../types/error-handling.ts";
-import {isSupported as _isSupportedPasskey} from "../../utils/passkey.ts";
-import {useTimeAgoLocalized} from "../../utils/time.ts";
-import {prompt} from "mdui/functions/prompt";
+import type { ErrorMessage } from "../../types/error-handling.ts";
+import { isSupported as _isSupportedPasskey } from "../../utils/passkey.ts";
+import { useTimeAgoLocalized } from "../../utils/time.ts";
+import { prompt } from "mdui/functions/prompt";
 import useUser from "../../hooks/user.ts";
-import {snackbar} from "mdui";
+import { snackbar } from "mdui";
 
 const { insideCard = false } = defineProps<{
   insideCard?: boolean;

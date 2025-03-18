@@ -1,5 +1,5 @@
-import type {MaybeRef, MaybeRefOrGetter} from "@vueuse/core";
-import type {ComputedRef} from "vue";
+import type { MaybeRef, MaybeRefOrGetter } from "@vueuse/core";
+import type { ComputedRef } from "vue";
 
 export type IconBtn = { icon: string; onClick: () => void };
 export type IconBtnWithTooltip = IconBtn & { tooltip: MaybeRef<string> };

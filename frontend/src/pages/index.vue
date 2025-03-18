@@ -1,18 +1,26 @@
 <script lang="ts" setup>
-import {BottomAppBar, NavigationBar, NavigationDrawer} from "mdui";
+import { BottomAppBar, NavigationBar, NavigationDrawer } from "mdui";
 import NText from "../components/NText.vue";
-import {type RouteRecordNameGeneric, useRoute, useRouter} from "vue-router";
-import {computed, provide, ref, toValue, useTemplateRef, watch, watchEffect,} from "vue";
-import {useI18n} from "vue-i18n";
-import {useMediaQuery} from "@vueuse/core";
+import { type RouteRecordNameGeneric, useRoute, useRouter } from "vue-router";
+import {
+  computed,
+  provide,
+  ref,
+  toValue,
+  useTemplateRef,
+  watch,
+  watchEffect,
+} from "vue";
+import { useI18n } from "vue-i18n";
+import { useMediaQuery } from "@vueuse/core";
 import useTheme from "../hooks/theme.ts";
 import useLocale from "../hooks/locale.ts";
-import {availableLocales, getLocalizedLocalName} from "../utils/locale.ts";
-import {layout} from "../utils/symbol.ts";
+import { availableLocales, getLocalizedLocalName } from "../utils/locale.ts";
+import { layout } from "../utils/symbol.ts";
 import useAuth from "../hooks/auth.ts";
-import {useSessionStore} from "../stores/session.ts";
-import {storeToRefs} from "pinia";
-import type {IconBtn, IconBtnWithTooltip, Layout} from "../types/layout.ts";
+import { useSessionStore } from "../stores/session.ts";
+import { storeToRefs } from "pinia";
+import type { IconBtn, IconBtnWithTooltip, Layout } from "../types/layout.ts";
 import NUserAvatar from "../components/NUserAvatar.vue";
 
 const { t } = useI18n();
@@ -108,6 +116,21 @@ const signOut = async () => {
   await _signOut();
   await router.push({ name: "index" });
 };
+
+const searchQuery = ref("");
+const search = async () => {
+  if (searchQuery.value === "") {
+    return;
+  }
+  await router.push({
+    name: "search-query",
+    params: { query: searchQuery.value },
+  });
+};
+
+if (route.name === "search-query" && route.params.query !== undefined) {
+  searchQuery.value = route.params.query as string;
+}
 </script>
 
 <template>
@@ -199,8 +222,12 @@ const signOut = async () => {
         class="search-bar"
         clearable
         variant="outlined"
+        enterkeyhint="search"
+        :value="searchQuery"
+        @input="searchQuery = $event.target.value"
+        @keyup.enter="search"
       >
-        <mdui-button-icon slot="end-icon" icon="search" />
+        <mdui-button-icon slot="end-icon" icon="search" @click="search" />
       </mdui-text-field>
       <template v-if="isLargeScreen">
         <mdui-dropdown v-if="isLoggedIn">
@@ -345,5 +372,9 @@ mdui-layout-main {
   ); /* 64px is the height of the top app bar, 24px is the y-axis padding */
   --mdui-typescale-body-large-line-height: 0.75rem;
   --mdui-typescale-body-large-size: 0.75rem;
+}
+
+mdui-top-app-bar-title {
+  padding-left: 1em;
 }
 </style>

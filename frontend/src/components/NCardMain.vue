@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import NText from "./NText.vue";
+import NTextDecorator from "./NTextDecorator.vue";
 
 const { title, subhead, supportingText } = defineProps<{
   title?: string;
@@ -16,15 +17,17 @@ const { default: _default, actions } = defineSlots<{
 <template>
   <div class="card--content">
     <div v-if="title || subhead" class="card--content--headline">
-      <NText v-if="title" class="title" scale="body" size="large"
-        >{{ title }}
+      <NText v-if="title" class="title" scale="body" size="large">
+        <NTextDecorator :text="title" />
       </NText>
-      <NText v-if="subhead" class="subhead" scale="body" size="medium"
-        >{{ subhead }}
+      <NText v-if="subhead" class="subhead" scale="body" size="medium">
+        <NTextDecorator :text="subhead" />
       </NText>
     </div>
     <div v-if="supportingText" class="card--content--supporting">
-      <NText class="supporting" scale="body">{{ supportingText }} </NText>
+      <NText class="supporting" scale="body">
+        <NTextDecorator :text="supportingText" />
+      </NText>
     </div>
     <div v-else-if="_default">
       <slot name="default" />

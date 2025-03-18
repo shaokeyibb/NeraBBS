@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/service-auth" />
             <option value="$PROJECT_DIR$/service-oss" />
             <option value="$PROJECT_DIR$/service-post" />
+            <option value="$PROJECT_DIR$/service-search" />
             <option value="$PROJECT_DIR$/service-user" />
             <option value="$PROJECT_DIR$/service-user-profile" />
             <option value="$PROJECT_DIR$/service-webauthn" />

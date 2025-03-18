@@ -40,3 +40,14 @@ export type Passkey = {
   signatureCount: number;
   createAt: string;
 };
+
+export type SearchResp<T> = ({
+  [key in keyof T]: T[key];
+} & {
+  _matchesPosition: {
+    [key in keyof T]: {
+      start: number;
+      length: number;
+    }[];
+  };
+})[];

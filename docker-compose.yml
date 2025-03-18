@@ -221,6 +221,30 @@ services:
       retries: 5
       start_period: 30s
 
+  service-search:
+    build:
+      context: .
+      target: service-search
+    container_name: "NeraBBS-Service-Search"
+    restart: on-failure
+    depends_on:
+      consul:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - services
+      - consul
+      - meilisearch
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   redis:
     image: redis:latest
     container_name: "NeraBBS-Middleware-Redis"
@@ -295,6 +319,24 @@ services:
       - MINIO_ROOT_PASSWORD=nerabbs#strong_password@2023
     command: [ "server", "/data" ]
 
+  meilisearch:
+    image: getmeili/meilisearch
+    container_name: "NeraBBS-Middleware-Meilisearch"
+    restart: on-failure
+    expose:
+      - "7700"
+    networks:
+      - meilisearch
+    volumes:
+      - ./data/meilisearch:/meili_data
+    healthcheck:
+      test: set -o pipefail; curl -fsS http://localhost:7700/health | grep -q '{"status":"available"}'
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    environment:
+      - MEILI_MASTER_KEY=nerabbs#strong_password@2023
+
   caddy:
     image: caddy
     container_name: "NeraBBS-Gateway-Caddy"
@@ -321,4 +363,5 @@ networks:
   postgres:
   consul:
   minio:
+  meilisearch:
   gateway:

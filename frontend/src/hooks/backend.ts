@@ -1,11 +1,19 @@
-import {apiBaseUrl} from "../config.ts";
-import type {Passkey, PatchUserProfileReq, Post, PreviewPost, UserInfo, UserProfile,} from "../types/backend.ts";
-import type {ErrorMessage} from "../types/error-handling.ts";
+import { apiBaseUrl } from "../config.ts";
 import type {
-    AuthenticationPublicKeyCredential,
-    CredentialCreationOptionsJSON,
-    CredentialRequestOptionsJSON,
-    RegistrationPublicKeyCredential,
+  Passkey,
+  PatchUserProfileReq,
+  Post,
+  PreviewPost,
+  SearchResp,
+  UserInfo,
+  UserProfile,
+} from "../types/backend.ts";
+import type { ErrorMessage } from "../types/error-handling.ts";
+import type {
+  AuthenticationPublicKeyCredential,
+  CredentialCreationOptionsJSON,
+  CredentialRequestOptionsJSON,
+  RegistrationPublicKeyCredential,
 } from "@github/webauthn-json/browser-ponyfill";
 
 const $fetch = async <T>(
@@ -207,6 +215,17 @@ export default function useBackend() {
     });
   };
 
+  const _search = async <T>(
+    index: string,
+    query: string,
+    offset: number,
+    limit: number,
+  ) => {
+    return await $fetch<SearchResp<T>>({
+      path: `search/${index}/${query}?offset=${offset}&limit=${limit}`,
+    });
+  };
+
   return {
     _getPost,
     _getPreviewPost,
@@ -225,5 +244,6 @@ export default function useBackend() {
     _getPasskeys,
     _removePasskey,
     _changePassword,
+    _search,
   };
 }

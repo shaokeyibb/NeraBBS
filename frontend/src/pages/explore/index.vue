@@ -4,20 +4,30 @@ import NCard from "../../components/NCard.vue";
 import NCardHeader from "../../components/NCardHeader.vue";
 import NCardMain from "../../components/NCardMain.vue";
 
-import type {Ref} from "vue";
-import {computed, inject, onMounted, onUnmounted, ref, shallowRef, toValue, useTemplateRef, watch,} from "vue";
-import type {PreviewPost, UserProfile} from "../../types/backend.ts";
-import {useTimeAgoLocalized} from "../../utils/time.ts";
-import {computedAsync, useInfiniteScroll} from "@vueuse/core";
-import {layout} from "../../utils/symbol.ts";
-import {useI18n} from "vue-i18n";
-import type {ErrorMessage} from "../../types/error-handling.ts";
+import type { Ref } from "vue";
+import {
+  computed,
+  inject,
+  onMounted,
+  onUnmounted,
+  ref,
+  shallowRef,
+  toValue,
+  useTemplateRef,
+  watch,
+} from "vue";
+import type { PreviewPost, UserProfile } from "../../types/backend.ts";
+import { useTimeAgoLocalized } from "../../utils/time.ts";
+import { computedAsync, useInfiniteScroll } from "@vueuse/core";
+import { layout } from "../../utils/symbol.ts";
+import { useI18n } from "vue-i18n";
+import type { ErrorMessage } from "../../types/error-handling.ts";
 import NText from "../../components/NText.vue";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import usePost from "../../hooks/post.ts";
 import useUser from "../../hooks/user.ts";
-import type {Layout} from "../../types/layout.ts";
-import {useRouter} from "vue-router";
+import type { Layout } from "../../types/layout.ts";
+import { useRouter } from "vue-router";
 import NUserAvatar from "../../components/NUserAvatar.vue";
 
 const router = useRouter();
@@ -141,7 +151,10 @@ const getUserProfileCached = (id: number) => {
               </template>
             </NCardHeader>
           </template>
-          <NCardMain :supporting-text="item.content" :title="item.title" />
+          <NCardMain
+            :supporting-text="item.content + '...'"
+            :title="item.title"
+          />
         </NCard>
       </template>
     </MasonryWall>

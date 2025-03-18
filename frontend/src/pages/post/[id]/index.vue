@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import NPost from "../../../components/NPost.vue";
-import {computed, inject, ref, toValue, watchEffect} from "vue";
+import { computed, inject, ref, toValue, watchEffect } from "vue";
 import usePost from "../../../hooks/post.ts";
-import {computedAsync} from "@vueuse/core";
-import {layout} from "../../../utils/symbol.ts";
-import type {Layout} from "../../../types/layout.ts";
-import {useHead} from "@unhead/vue";
-import {useI18n} from "vue-i18n";
-import {useSessionStore} from "../../../stores/session.ts";
+import { computedAsync } from "@vueuse/core";
+import { layout } from "../../../utils/symbol.ts";
+import type { Layout } from "../../../types/layout.ts";
+import { useHead } from "@unhead/vue";
+import { useI18n } from "vue-i18n";
+import { useSessionStore } from "../../../stores/session.ts";
 import useErrorHandling from "../../../hooks/error-handling.ts";
-import type {ErrorMessage} from "../../../types/error-handling.ts";
+import type { ErrorMessage } from "../../../types/error-handling.ts";
 
-import {confirm} from "mdui/functions/confirm.js";
-import {snackbar} from "mdui/functions/snackbar.js";
+import { confirm } from "mdui/functions/confirm.js";
+import { snackbar } from "mdui/functions/snackbar.js";
 
 const { getPost, deletePost } = usePost();
 const router = useRouter();

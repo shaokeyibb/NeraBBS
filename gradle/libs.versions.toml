@@ -25,6 +25,8 @@ hypersistenceUtils = "3.9.0"
 jackson-module-jakarta-xmlbind-annotations = "2.18.2"
 
 minio = "8.5.14"
+meilisearch-java = "0.14.2"
+
 [libraries]
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
@@ -46,6 +48,8 @@ hypersistence-utils-hibernate = { module = "io.hypersistence:hypersistence-utils
 jackson-module-jakarta-xmlbind-annotations = { module = "com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations", version.ref = "jackson-module-jakarta-xmlbind-annotations" }
 
 minio = { module = "io.minio:minio", version.ref = "minio" }
+
+meilisearch-java = { module = "com.meilisearch.sdk:meilisearch-java", version.ref = "meilisearch-java" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
