@@ -1,5 +1,8 @@
-import type { RouteRecordRaw } from "vue-router";
-import { createRouter, createWebHashHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import type { PageDecl } from "../types/route.ts";
 import { useSessionStore } from "../stores/session.ts";
 
@@ -126,7 +129,7 @@ const buildRoutes = () => {
 };
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: buildRoutes(),
 });
 
