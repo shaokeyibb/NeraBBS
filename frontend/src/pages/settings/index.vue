@@ -104,6 +104,8 @@ const topAppBarHeight = computed(
   ); /* 64px is the height of the top app bar */
   overflow-y: auto;
   padding: 16px 24px;
+
+  user-select: none;
 }
 
 .tab-panel {

@@ -134,28 +134,35 @@ onMounted(() => {
           handleMatchesPosition(it, "title");
           const contentOffset = handleMatchesPosition(it, "content");
           if (it.content.length > maxContentLength) {
-            const closestMatches = it._matchesPosition.content.sort((a, b) =>
-              Math.abs(
-                b.start +
-                  b.length -
-                  maxContentLength -
-                  (a.start + a.length - maxContentLength),
-              ),
-            )[0];
-            it.content = decoder.decode(
-              encoder
-                .encode(it.content)
-                .slice(
-                  0,
-                  contentOffset + closestMatches.start + closestMatches.length,
+            if (it._matchesPosition.content) {
+              const closestMatches = it._matchesPosition.content.sort((a, b) =>
+                Math.abs(
+                  b.start +
+                    b.length -
+                    maxContentLength -
+                    (a.start + a.length - maxContentLength),
                 ),
-            );
+              )[0];
+              it.content = decoder.decode(
+                encoder
+                  .encode(it.content)
+                  .slice(
+                    0,
+                    contentOffset +
+                      closestMatches.start +
+                      closestMatches.length,
+                  ),
+              );
+            } else {
+              it.content = it.content.substring(0, maxContentLength);
+            }
           }
 
           return it;
         });
         items.value = items.value.concat(res);
       } catch (e: unknown) {
+        console.error(e);
         error.value = e as ErrorMessage;
         reachedEnd.value = true;
       }
@@ -266,6 +273,8 @@ useHead({
   ); /* 64px is the height of the top app bar */
   overflow-y: auto;
   padding: 16px 24px;
+
+  user-select: none;
 }
 
 .reached-end {

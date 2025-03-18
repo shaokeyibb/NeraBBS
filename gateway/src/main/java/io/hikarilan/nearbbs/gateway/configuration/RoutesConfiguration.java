@@ -33,7 +33,7 @@ public class RoutesConfiguration {
                 .route("service-webauthn", r -> r.path("/api/webauthn/passkey/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://nerabbs-service-webauthn"))
-                .route("service-search", r -> r.path("/api/search/**")
+                .route("service-search", r -> r.path("/api/search/**", "/api/hit/**", "/api/trending/**")
                         .filters(f -> f.stripPrefix(1))
                         .uri("lb://nerabbs-service-search"))
                 .route("frontend", r -> r.path("/**")

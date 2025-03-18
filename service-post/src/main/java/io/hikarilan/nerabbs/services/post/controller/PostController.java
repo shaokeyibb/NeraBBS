@@ -3,6 +3,8 @@ package io.hikarilan.nerabbs.services.post.controller;
 import io.hikarilan.nerabbs.common.BizConstants;
 import io.hikarilan.nerabbs.common.exception.ForbiddenException;
 import io.hikarilan.nerabbs.common.exception.UnauthorizedException;
+import io.hikarilan.nerabbs.lib.services.search.grpc.HitGrpc;
+import io.hikarilan.nerabbs.lib.services.search.grpc.HitRequest;
 import io.hikarilan.nerabbs.services.post.data.bo.PostCreationBo;
 import io.hikarilan.nerabbs.services.post.data.dto.PostCreationDto;
 import io.hikarilan.nerabbs.services.post.data.vo.PostVo;
@@ -10,6 +12,7 @@ import io.hikarilan.nerabbs.services.post.data.vo.PreviewPostVo;
 import io.hikarilan.nerabbs.services.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +27,15 @@ public class PostController {
 
     private final PostService postService;
 
+    @GrpcClient("nerabbs-service-search")
+    private HitGrpc.HitBlockingStub hitStub;
+
     @GetMapping("/{id}")
     @ResponseBody
-    public PostVo getPost(@PathVariable long id) {
+    public PostVo getPost(@PathVariable long id, @RequestParam(defaultValue = "false") boolean pure) {
+        if (!pure) {
+            hitStub.hit(HitRequest.newBuilder().setTopic("posts").setKey(String.valueOf(id)).build());
+        }
         return postService.getPostByID(id);
     }
 

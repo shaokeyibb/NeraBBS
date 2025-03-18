@@ -13,6 +13,11 @@ service Search {
   rpc SearchDocument(SearchDocumentRequest) returns (SearchDocumentResponse);
 }
 
+service Hit {
+  rpc Hit(HitRequest) returns (google.protobuf.Empty);
+  rpc Reset(ResetRequest) returns (google.protobuf.Empty);
+}
+
 message AddDocumentsRequest {
   string index = 1;
   repeated string document = 2;
@@ -33,4 +38,14 @@ message SearchDocumentRequest {
 
 message SearchDocumentResponse {
   repeated string hits = 1;
+}
+
+message HitRequest {
+  string topic = 1;
+  string key = 2;
+}
+
+message ResetRequest {
+  string topic = 1;
+  string key = 2;
 }

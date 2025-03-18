@@ -12,10 +12,6 @@ import { prompt } from "mdui/functions/prompt";
 import useUser from "../../hooks/user.ts";
 import { snackbar } from "mdui";
 
-const { insideCard = false } = defineProps<{
-  insideCard?: boolean;
-}>();
-
 const { t } = useI18n();
 
 const { handle: handleError } = useErrorHandling();
@@ -93,7 +89,7 @@ const changePassword = async () => {
 </script>
 
 <template>
-  <component :is="insideCard ? NCardMain : 'div'" class="section">
+  <NCardMain class="section">
     <div class="list">
       <div class="list-headline">
         <NText scale="label" size="large"
@@ -146,7 +142,7 @@ const changePassword = async () => {
         {{ t("page.settings.security.passkey.unsupported") }}
       </NText>
     </div>
-  </component>
+  </NCardMain>
 </template>
 
 <style scoped>

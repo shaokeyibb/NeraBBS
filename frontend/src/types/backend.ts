@@ -51,3 +51,9 @@ export type SearchResp<T> = ({
     }[];
   };
 })[];
+
+export type Hit = {
+  topic: string;
+  key: string;
+  hitCount: number;
+};

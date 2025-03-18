@@ -100,7 +100,16 @@ const onSubmit = async () => {
       />
     </mdui-tab-panel>
     <mdui-tab-panel slot="panel" value="PREVIEW" class="wall-container">
-      <n-post :title="title" :content="content" />
+      <n-post
+        :the-post="{
+          id: -1,
+          posterID: -1,
+          title: title,
+          content: content,
+          createAt: new Date().toISOString(),
+        }"
+        :is-preview="true"
+      />
     </mdui-tab-panel>
   </mdui-tabs>
 </template>

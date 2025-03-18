@@ -42,6 +42,14 @@ const topAppBarHeight = computed(
   () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
 );
 
+const bottomAppBarHeight = computed(
+  () => (toValue(l?.bottomAppBar)?.height ?? 0) + "px",
+);
+
+const outContainerMargin = computed(() =>
+  l.isLargeScreen.value ? "0 240px" : "0",
+);
+
 const actions = [
   {
     icon: "delete",
@@ -63,7 +71,7 @@ const actions = [
 
       try {
         await deletePost(id.value);
-        await router.push("/");
+        await router.push({ name: "index" });
         snackbar({
           message: t("page.post.delete.success"),
           closeable: true,
@@ -108,7 +116,7 @@ useHead({
     <mdui-linear-progress v-if="post === undefined" />
     <div v-else class="outer-container">
       <div class="wall-container">
-        <n-post :title="post.title" :content="post.content"></n-post>
+        <n-post :the-post="post" />
       </div>
     </div>
   </div>
@@ -121,6 +129,8 @@ useHead({
   min-height: calc(
     100vh - v-bind(topAppBarHeight)
   ); /* 64px is the height of the top app bar */
+
+  margin: v-bind(outContainerMargin);
 }
 
 .wall-container {
@@ -131,7 +141,7 @@ useHead({
 
   box-sizing: border-box;
   max-height: calc(
-    100vh - v-bind(topAppBarHeight)
+    100vh - v-bind(topAppBarHeight) - v-bind(bottomAppBarHeight)
   ); /* 64px is the height of the top app bar */
   overflow: auto;
   padding: 16px 24px;

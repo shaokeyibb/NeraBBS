@@ -101,7 +101,7 @@ l.updateLayout({
   fab: {
     icon: "add",
     onClick: () => {
-      router.push("create");
+      router.push({ name: "create" });
     },
   },
 });
@@ -178,6 +178,8 @@ const getUserProfileCached = (id: number) => {
   ); /* 64px is the height of the top app bar */
   overflow-y: auto;
   padding: 16px 24px;
+
+  user-select: none;
 }
 
 .reached-end {
@@ -190,5 +192,9 @@ const getUserProfileCached = (id: number) => {
 
 .reached-end--divider {
   margin: 12px 0;
+}
+
+.card {
+  user-select: none;
 }
 </style>

@@ -33,6 +33,8 @@
   "page.post.delete.confirm.description": "此操作无法撤销。",
   "page.post.delete.success": "主题已删除",
   "page.search.title": "{query} 的搜索结果",
+  "page.trending.title": "趋势",
+  "page.trending.supporting": "热度: {hit}",
   "theme.switcher.tooltip": "主题：{theme}",
   "theme.auto": "跟随系统",
   "theme.light": "浅色",

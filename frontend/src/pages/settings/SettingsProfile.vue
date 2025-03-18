@@ -71,6 +71,9 @@ const onModifyTextProfile = async (e: MouseEvent) => {
       closeOnEsc: true,
       closeOnOverlayClick: true,
       queue: "modify-text-profile",
+      textFieldOptions: {
+        value: userProfile.value![field as keyof typeof userProfile.value],
+      },
     });
   } catch {
     // ignore cancel error

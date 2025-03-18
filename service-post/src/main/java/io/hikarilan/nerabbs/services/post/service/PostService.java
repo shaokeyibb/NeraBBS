@@ -1,9 +1,7 @@
 package io.hikarilan.nerabbs.services.post.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.hikarilan.nerabbs.lib.services.search.grpc.AddDocumentsRequest;
-import io.hikarilan.nerabbs.lib.services.search.grpc.DeleteDocumentsRequest;
-import io.hikarilan.nerabbs.lib.services.search.grpc.SearchGrpc;
+import io.hikarilan.nerabbs.lib.services.search.grpc.*;
 import io.hikarilan.nerabbs.services.post.data.bo.PostCreationBo;
 import io.hikarilan.nerabbs.services.post.data.vo.PostVo;
 import io.hikarilan.nerabbs.services.post.data.vo.PreviewPostVo;
@@ -33,6 +31,9 @@ public class PostService {
 
     @GrpcClient("nerabbs-service-search")
     private SearchGrpc.SearchBlockingStub searchStub;
+
+    @GrpcClient("nerabbs-service-search")
+    private HitGrpc.HitBlockingStub hitStub;
 
     private final ObjectMapper objectMapper;
 
@@ -64,6 +65,7 @@ public class PostService {
     })
     public void deletePost(long id) {
         searchStub.deleteDocuments(DeleteDocumentsRequest.newBuilder().setIndex("posts").addPrimaryKey(String.valueOf(id)).build());
+        hitStub.reset(ResetRequest.newBuilder().setTopic("posts").setKey(String.valueOf(id)).build());
 
         postRepository.deleteById(id);
     }

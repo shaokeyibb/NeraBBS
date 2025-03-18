@@ -84,6 +84,7 @@ const l: Layout = {
     !isLargeScreen.value ? { height: 80 } : undefined,
   ),
   topAppBar: { height: 64 },
+  bottomAppBar: !bottomAppBar.value ? { height: 80 } : undefined,
   updateLayout: (data) => {
     cachedLayout[route.name!] = data;
     updateLayout0(data);
@@ -236,7 +237,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
             <mdui-menu-item disabled>
               <n-text>{{ userProfile?.username }}</n-text>
             </mdui-menu-item>
-            <mdui-menu-item @click="router.push('settings')">
+            <mdui-menu-item @click="router.push({ name: 'settings' })">
               <n-text>{{ t("settings") }}</n-text>
             </mdui-menu-item>
             <mdui-menu-item @click="signOut()">
@@ -303,7 +304,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
                 <n-user-avatar slot="icon" :user="userProfile" />
               </mdui-list-item>
               <div style="margin-left: 2.5rem">
-                <mdui-list-item @click="router.push('settings')">
+                <mdui-list-item @click="router.push({ name: 'settings' })">
                   <n-text>{{ t("settings") }}</n-text>
                 </mdui-list-item>
                 <mdui-list-item @click="signOut()">
@@ -315,7 +316,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
               icon="login"
               slot="header"
               v-else
-              @click="router.push('signin')"
+              @click="router.push({ name: 'signin' })"
               >{{ t("sign_in") }}
             </mdui-list-item>
           </mdui-collapse-item>
@@ -325,7 +326,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
     <mdui-layout-main>
       <RouterView />
       <mdui-fab
-        v-if="fab !== undefined && !isLargeScreen && bottomAppBar === null"
+        v-if="fab !== undefined && !isLargeScreen && bottomAppBar == null"
         class="fab"
         :icon="fab.icon"
         @click="fab.onClick"
@@ -376,5 +377,6 @@ mdui-layout-main {
 
 mdui-top-app-bar-title {
   padding-left: 1em;
+  user-select: none;
 }
 </style>

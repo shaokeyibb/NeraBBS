@@ -238,6 +238,8 @@ services:
       - services
       - consul
       - meilisearch
+      - redis
+      - postgres
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s

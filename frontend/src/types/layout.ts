@@ -24,6 +24,12 @@ export type Layout = {
       }
     | undefined
   >;
+  bottomAppBar: MaybeRefOrGetter<
+    | {
+        height: number;
+      }
+    | undefined
+  >;
   updateLayout: (data: {
     fab?: IconBtn;
     topAppBar?: {

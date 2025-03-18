@@ -1,5 +1,6 @@
 import { apiBaseUrl } from "../config.ts";
 import type {
+  Hit,
   Passkey,
   PatchUserProfileReq,
   Post,
@@ -93,8 +94,8 @@ const $fetch = async <T>(
 };
 
 export default function useBackend() {
-  const _getPost = async (id: number) => {
-    return await $fetch<Post>(`posts/${id}`);
+  const _getPost = async (id: number, pure: boolean) => {
+    return await $fetch<Post>(`posts/${id}?pure=${pure}`);
   };
 
   const _getPreviewPost = async (page: number, size: number) => {
@@ -226,6 +227,14 @@ export default function useBackend() {
     });
   };
 
+  const _getHitCount = async (topic: string, key: string) => {
+    return await $fetch<Hit>(`hit/${topic}/${key}`);
+  };
+
+  const _getTrending = async (topic: string, limit: number) => {
+    return await $fetch<Hit[]>(`trending/${topic}?limit=${limit}`);
+  };
+
   return {
     _getPost,
     _getPreviewPost,
@@ -245,5 +254,7 @@ export default function useBackend() {
     _removePasskey,
     _changePassword,
     _search,
+    _getHitCount,
+    _getTrending,
   };
 }

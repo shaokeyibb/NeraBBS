@@ -32,6 +32,8 @@
   "page.post.delete.confirm.description": "This action cannot be undone.",
   "page.post.delete.success": "Topic deleted",
   "page.search.title": "Search Results for {query}",
+  "page.trending.title": "Trending",
+  "page.trending.supporting": "Hit: {hit}",
   "theme.switcher.tooltip": "Theme：{theme}",
   "theme.auto": "Auto",
   "theme.light": "Light",
