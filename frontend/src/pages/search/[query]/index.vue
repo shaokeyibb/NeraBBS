@@ -2,12 +2,10 @@
 import { useHead } from "@unhead/vue";
 import {
   computed,
-  inject,
   onMounted,
   type Ref,
   ref,
   shallowRef,
-  toValue,
   useTemplateRef,
   watch,
 } from "vue";
@@ -20,8 +18,6 @@ import NCardHeader from "../../../components/NCardHeader.vue";
 import NText from "../../../components/NText.vue";
 import NCardMain from "../../../components/NCardMain.vue";
 import MasonryWall from "@yeger/vue-masonry-wall";
-import { layout } from "../../../utils/symbol.ts";
-import type { Layout } from "../../../types/layout.ts";
 import type { ErrorMessage } from "../../../types/error-handling.ts";
 import type { Post, UserProfile } from "../../../types/backend.ts";
 import { computedAsync, useInfiniteScroll } from "@vueuse/core";
@@ -194,12 +190,6 @@ watch(query, () => {
   reachedEnd.value = false;
 });
 
-const l = inject(layout) as Layout;
-
-const topAppBarHeight = computed(
-  () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
-);
-
 const cachedUserProfile: {
   [key: number]: Ref<UserProfile | undefined>;
 } = {};
@@ -268,9 +258,6 @@ useHead({
   flex-direction: column;
 
   box-sizing: border-box;
-  max-height: calc(
-    100vh - v-bind(topAppBarHeight)
-  ); /* 64px is the height of the top app bar */
   overflow-y: auto;
   padding: 16px 24px;
 

@@ -6,13 +6,11 @@ import NCardMain from "../../components/NCardMain.vue";
 
 import type { Ref } from "vue";
 import {
-  computed,
   inject,
   onMounted,
   onUnmounted,
   ref,
   shallowRef,
-  toValue,
   useTemplateRef,
   watch,
 } from "vue";
@@ -93,10 +91,6 @@ onUnmounted(() => {
 
 const l = inject(layout) as Layout;
 
-const topAppBarHeight = computed(
-  () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
-);
-
 l.updateLayout({
   fab: {
     icon: "add",
@@ -173,9 +167,6 @@ const getUserProfileCached = (id: number) => {
   flex-direction: column;
 
   box-sizing: border-box;
-  max-height: calc(
-    100vh - v-bind(topAppBarHeight)
-  ); /* 64px is the height of the top app bar */
   overflow-y: auto;
   padding: 16px 24px;
 

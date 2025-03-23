@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, toValue, useTemplateRef } from "vue";
+import { computed, inject, ref, useTemplateRef } from "vue";
 import { layout } from "../../utils/symbol.ts";
 import type { Layout } from "../../types/layout.ts";
 import { useI18n } from "vue-i18n";
@@ -19,16 +19,16 @@ const currentTab = ref<"WRITE" | "PREVIEW">("WRITE");
 
 const l = inject(layout) as Layout;
 
-const topAppBarHeight = computed(
-  () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
-);
-
 l.updateLayout({
   fab: {
     icon: "save",
     onClick: () => onSubmit(),
   },
 });
+
+const outContainerMargin = computed(() =>
+  l.isLargeScreen.value ? "0 240px" : "0",
+);
 
 const titleEl = useTemplateRef<TextField>("titleEl");
 const contentEl = useTemplateRef<TextField>("contentEl");
@@ -100,16 +100,20 @@ const onSubmit = async () => {
       />
     </mdui-tab-panel>
     <mdui-tab-panel slot="panel" value="PREVIEW" class="wall-container">
-      <n-post
-        :the-post="{
-          id: -1,
-          posterID: -1,
-          title: title,
-          content: content,
-          createAt: new Date().toISOString(),
-        }"
-        :is-preview="true"
-      />
+      <div class="outer-container">
+        <div class="container">
+          <n-post
+            :the-post="{
+              id: -1,
+              posterID: -1,
+              title: title,
+              content: content,
+              createAt: new Date().toISOString(),
+            }"
+            :is-preview="true"
+          />
+        </div>
+      </div>
     </mdui-tab-panel>
   </mdui-tabs>
 </template>
@@ -117,10 +121,18 @@ const onSubmit = async () => {
 <style scoped>
 .wall-container {
   box-sizing: border-box;
-  max-height: calc(
-    100vh - v-bind(topAppBarHeight)
-  ); /* 64px is the height of the top app bar */
-  overflow-y: auto;
   padding: 16px 24px;
+}
+
+.outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  box-sizing: border-box;
+
+  margin: v-bind(outContainerMargin);
 }
 </style>

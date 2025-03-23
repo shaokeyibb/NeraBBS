@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import type { Component } from "vue";
-import {
-  computed,
-  inject,
-  ref,
-  shallowRef,
-  toValue,
-  useTemplateRef,
-} from "vue";
+import { inject, ref, shallowRef, useTemplateRef } from "vue";
 import type { Layout } from "../../types/layout.ts";
 import { layout } from "../../utils/symbol.ts";
 import MasonryWall from "@yeger/vue-masonry-wall";
@@ -47,10 +40,6 @@ const items = shallowRef<
 const currentTab = ref<string>(items.value[0].key);
 
 const l = inject(layout) as Layout;
-
-const topAppBarHeight = computed(
-  () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
-);
 </script>
 
 <template>
@@ -99,9 +88,6 @@ const topAppBarHeight = computed(
   flex-direction: column;
 
   box-sizing: border-box;
-  max-height: calc(
-    100vh - v-bind(topAppBarHeight)
-  ); /* 64px is the height of the top app bar */
   overflow-y: auto;
   padding: 16px 24px;
 

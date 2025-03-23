@@ -135,7 +135,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
 </script>
 
 <template>
-  <mdui-layout>
+  <mdui-layout full-height>
     <mdui-navigation-rail
       v-if="isLargeScreen"
       :value="route.name"
@@ -351,11 +351,6 @@ if (route.name === "search-query" && route.params.query !== undefined) {
 </template>
 
 <style scoped>
-mdui-layout-main {
-  height: 100vh;
-  overflow: hidden;
-}
-
 .fab {
   position: fixed;
   right: 16px;

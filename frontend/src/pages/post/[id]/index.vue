@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import NPost from "../../../components/NPost.vue";
-import { computed, inject, ref, toValue, watchEffect } from "vue";
+import { computed, inject, ref, watchEffect } from "vue";
 import usePost from "../../../hooks/post.ts";
 import { computedAsync } from "@vueuse/core";
 import { layout } from "../../../utils/symbol.ts";
@@ -37,14 +37,6 @@ const post = computedAsync(async () => {
 const { userInfo: currentUserInfo } = useSessionStore();
 
 const l = inject(layout) as Layout;
-
-const topAppBarHeight = computed(
-  () => (toValue(l?.topAppBar)?.height ?? 0) + "px",
-);
-
-const bottomAppBarHeight = computed(
-  () => (toValue(l?.bottomAppBar)?.height ?? 0) + "px",
-);
 
 const outContainerMargin = computed(() =>
   l.isLargeScreen.value ? "0 240px" : "0",
@@ -115,8 +107,9 @@ useHead({
   <div v-if="!error">
     <mdui-linear-progress v-if="post === undefined" />
     <div v-else class="outer-container">
-      <div class="wall-container">
+      <div class="container">
         <n-post :the-post="post" />
+        <div class="comments-panel"></div>
       </div>
     </div>
   </div>
@@ -124,26 +117,16 @@ useHead({
 
 <style scoped>
 .outer-container {
-  position: relative;
-  overflow: hidden;
-  min-height: calc(
-    100vh - v-bind(topAppBarHeight)
-  ); /* 64px is the height of the top app bar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  margin: v-bind(outContainerMargin);
+  padding: 16px 24px;
 }
 
-.wall-container {
-  display: flex;
-  flex-direction: column;
-
-  position: relative;
-
+.container {
   box-sizing: border-box;
-  max-height: calc(
-    100vh - v-bind(topAppBarHeight) - v-bind(bottomAppBarHeight)
-  ); /* 64px is the height of the top app bar */
-  overflow: auto;
-  padding: 16px 24px;
+
+  margin: v-bind(outContainerMargin);
 }
 </style>
