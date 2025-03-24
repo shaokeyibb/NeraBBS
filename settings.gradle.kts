@@ -13,6 +13,7 @@ include("service-user")
 include("service-user-profile")
 include("service-post")
 include("service-search")
+include("service-comment")
 
 include("frontend")
 

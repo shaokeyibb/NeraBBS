@@ -2,9 +2,14 @@
 import { onMounted, provide, type Ref, ref, useTemplateRef } from "vue";
 import { isInNCard } from "../utils/symbol.ts";
 
-const { variant = "filled", clickable = false } = defineProps<{
+const {
+  variant = "filled",
+  clickable = false,
+  disabled = false,
+} = defineProps<{
   variant?: "elevated" | "filled" | "outlined";
   clickable?: boolean;
+  disabled?: boolean;
 }>();
 
 const {
@@ -48,7 +53,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <mdui-card ref="card" :clickable="clickable" :variant="variant" class="card">
+  <mdui-card
+    ref="card"
+    :clickable="clickable"
+    :variant="variant"
+    :disabled="disabled"
+    class="card"
+  >
     <div v-if="header" ref="headerEl" class="card--header">
       <slot name="header" />
     </div>

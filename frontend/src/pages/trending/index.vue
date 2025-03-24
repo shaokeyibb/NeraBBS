@@ -8,6 +8,7 @@ import { computed, inject, type Ref } from "vue";
 import { layout } from "../../utils/symbol.ts";
 import type { Layout } from "../../types/layout.ts";
 import usePost from "../../hooks/post.ts";
+import type { Post } from "../../types/backend.ts";
 
 const { t } = useI18n();
 
@@ -18,18 +19,15 @@ const { getPost } = usePost();
 
 const trending = computedAsync(async () => await getPostTrending());
 
-const cachedPostTitle: {
-  [key: string]: Ref<string | undefined>;
+const cachedPost: {
+  [key: string]: Ref<Post | undefined>;
 } = {};
 
-const getPostTitleCached = (id: number) => {
-  if (cachedPostTitle[id] === undefined) {
-    cachedPostTitle[id] = computedAsync(
-      async () => (await getPost(id, true)).title,
-      "",
-    );
+const getPostCached = (id: number) => {
+  if (cachedPost[id] === undefined) {
+    cachedPost[id] = computedAsync(async () => await getPost(id, true));
   }
-  return cachedPostTitle[id];
+  return cachedPost[id];
 };
 
 const l = inject(layout) as Layout;
@@ -49,7 +47,10 @@ const outContainerMargin = computed(() =>
     <mdui-list-item
       v-for="item in trending"
       :key="`${item.topic}:${item.key}`"
-      :headline="getPostTitleCached(parseInt(item.key)).value"
+      :headline="
+        getPostCached(parseInt(item.key)).value?.title ??
+        getPostCached(parseInt(item.key)).value?.content?.substring(0, 200)
+      "
       :description="t('page.trending.supporting', { hit: item.hitCount })"
       @click="router.push({ name: 'post-id', params: { id: item.key } })"
     />

@@ -1,6 +1,8 @@
 package io.hikarilan.nerabbs.services.post.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.hikarilan.nerabbs.lib.services.comment.grpc.CommentGrpc;
+import io.hikarilan.nerabbs.lib.services.comment.grpc.DeleteAllCommentsRequest;
 import io.hikarilan.nerabbs.lib.services.search.grpc.*;
 import io.hikarilan.nerabbs.services.post.data.bo.PostCreationBo;
 import io.hikarilan.nerabbs.services.post.data.vo.PostVo;
@@ -35,6 +37,9 @@ public class PostService {
     @GrpcClient("nerabbs-service-search")
     private HitGrpc.HitBlockingStub hitStub;
 
+    @GrpcClient("nerabbs-service-comment")
+    private CommentGrpc.CommentBlockingStub commentStub;
+
     private final ObjectMapper objectMapper;
 
     @Cacheable(value = "post", key = "#id")
@@ -42,6 +47,10 @@ public class PostService {
         return postRepository.findById(id).map(PostVo::fromPostEntity).orElseThrow();
     }
 
+    @Cacheable(value = "hasPost", key = "#id")
+    public boolean hasPost(long id) {
+        return postRepository.existsById(id);
+    }
 
     @SneakyThrows
     @CacheEvict(value = "previewPosts", allEntries = true)
@@ -61,11 +70,13 @@ public class PostService {
 
     @Caching(evict = {
             @CacheEvict(value = "post", key = "#id"),
-            @CacheEvict(value = "previewPosts", allEntries = true)
+            @CacheEvict(value = "previewPosts", allEntries = true),
+            @CacheEvict(value = "hasPost", key = "#id")
     })
     public void deletePost(long id) {
         searchStub.deleteDocuments(DeleteDocumentsRequest.newBuilder().setIndex("posts").addPrimaryKey(String.valueOf(id)).build());
         hitStub.reset(ResetRequest.newBuilder().setTopic("posts").setKey(String.valueOf(id)).build());
+        commentStub.deleteAllComments(DeleteAllCommentsRequest.newBuilder().setPostId(id).build());
 
         postRepository.deleteById(id);
     }

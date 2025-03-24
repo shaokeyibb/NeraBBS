@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: nerabbs-service-post
+    name: nerabbs-service-comment
 
   data:
     redis:
@@ -39,9 +39,6 @@ grpc:
     security:
       enabled: false
   client:
-    nerabbs-service-search:
-      address: 'discovery:///nerabbs-service-search'
-      negotiationType: PLAINTEXT
-    nerabbs-service-comment:
-      address: 'discovery:///nerabbs-service-comment'
+    nerabbs-service-post:
+      address: 'discovery:///nerabbs-service-post'
       negotiationType: PLAINTEXT

@@ -17,10 +17,14 @@ const { getUserProfile } = useUser();
 const { getPostHitCount } = useSearch();
 
 const { user, hit } = {
-  user: computedAsync(async () => await getUserProfile(thePost.posterID)),
-  hit: computedAsync(
-    async () => (await getPostHitCount("" + thePost.id)).hitCount,
-  ),
+  user: isPreview
+    ? null
+    : computedAsync(async () => await getUserProfile(thePost.posterID)),
+  hit: isPreview
+    ? null
+    : computedAsync(
+        async () => (await getPostHitCount("" + thePost.id)).hitCount,
+      ),
 };
 </script>
 

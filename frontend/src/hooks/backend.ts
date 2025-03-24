@@ -1,5 +1,8 @@
 import { apiBaseUrl } from "../config.ts";
 import type {
+  Comment,
+  CommentChain,
+  CreateCommentReq,
   Hit,
   Passkey,
   PatchUserProfileReq,
@@ -17,7 +20,7 @@ import type {
   RegistrationPublicKeyCredential,
 } from "@github/webauthn-json/browser-ponyfill";
 
-const $fetch = async <T>(
+const $fetch = async <T = unknown>(
   options:
     | {
         path: string;
@@ -235,6 +238,29 @@ export default function useBackend() {
     return await $fetch<Hit[]>(`trending/${topic}?limit=${limit}`);
   };
 
+  const _getComment = async (postID: number, commentID: number) => {
+    return await $fetch<Comment>(`posts/${postID}/comments/${commentID}`);
+  };
+
+  const _getComments = async (postID: number) => {
+    return await $fetch<CommentChain[]>(`posts/${postID}/comments`);
+  };
+
+  const _createComment = async (postID: number, data: CreateCommentReq) => {
+    return await $fetch<number>({
+      path: `posts/${postID}/comments`,
+      method: "POST",
+      data,
+    });
+  };
+
+  const _deleteComment = async (postID: number, commentID: number) => {
+    await $fetch({
+      path: `posts/${postID}/comments/${commentID}`,
+      method: "DELETE",
+    });
+  };
+
   return {
     _getPost,
     _getPreviewPost,
@@ -256,5 +282,9 @@ export default function useBackend() {
     _search,
     _getHitCount,
     _getTrending,
+    _getComment,
+    _getComments,
+    _createComment,
+    _deleteComment,
   };
 }

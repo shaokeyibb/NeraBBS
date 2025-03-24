@@ -177,7 +177,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
         slot="bottom"
         :content="t('theme.switcher.tooltip', { theme: t('theme.auto') })"
       >
-        <mdui-button-icon icon="mode_standby" @click="toggleTheme()" />
+        <mdui-button-icon icon="brightness_auto" @click="toggleTheme()" />
       </mdui-tooltip>
       <mdui-tooltip
         v-show="theme === 'light'"
@@ -286,7 +286,7 @@ if (route.name === "search-query" && route.params.query !== undefined) {
         </mdui-collapse>
         <mdui-list-item
           :icon="
-            { auto: 'mode_standby', light: 'light_mode', dark: 'dark_mode' }[
+            { auto: 'brightness_auto', light: 'light_mode', dark: 'dark_mode' }[
               theme
             ]
           "
@@ -373,5 +373,9 @@ if (route.name === "search-query" && route.params.query !== undefined) {
 mdui-top-app-bar-title {
   padding-left: 1em;
   user-select: none;
+}
+
+mdui-button-icon + mdui-top-app-bar-title {
+  padding-left: 0;
 }
 </style>

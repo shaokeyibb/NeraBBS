@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.hikarilan.nerabbs.lib.services.comment.grpc";
+option java_outer_classname = "CommentServiceProto";
+
+package comment_service;
+import "google/protobuf/empty.proto";
+
+service Comment{
+  rpc DeleteAllComments(DeleteAllCommentsRequest) returns (google.protobuf.Empty);
+}
+
+message DeleteAllCommentsRequest{
+  uint64 postId = 1;
+}

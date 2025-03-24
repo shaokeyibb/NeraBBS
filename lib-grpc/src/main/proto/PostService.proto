@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.hikarilan.nerabbs.lib.services.post.grpc";
+option java_outer_classname = "PostServiceProto";
+
+package post_service;
+
+service Post{
+  rpc HasPost(HasPostRequest) returns (HasPostResponse);
+}
+
+message HasPostRequest{
+  uint64 id = 1;
+}
+
+message HasPostResponse{
+  bool has = 1;
+}

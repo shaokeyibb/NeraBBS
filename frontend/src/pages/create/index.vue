@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, useTemplateRef } from "vue";
+import { inject, ref, useTemplateRef } from "vue";
 import { layout } from "../../utils/symbol.ts";
 import type { Layout } from "../../types/layout.ts";
 import { useI18n } from "vue-i18n";
@@ -25,10 +25,6 @@ l.updateLayout({
     onClick: () => onSubmit(),
   },
 });
-
-const outContainerMargin = computed(() =>
-  l.isLargeScreen.value ? "0 240px" : "0",
-);
 
 const titleEl = useTemplateRef<TextField>("titleEl");
 const contentEl = useTemplateRef<TextField>("contentEl");
@@ -128,11 +124,5 @@ const onSubmit = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.container {
-  box-sizing: border-box;
-
-  margin: v-bind(outContainerMargin);
 }
 </style>

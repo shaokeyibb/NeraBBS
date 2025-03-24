@@ -15,7 +15,6 @@ import { useTimeAgoLocalized } from "../../../utils/time.ts";
 import NCard from "../../../components/NCard.vue";
 import NUserAvatar from "../../../components/NUserAvatar.vue";
 import NCardHeader from "../../../components/NCardHeader.vue";
-import NText from "../../../components/NText.vue";
 import NCardMain from "../../../components/NCardMain.vue";
 import MasonryWall from "@yeger/vue-masonry-wall";
 import type { ErrorMessage } from "../../../types/error-handling.ts";
@@ -24,6 +23,7 @@ import { computedAsync, useInfiniteScroll } from "@vueuse/core";
 import useErrorHandling from "../../../hooks/error-handling.ts";
 import useSearch from "../../../hooks/search.ts";
 import useUser from "../../../hooks/user.ts";
+import NReachedEndDividier from "../../../components/NReachedEndDividier.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -243,12 +243,7 @@ useHead({
         </NCard>
       </template>
     </MasonryWall>
-    <div v-if="reachedEnd" class="reached-end">
-      <mdui-divider class="reached-end--divider" />
-      <NText>
-        {{ t("page.explore.reached_end") }}
-      </NText>
-    </div>
+    <NReachedEndDividier v-if="reachedEnd" />
   </div>
 </template>
 
@@ -262,17 +257,5 @@ useHead({
   padding: 16px 24px;
 
   user-select: none;
-}
-
-.reached-end {
-  width: 30%;
-
-  align-self: center;
-
-  text-align: center;
-}
-
-.reached-end--divider {
-  margin: 12px 0;
 }
 </style>

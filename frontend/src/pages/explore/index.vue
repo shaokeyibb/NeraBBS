@@ -18,18 +18,16 @@ import type { PreviewPost, UserProfile } from "../../types/backend.ts";
 import { useTimeAgoLocalized } from "../../utils/time.ts";
 import { computedAsync, useInfiniteScroll } from "@vueuse/core";
 import { layout } from "../../utils/symbol.ts";
-import { useI18n } from "vue-i18n";
 import type { ErrorMessage } from "../../types/error-handling.ts";
-import NText from "../../components/NText.vue";
 import useErrorHandling from "../../hooks/error-handling.ts";
 import usePost from "../../hooks/post.ts";
 import useUser from "../../hooks/user.ts";
 import type { Layout } from "../../types/layout.ts";
 import { useRouter } from "vue-router";
 import NUserAvatar from "../../components/NUserAvatar.vue";
+import NReachedEndDividier from "../../components/NReachedEndDividier.vue";
 
 const router = useRouter();
-const { t } = useI18n();
 const { getPreviewPost } = usePost();
 const { getUserProfile } = useUser();
 const { handle: handleError } = useErrorHandling();
@@ -152,12 +150,7 @@ const getUserProfileCached = (id: number) => {
         </NCard>
       </template>
     </MasonryWall>
-    <div v-if="reachedEnd" class="reached-end">
-      <mdui-divider class="reached-end--divider" />
-      <NText>
-        {{ t("page.explore.reached_end") }}
-      </NText>
-    </div>
+    <NReachedEndDividier v-if="reachedEnd" />
   </div>
 </template>
 
@@ -171,18 +164,6 @@ const getUserProfileCached = (id: number) => {
   padding: 16px 24px;
 
   user-select: none;
-}
-
-.reached-end {
-  width: 30%;
-
-  align-self: center;
-
-  text-align: center;
-}
-
-.reached-end--divider {
-  margin: 12px 0;
 }
 
 .card {

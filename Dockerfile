@@ -22,7 +22,7 @@ COPY . .
 
 RUN --mount=type=cache,id=build,target=/gradle/cache gradle build -x :frontend:build --no-daemon --parallel
 
-FROM node:22 AS frontend
+FROM node:22-slim AS frontend
 LABEL org.opencontainers.image.authors="HikariLan"
 
 EXPOSE 3000
@@ -117,6 +117,19 @@ FROM openjdk:21 AS service-search
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-search
+
+EXPOSE 8080
+
+WORKDIR /app
+
+COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+
+ENTRYPOINT ["java", "-jar", "application.jar"]
+
+FROM openjdk:21 AS service-comment
+LABEL org.opencontainers.image.authors="HikariLan"
+
+ARG SERVICE_NAME=service-comment
 
 EXPOSE 8080
 

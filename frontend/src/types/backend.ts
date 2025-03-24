@@ -57,3 +57,24 @@ export type Hit = {
   key: string;
   hitCount: number;
 };
+
+export type Comment = {
+  id: number;
+  postID: number;
+  commenterID: number;
+  rootCommentID: number;
+  parentCommentID?: number;
+  content: string;
+  createAt: string;
+  isDeleted: boolean;
+};
+
+export type CommentChain = {
+  comment: Comment;
+  children: CommentChain[];
+};
+
+export type CreateCommentReq = {
+  parentCommentID?: number;
+  content: string;
+};

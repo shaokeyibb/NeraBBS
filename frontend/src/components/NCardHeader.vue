@@ -62,6 +62,7 @@ onMounted(() => {
 .card--header--content {
   display: flex;
   flex-direction: row;
+  align-items: center;
 
   gap: 16px;
 }
