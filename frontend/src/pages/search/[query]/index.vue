@@ -23,7 +23,7 @@ import { computedAsync, useInfiniteScroll } from "@vueuse/core";
 import useErrorHandling from "../../../hooks/error-handling.ts";
 import useSearch from "../../../hooks/search.ts";
 import useUser from "../../../hooks/user.ts";
-import NReachedEndDividier from "../../../components/NReachedEndDividier.vue";
+import NReachedEndDivider from "../../../components/NReachedEndDivider.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -243,7 +243,7 @@ useHead({
         </NCard>
       </template>
     </MasonryWall>
-    <NReachedEndDividier v-if="reachedEnd" />
+    <NReachedEndDivider v-if="reachedEnd" />
   </div>
 </template>
 

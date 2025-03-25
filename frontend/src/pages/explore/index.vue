@@ -25,7 +25,7 @@ import useUser from "../../hooks/user.ts";
 import type { Layout } from "../../types/layout.ts";
 import { useRouter } from "vue-router";
 import NUserAvatar from "../../components/NUserAvatar.vue";
-import NReachedEndDividier from "../../components/NReachedEndDividier.vue";
+import NReachedEndDivider from "../../components/NReachedEndDivider.vue";
 
 const router = useRouter();
 const { getPreviewPost } = usePost();
@@ -150,7 +150,7 @@ const getUserProfileCached = (id: number) => {
         </NCard>
       </template>
     </MasonryWall>
-    <NReachedEndDividier v-if="reachedEnd" />
+    <NReachedEndDivider v-if="reachedEnd" />
   </div>
 </template>
 
