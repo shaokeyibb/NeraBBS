@@ -34,6 +34,21 @@ spring:
       host: consul
       port: 8500
 
+  quartz:
+    job-store-type: "jdbc"
+    jdbc:
+      initialize-schema: "always"
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: scheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            tablePrefix: qrtz_
+
 grpc:
   server:
     security:
