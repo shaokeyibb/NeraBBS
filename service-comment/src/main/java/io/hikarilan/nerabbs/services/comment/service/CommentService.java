@@ -14,7 +14,6 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -101,14 +100,6 @@ public class CommentService {
         }
 
         return commentRepository.getAllByPostIDAndParentCommentIsNullOrderByCreateAt(postID).stream().map(this::buildCommentChain).collect(Collectors.toList());
-    }
-
-    @Scheduled(cron = "0 0 * * * *")
-    public void deleteAllFrozenComments() {
-        var frozenComments = commentRepository.getAllByFrozenIsTrue();
-        frozenComments = frozenComments.stream().filter(it -> !commentRepository.existsByParentCommentId(it.getId())).toList();
-        frozenComments.forEach(it -> it.setDeleted(true));
-        commentRepository.saveAll(frozenComments);
     }
 
     @Caching(evict = {

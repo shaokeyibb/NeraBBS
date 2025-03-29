@@ -29,10 +29,31 @@ spring:
 
     show-sql: true
 
+  sql:
+    init:
+      mode: always
+
   cloud:
     consul:
       host: consul
       port: 8500
+
+  quartz:
+    job-store-type: "jdbc"
+    jdbc:
+      initialize-schema: "never"
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: scheduler
+            instanceId: AUTO
+            classLoadHelper:
+              class: org.quartz.simpl.CascadingClassLoadHelper
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            tablePrefix: QRTZ_
 
 grpc:
   server:
