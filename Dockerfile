@@ -39,115 +39,133 @@ FROM openjdk:21 AS service-auth
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-auth
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-user
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-user
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-user-profile
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-user-profile
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-post
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-post
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-webauthn
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-webauthn
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-oss
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-oss
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-search
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-search
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS service-comment
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=service-comment
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
 EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
 
 FROM openjdk:21 AS gateway
 LABEL org.opencontainers.image.authors="HikariLan"
 
 ARG SERVICE_NAME=gateway
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
 
-EXPOSE 80
+EXPOSE 8080
 
 WORKDIR /app
 
 COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar

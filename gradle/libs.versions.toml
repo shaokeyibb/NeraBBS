@@ -7,7 +7,7 @@ frontendGradlePlugin = "10.0.0"
 springCloud = "2024.0.0"
 springData = "2024.1.1"
 
-grpc = "1.58.0"
+grpc = "1.63.0"
 protobuf = "3.23.4"
 
 grpcSpringBootStarter = "3.1.0.RELEASE"

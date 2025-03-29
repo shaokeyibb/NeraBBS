@@ -43,13 +43,14 @@ services:
     expose:
       - "8080"
     ports:
-      - "8080:8080"
+      - "8090:8080"
     networks:
       - services
       - redis
       - consul
       - frontend
       - gateway
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:80/actuator/health" ]
       interval: 30s
@@ -57,7 +58,10 @@ services:
       retries: 5
       start_period: 30s
     environment:
-      - logging.level.org.springframework.cloud.gateway=TRACE
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_INSTRUMENTATION_HTTP_CLIENT_CAPTURE_REQUEST_HEADERS=X-User-ID
 
   service-auth:
     build:
@@ -79,12 +83,17 @@ services:
       - redis
       - postgres
       - consul
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-user:
     build:
@@ -106,12 +115,17 @@ services:
       - redis
       - postgres
       - consul
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-post:
     build:
@@ -133,12 +147,17 @@ services:
       - redis
       - postgres
       - consul
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-webauthn:
     build:
@@ -160,6 +179,7 @@ services:
       - redis
       - postgres
       - consul
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
@@ -169,6 +189,9 @@ services:
     environment:
       - nerabbs.webauthn.relying-party.id=localhost
       - nerabbs.webauthn.relying-party.name=Nerabbs
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-oss:
     build:
@@ -187,12 +210,17 @@ services:
       - services
       - consul
       - minio
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-user-profile:
     build:
@@ -214,12 +242,17 @@ services:
       - redis
       - postgres
       - consul
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-search:
     build:
@@ -240,12 +273,17 @@ services:
       - meilisearch
       - redis
       - postgres
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   service-comment:
     build:
@@ -267,12 +305,17 @@ services:
       - redis
       - postgres
       - consul
+      - hyperdx
     healthcheck:
       test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8080/actuator/health" ]
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
 
   redis:
     image: redis:latest
@@ -384,6 +427,19 @@ services:
       timeout: 1s
       retries: 3
 
+  hyperdx:
+    image: hyperdx/hyperdx-local
+    container_name: "NeraBBS-Middleware-HyperDX"
+    restart: on-failure
+    expose:
+      - "4318"
+      - "4317"
+      - "8082"
+    ports:
+      - "8000:8000"
+      - "8080:8080"
+    networks:
+      - hyperdx
 
 networks:
   frontend:
@@ -394,3 +450,4 @@ networks:
   minio:
   meilisearch:
   gateway:
+  hyperdx:
