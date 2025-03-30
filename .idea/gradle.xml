@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/frontend" />
             <option value="$PROJECT_DIR$/gateway" />
             <option value="$PROJECT_DIR$/lib-grpc" />
+            <option value="$PROJECT_DIR$/middleware-config" />
             <option value="$PROJECT_DIR$/service-auth" />
             <option value="$PROJECT_DIR$/service-comment" />
             <option value="$PROJECT_DIR$/service-oss" />

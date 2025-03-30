@@ -11,19 +11,10 @@ java {
 dependencies {
     implementation(project(":common"))
 
-    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
-    implementation("org.springframework.cloud:spring-cloud-starter-config")
-    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
-
-    implementation(libs.sa.token.reactor.starter)
-    implementation(libs.sa.token.redis)
-    implementation("org.apache.commons:commons-pool2")
-
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.cloud:spring-cloud-config-server")
 }
 
 dependencyManagement {

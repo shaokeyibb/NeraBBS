@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: nerabbs-service-comment
+
+  cloud:
+    consul:
+      host: consul
+      port: 8500
+
+    config:
+      discovery:
+        enabled: true
+        serviceId: nerabbs-middleware-config

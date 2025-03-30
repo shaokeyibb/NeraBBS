@@ -169,3 +169,18 @@ COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar applicatio
 COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
 ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar
+
+FROM openjdk:21 AS middleware-config
+LABEL org.opencontainers.image.authors="HikariLan"
+
+ARG SERVICE_NAME=middleware-config
+ENV ENV_SERVICE_NAME=$SERVICE_NAME
+
+EXPOSE 8080
+
+WORKDIR /app
+
+COPY --from=build /build/$SERVICE_NAME/build/libs/$SERVICE_NAME-*.jar application.jar
+COPY --from=build /build/binary-tools/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
+
+ENTRYPOINT java -javaagent:opentelemetry-javaagent.jar -Dotel.service.name=$ENV_SERVICE_NAME -jar application.jar

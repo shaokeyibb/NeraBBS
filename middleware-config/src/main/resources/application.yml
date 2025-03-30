@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: nerabbs-middleware-config
+
+  cloud:
+    consul:
+      host: consul
+      port: 8500
+
+    config:
+      server:
+        git:
+          uri: "https://github.com/shaokeyibb/NeraBBS-Config"
+          defaultLabel: master

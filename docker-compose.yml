@@ -63,6 +63,29 @@ services:
       - OTEL_LOGS_EXPORTER=otlp
       - OTEL_INSTRUMENTATION_HTTP_CLIENT_CAPTURE_REQUEST_HEADERS=X-User-ID
 
+  middleware-config:
+    build:
+      context: .
+      target: middleware-config
+    container_name: "NeraBBS-Middleware-Config"
+    restart: on-failure
+    expose:
+      - "8888"
+    networks:
+      - services
+      - consul
+      - hyperdx
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost:8888/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://hyperdx:4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_LOGS_EXPORTER=otlp
+
   service-auth:
     build:
       context: .

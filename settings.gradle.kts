@@ -4,6 +4,8 @@ include("common")
 
 include("lib-grpc")
 
+include("middleware-config")
+
 include("gateway")
 
 include("service-oss")
