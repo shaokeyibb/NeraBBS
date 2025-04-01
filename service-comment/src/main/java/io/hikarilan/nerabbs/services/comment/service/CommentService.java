@@ -107,7 +107,7 @@ public class CommentService {
             @CacheEvict(value = "commentChain", key = "#postID")
     })
     @Transactional
-    public void deleteComment(long postID /* for cache evict */, long id) {
+    public void deleteComment(@SuppressWarnings("unused") long postID /* for cache evict */, long id) {
         var chainExists = commentRepository.existsByParentCommentId(id);
         if (chainExists) {
             var entity = commentRepository.findById(id).orElseThrow();
