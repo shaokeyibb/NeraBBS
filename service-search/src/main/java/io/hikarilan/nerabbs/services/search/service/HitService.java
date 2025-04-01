@@ -9,6 +9,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.CompletableFuture;
+
 @RequiredArgsConstructor
 @Service
 public class HitService {
@@ -38,8 +40,9 @@ public class HitService {
     @Transactional
     @CacheEvict(value = "hit", key = "#topic+':'+#key")
     public void reset(String topic, String key) {
-        trendingService.reset(topic, key);
-        hitRepository.deleteById(new HitEntity.HitEntityKey(topic, key));
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> trendingService.reset(topic, key)),
+                CompletableFuture.runAsync(() -> hitRepository.deleteById(new HitEntity.HitEntityKey(topic, key)))).join();
     }
 
     @Transactional

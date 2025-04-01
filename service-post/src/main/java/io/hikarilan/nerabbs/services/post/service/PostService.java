@@ -32,13 +32,13 @@ public class PostService {
     private final PostRepository postRepository;
 
     @GrpcClient("nerabbs-service-search")
-    private SearchGrpc.SearchBlockingStub searchStub;
+    private SearchGrpc.SearchFutureStub searchStub;
 
     @GrpcClient("nerabbs-service-search")
-    private HitGrpc.HitBlockingStub hitStub;
+    private HitGrpc.HitFutureStub hitStub;
 
     @GrpcClient("nerabbs-service-comment")
-    private CommentGrpc.CommentBlockingStub commentStub;
+    private CommentGrpc.CommentFutureStub commentStub;
 
     private final ObjectMapper objectMapper;
 

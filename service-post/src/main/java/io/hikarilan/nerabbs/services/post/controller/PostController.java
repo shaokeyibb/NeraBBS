@@ -28,7 +28,7 @@ public class PostController {
     private final PostService postService;
 
     @GrpcClient("nerabbs-service-search")
-    private HitGrpc.HitBlockingStub hitStub;
+    private HitGrpc.HitFutureStub hitStub;
 
     @GetMapping("/{id}")
     @ResponseBody
