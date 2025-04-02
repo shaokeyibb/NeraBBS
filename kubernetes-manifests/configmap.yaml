@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap
+  namespace: nerabbs
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres.nerabbs.svc.cluster.local:5432/nerabbs"
+  SPRING_DATA_REDIS_HOST: "redis.nerabbs.svc.cluster.local"
+  SPRING_CLOUD_CONSUL_HOST: "consul.nerabbs.svc.cluster.local"
+  MINIO_ENDPOINT: "http://minio.nerabbs.svc.cluster.local:9000"
+  MEILISEARCH_ENDPOINT: "http://meilisearch.nerabbs.svc.cluster.local:7700"
+
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://hyperdx.nerabbs.svc.cluster.local:4318"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+  OTEL_LOGS_EXPORTER: "otlp"
+  OTEL_INSTRUMENTATION_HTTP_CLIENT_CAPTURE_REQUEST_HEADERS: "X-User-ID"
+
+  NERABBS_FRONTEND_URL: "http://frontend.nerabbs.svc.cluster.local:3000"
+
+  POSTGRES_PASSWORD: "nerabbs"
+  POSTGRES_USER: "nerabbs"
+  POSTGRES_DB: "nerabbs"
+
+  MINIO_ROOT_USER: "nerabbs"
+  MINIO_ROOT_PASSWORD: "nerabbs#strong_password@2023"
+
+  MEILI_MASTER_KEY: "nerabbs#strong_password@2023"

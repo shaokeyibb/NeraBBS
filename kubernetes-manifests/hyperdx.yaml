@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hyperdx
+  namespace: nerabbs
+  labels:
+    app: hyperdx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperdx
+  template:
+    metadata:
+      name: hyperdx
+      labels:
+        app: hyperdx
+    spec:
+      containers:
+        - name: hyperdx
+          image: hyperdx/hyperdx-local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+            - containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: configmap
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hyperdx
+  namespace: nerabbs
+spec:
+  selector:
+    app: hyperdx
+  ports:
+    - name: "hyperdx-tcp-8000"
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+    - name: "hyperdx-tcp-8080"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
