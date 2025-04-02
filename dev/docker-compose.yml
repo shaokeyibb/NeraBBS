@@ -1,0 +1,135 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: "NeraBBS-Dev-Middleware-Redis"
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    networks:
+      - redis
+    volumes:
+      - ../data/redis:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: [ "redis-server", "--bind", "0.0.0.0", "--port", "6379" ]
+
+  postgres:
+    image: postgres:latest
+    container_name: "NeraBBS-Dev-Middleware-Postgres"
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    volumes:
+      - ../data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "nerabbs", "-d", "nerabbs" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_PASSWORD=nerabbs
+      - POSTGRES_USER=nerabbs
+      - POSTGRES_DB=nerabbs
+
+  consul:
+    image: hashicorp/consul:latest
+    container_name: "NeraBBS-Dev-Middleware-Consul"
+    restart: on-failure
+    ports:
+      - "8500:8500"
+    networks:
+      - consul
+    volumes:
+      - ../data/consul:/consul/data
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "localhost:8500/v1/status/leader" ]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    command: [ "consul", "agent", "-dev", "-data-dir=/consul/data", "-client=0.0.0.0" ]
+
+  minio:
+    image: minio/minio
+    container_name: "NeraBBS-Dev-Middleware-Minio"
+    restart: on-failure
+    ports:
+      - "9000:9000"
+    networks:
+      - minio
+    volumes:
+      - ../data/minio:/data
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "localhost:9000/minio/health/live" ]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    environment:
+      - MINIO_ROOT_USER=nerabbs
+      - MINIO_ROOT_PASSWORD=nerabbs#strong_password@2023
+    command: [ "server", "/data" ]
+
+  meilisearch:
+    image: getmeili/meilisearch
+    container_name: "NeraBBS-Dev-Middleware-Meilisearch"
+    restart: on-failure
+    ports:
+      - "7700:7700"
+    networks:
+      - meilisearch
+    volumes:
+      - ../data/meilisearch:/meili_data
+    healthcheck:
+      test: set -o pipefail; curl -fsS http://localhost:7700/health | grep -q '{"status":"available"}'
+      interval: 1s
+      timeout: 3s
+      retries: 60
+    environment:
+      - MEILI_MASTER_KEY=nerabbs#strong_password@2023
+
+  caddy:
+    image: caddy
+    container_name: "NeraBBS-Dev-Gateway-Caddy"
+    restart: on-failure
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - gateway
+    volumes:
+      - ../data/caddy:/data/caddy
+      - ./:/etc/caddy # mount Caddyfile
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "http://localhost" ]
+      interval: 5s
+      timeout: 1s
+      retries: 3
+
+  hyperdx:
+    image: hyperdx/hyperdx-local
+    container_name: "NeraBBS-Dev-Middleware-HyperDX"
+    restart: on-failure
+    expose:
+      - "8082"
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "8000:8000"
+      - "8080:8080"
+    networks:
+      - hyperdx
+
+networks:
+  frontend:
+  services:
+  redis:
+  postgres:
+  consul:
+  minio:
+  meilisearch:
+  gateway:
+  hyperdx:
