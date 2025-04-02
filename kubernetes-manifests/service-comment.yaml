@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-comment
+  namespace: nerabbs
+  labels:
+    app: service-comment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-comment
+  template:
+    metadata:
+      name: service-comment
+      labels:
+        app: service-comment
+    spec:
+      containers:
+        - name: service-comment
+          image: hikarilan/nerabbs:service-comment
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: configmap
+          env:
+            - name: SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-comment
+  namespace: nerabbs
+spec:
+  selector:
+    app: service-comment
+  ports:
+    - name: "http-8080"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: "grpc-9090"
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+  type: ClusterIP
+
+      

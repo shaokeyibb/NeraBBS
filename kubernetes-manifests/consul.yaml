@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: consul
+  namespace: nerabbs
+spec:
+  selector:
+    matchLabels:
+      app: consul
+  serviceName: "consul"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      containers:
+        - name: consul
+          image: hashicorp/consul
+          ports:
+            - name: consul
+              containerPort: 8500
+          command: [ "consul" ]
+          args: [ "agent", "-server", "-data-dir=/consul/data", "-bootstrap-expect=1", "-client=0.0.0.0" ]
+          envFrom:
+            - configMapRef:
+                name: configmap
+          volumeMounts:
+            - name: consul
+              mountPath: /consul/data
+  volumeClaimTemplates:
+    - metadata:
+        name: consul
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+  namespace: nerabbs
+spec:
+  selector:
+    app: consul
+  ports:
+    - protocol: TCP
+      port: 8500
+      targetPort: 8500
