@@ -33,3 +33,8 @@ tasks.named<InstallFrontendTask>("installFrontend") {
     inputs.files(retainedMetadataFileNames).withPropertyName("metadataFiles")
     outputs.dir("${projectDir}/node_modules").withPropertyName("nodeModulesDirectory")
 }
+
+if (System.getenv("DISABLE_FRONTEND_BUILD") != null) {
+    println("Frontend build is disabled by DISABLE_FRONTEND_BUILD environment variable")
+    project.tasks.all { this.enabled = false }
+}

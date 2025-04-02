@@ -16,11 +16,12 @@ LABEL org.opencontainers.image.authors="HikariLan"
 
 ENV GRADLE_USER_HOME="/gradle"
 ENV PATH="$GRADLE_USER_HOME:$PATH"
+ENV DISABLE_FRONTEND_BUILD="true"
 
 WORKDIR /build
 COPY . .
 
-RUN --mount=type=cache,id=build,target=/gradle/cache gradle build -x :frontend:build --no-daemon --parallel
+RUN --mount=type=cache,id=build,target=/gradle/cache gradle build --no-daemon --parallel
 
 FROM node:22-slim AS frontend
 LABEL org.opencontainers.image.authors="HikariLan"
