@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -54,6 +55,7 @@ public class PostService {
 
     @SneakyThrows
     @CacheEvict(value = "previewPosts", allEntries = true)
+    @GlobalTransactional
     @Transactional
     public long createPost(@Valid PostCreationBo postCreationBo) {
         var entity = postRepository.save(PostEntity.fromPostCreationBo(postCreationBo));
@@ -73,6 +75,7 @@ public class PostService {
             @CacheEvict(value = "previewPosts", allEntries = true),
             @CacheEvict(value = "hasPost", key = "#id")
     })
+    @GlobalTransactional
     public void deletePost(long id) {
         searchStub.deleteDocuments(DeleteDocumentsRequest.newBuilder().setIndex("posts").addPrimaryKey(String.valueOf(id)).build());
         hitStub.reset(ResetRequest.newBuilder().setTopic("posts").setKey(String.valueOf(id)).build());

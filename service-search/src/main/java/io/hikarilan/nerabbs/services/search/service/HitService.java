@@ -4,6 +4,7 @@ import io.hikarilan.nerabbs.services.search.data.vo.HitVo;
 import io.hikarilan.nerabbs.services.search.database.entity.HitEntity;
 import io.hikarilan.nerabbs.services.search.database.repository.HitRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class HitService {
 
     private final TrendingService trendingService;
 
+    @GlobalTransactional
     @Transactional
     @CacheEvict(value = "hit", key = "#topic+':'+#key")
     public void hit(String topic, String key) {
@@ -37,6 +39,7 @@ public class HitService {
         trendingService.hit(topic, key);
     }
 
+    @GlobalTransactional
     @Transactional
     @CacheEvict(value = "hit", key = "#topic+':'+#key")
     public void reset(String topic, String key) {

@@ -32,6 +32,8 @@ dependencies {
 
     implementation(libs.grpc.spring.boot.starter)
 
+    implementation(libs.seata.spring.cloud.starter)
+
     implementation(libs.hutool.crypto)
 
     compileOnly("org.projectlombok:lombok")

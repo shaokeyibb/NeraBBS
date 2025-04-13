@@ -9,6 +9,7 @@ data:
   SPRING_CLOUD_CONSUL_HOST: "consul.nerabbs.svc.cluster.local"
   MINIO_ENDPOINT: "http://minio.nerabbs.svc.cluster.local:9000"
   MEILISEARCH_ENDPOINT: "http://meilisearch.nerabbs.svc.cluster.local:7700"
+  SEATA_SERVICE_GROUPLIST_DEFAULT: "seata-server.nerabbs.svc.cluster.local:8091"
 
   OTEL_EXPORTER_OTLP_ENDPOINT: "http://hyperdx.nerabbs.svc.cluster.local:4318"
   OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"

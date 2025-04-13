@@ -33,6 +33,8 @@ dependencies {
 
     implementation(libs.grpc.spring.boot.starter)
 
+    implementation(libs.seata.spring.cloud.starter)
+
     implementation(libs.meilisearch.java)
 
     compileOnly("org.projectlombok:lombok")

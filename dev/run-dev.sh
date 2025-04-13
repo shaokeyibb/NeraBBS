@@ -40,6 +40,8 @@ export NERABBS_WEBAUTHN_RELYINGPARTY_NAME="Nerabbs"
 
 export SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME="localhost"
 
+export SEATA_SERVICE_GROUPLIST_DEFAULT="localhost:8091"
+
 PORT_BASE=0
 
 cd "$BASE_DIR"/../ && ./gradlew build || exit 1

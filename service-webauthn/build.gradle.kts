@@ -30,6 +30,8 @@ dependencies {
 
     implementation(libs.grpc.spring.boot.starter)
 
+    implementation(libs.seata.spring.cloud.starter)
+
     implementation(libs.hypersistence.utils.hibernate)
     implementation(libs.jackson.module.jakarta.xmlbind.annotations)
 

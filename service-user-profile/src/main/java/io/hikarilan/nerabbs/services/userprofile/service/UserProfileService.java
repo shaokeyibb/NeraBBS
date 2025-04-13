@@ -9,6 +9,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -38,6 +39,7 @@ public class UserProfileService {
     }
 
     @CacheEvict(value = "userProfile", key = "#id")
+    @GlobalTransactional
     @Transactional
     public void updateUserProfile(long id,
                                   @NotNull @Length(min = 3) String username,

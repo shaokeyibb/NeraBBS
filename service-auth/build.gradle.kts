@@ -29,6 +29,8 @@ dependencies {
 
     implementation(libs.grpc.spring.boot.starter)
 
+    implementation(libs.seata.spring.cloud.starter)
+
     implementation(libs.sa.token.starter)
     implementation(libs.sa.token.redis)
     implementation("org.apache.commons:commons-pool2")

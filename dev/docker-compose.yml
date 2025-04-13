@@ -123,6 +123,19 @@ services:
     networks:
       - hyperdx
 
+  seata-server:
+    image: seataio/seata-server
+    container_name: "NeraBBS-Middleware-Seata"
+    restart: on-failure
+    ports:
+      - "7091:7091"
+      - "8091:8091"
+    networks:
+      - seata
+    environment:
+      - SEATA_PORT=8091
+      - STORE_MODE=file
+
 networks:
   frontend:
   services:
@@ -133,3 +146,4 @@ networks:
   meilisearch:
   gateway:
   hyperdx:
+  seata:
