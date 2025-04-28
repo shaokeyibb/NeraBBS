@@ -1,4 +1,4 @@
-![banner](blob:https://capsule-render.vercel.app/6a4b7d4c-6455-45ec-b408-bf5593c489d7)
+![banner](https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=NeraBBS&desc=一款%20Material%20Degisn%203%20风格的云原生微服务论坛&descAlignY=65&textBg=false)
 
 # NeraBBS
 
