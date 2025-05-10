@@ -4,6 +4,8 @@
 
 一款 Material Degisn 3 风格的云原生微服务论坛。
 
+![](./docs/assets/preview.png)
+
 ## 特性
 
 - 基于 Java 21 + Vue 3 开发，前后端分离
